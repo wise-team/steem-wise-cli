@@ -5,10 +5,6 @@ const program = require('commander');
 const syncRules = require('./sync-rules.js');
 const syncVotes = require('./sync-votes.js');
 
-
-
-
-
 /*
  * CLI setup
  */
@@ -19,14 +15,14 @@ var version = require('../package.json').version;
 program
     .name('smartvotes')
     .version(version, '-v, --version')
-    .option('-c, --config-file', 'Use specific config file');
+    .option('-c, --config-file [path]', 'Use specific config file');
 
 program
     .command('sync-rules')
     .description('Synchronize rules from config file to blockchain')
     .action(function(){
         commandCorrect = true;
-        syncRules();
+        syncRules(program);
     });
 
 program
@@ -34,7 +30,7 @@ program
     .description('Send issued votes to blockchain')
     .action(function(){
         commandCorrect = true;
-        syncVotes();
+        syncVotes(program);
     });
 
 program
@@ -42,8 +38,8 @@ program
     .description('sync-rules + sync-votes')
     .action(function(){
         commandCorrect = true;
-        syncRules();
-        syncVotes();
+        syncRules(program);
+        syncVotes(program);
     });
 
 program
