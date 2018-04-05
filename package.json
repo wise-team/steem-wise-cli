@@ -2,7 +2,7 @@
   "name": "steem-smartvotes-cli",
   "version": "0.1.0",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "doc": "docs"
   },
@@ -11,7 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
