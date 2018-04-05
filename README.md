@@ -1,4 +1,7 @@
 # steem-smartvotes-cli
+
+[![Known Vulnerabilities](https://snyk.io/test/github/jblew/steem-smartvotes-cli/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jblew/steem-smartvotes-cli?targetFile=package.json)
+
 Vote delegation system for STEEM blockchain: cli tool for delegators.
 
  
