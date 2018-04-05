@@ -1,0 +1,32 @@
+{
+  "name": "steem-smartvotes-cli",
+  "version": "0.1.0",
+  "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "steem": "^0.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jblew/steem-smartvotes-cli.git"
+  },
+  "keywords": [
+    "steem",
+    "blockchain",
+    "smartvotes",
+    "cli"
+  ],
+  "author": "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Jblew/steem-smartvotes-cli/issues"
+  },
+  "homepage": "https://github.com/Jblew/steem-smartvotes-cli#readme"
+}

@@ -10,7 +10,8 @@ INTRODUCTION here -> [github.com/Jblew/steem-smartvotes-core](https://github.com
 
 ### Requirements
 STEEM smartvotes cli is a **node.js** app, 
-it uses **nvm** for local node version management.
+it uses **nvm** for local node version management
+and **npm** for dependencies.
 
 In order to use app easily and safely in a standarized environment, please install the following:
 
@@ -18,5 +19,9 @@ In order to use app easily and safely in a standarized environment, please insta
 
     - After installation type "nvm use" in project directory
      to activate proper version of node
+
+- [NPM](https://www.npmjs.com/)
+
+    - Type "npm install" to install all locked dependencies
 
 
