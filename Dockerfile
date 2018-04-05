@@ -1,5 +1,7 @@
 FROM node:8.11-slim
 
+LABEL maintainer="Jędrzej Lewandowski <jedrzejblew@gmail.com>"
+
 WORKDIR /app
 COPY .nvmrc package.json package-lock.json ./
 COPY src/ ./src
