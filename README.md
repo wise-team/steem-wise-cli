@@ -1,4 +1,7 @@
 # steem-smartvotes-cli
+
+[![Known Vulnerabilities](https://snyk.io/test/github/jblew/steem-smartvotes-cli/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jblew/steem-smartvotes-cli?targetFile=package.json)
+
 Vote delegation system for STEEM blockchain: cli tool for delegators.
 
 More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/Jblew/steem-smartvotes-core](https://github.com/Jblew/steem-smartvotes-core). Other components of smartvotes system are listed there.
