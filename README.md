@@ -1,11 +1,9 @@
 # steem-smartvotes-cli
 Vote delegation system for STEEM blockchain: cli tool for delegators.
 
- 
- 
+More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/Jblew/steem-smartvotes-core](https://github.com/Jblew/steem-smartvotes-core). Other components of smartvotes system are listed there.
 
-## What are STEEM smartvotes?
-INTRODUCTION here -> [github.com/Jblew/steem-smartvotes-core](https://github.com/Jblew/steem-smartvotes-core)
+
 
 ## How to use?
 
