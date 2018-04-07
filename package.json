@@ -2,7 +2,7 @@
   "name": "steem-smartvotes-cli",
   "version": "0.1.0",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
-  "main": "dist-js/app.js",
+  "main": "dist/js/app.js",
   "directories": {
     "doc": "docs"
   },
@@ -20,7 +20,7 @@
     "typescript": "^2.7.2"
   },
   "scripts": {
-    "start": "node dist-js/app.js",
+    "start": "node dist/js/app.js",
     "build": "npm run build-ts && npm run tslint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "tsc",

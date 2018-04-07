@@ -4,7 +4,7 @@ LABEL maintainer="Jędrzej Lewandowski <jedrzejblew@gmail.com>"
 
 WORKDIR /app
 COPY .nvmrc package.json package-lock.json ./
-COPY dist-js ./dist-js
+COPY dist/js ./dist/js
 
 RUN bash -c 'set -o pipefail && \
     ( \

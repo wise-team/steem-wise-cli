@@ -7,16 +7,16 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
-        "outDir": "dist-js",
+        "outDir": "dist/js",
         "baseUrl": ".",
         "paths": {
             "*": [
                 "node_modules/*",
-                "src-ts/types/*"
+                "src/ts/types/*"
             ]
         }
     },
     "include": [
-      "src-ts/**/*"
+      "src/ts/**/*"
     ]
 }
