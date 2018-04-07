@@ -1,10 +1,9 @@
 {
     "compilerOptions": {
-        "module": "es6",
+        "module": "commonjs",
         "target": "es6",
-        "strictNullChecks": true,
-        "allowJs": false,
-        "noImplicitAny": true,
+        "allowJs": true,
+        "strict": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
