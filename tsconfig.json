@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
+        "module": "es6",
         "target": "es6",
+        "strictNullChecks": true,
+        "allowJs": false,
         "noImplicitAny": true,
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
