@@ -24,7 +24,8 @@ In order to use app easily and safely in a standarized environment, please insta
 
 - [NPM](https://www.npmjs.com/)
 
-    - Type "npm install" to install all locked dependencies
+    - Type "npm install" to install both dev & production dependencies
+    - Type "npm install --production" to install only production dependencies
 
 
 ### Usage:
