@@ -1,4 +1,4 @@
-FROM node:8.11-slim
+FROM node:9.11-slim
 
 LABEL maintainer="Jędrzej Lewandowski <jedrzejblew@gmail.com>"
 

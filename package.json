@@ -6,6 +6,9 @@
   "directories": {
     "doc": "docs"
   },
+  "engines": {
+    "node": ">=9.11"
+  },
   "dependencies": {
     "commander": "^2.15.1",
     "steem": "^0.7.1"
