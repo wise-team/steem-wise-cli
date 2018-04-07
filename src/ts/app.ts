@@ -9,7 +9,7 @@ import SyncVotes from "./SyncVotes";
  */
 let commandCorrect = false;
 
-const version = require("../package.json").version;
+const version = require("../../package.json").version;
 program
     .name("smartvotes")
     .version(version, "-v, --version")
