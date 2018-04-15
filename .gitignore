@@ -1,6 +1,8 @@
 # Application specific
 /config.json
 
+##Mac OS X Stuff
+.DS_Store
 
 
 # IntelijIDEA IDEs
