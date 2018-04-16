@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jblew/steem-smartvotes-cli.git"
+    "url": "git+https://github.com/noisy-witness/steem-smartvotes-cli.git"
   },
   "keywords": [
     "steem",
@@ -41,7 +41,7 @@
   "author": "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/Jblew/steem-smartvotes-cli/issues"
+    "url": "https://github.com/noisy-witness/steem-smartvotes-cli/issues"
   },
-  "homepage": "https://github.com/Jblew/steem-smartvotes-cli#readme"
+  "homepage": "https://github.com/noisy-witness/steem-smartvotes-cli#readme"
 }
