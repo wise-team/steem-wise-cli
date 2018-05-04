@@ -2,6 +2,7 @@
 
 import * as program from "commander";
 import { SyncRules } from "./SyncRules";
+import { SendVoteorder } from "./SendVoteorder";
 import SyncVotes from "./SyncVotes";
 import { Config, ConfigLoader } from "./Config";
 
@@ -15,6 +16,18 @@ program
     .name("smartvotes")
     .version(version, "-v, --version")
     .option("-c, --config-file [path]", "Use specific config file");
+
+program
+    .command("send-voteorder [voteorder]")
+    .description("Sends a voteorder. You can pass path to a JSON file or pass JSON directly")
+    .action(function(voteorder) {
+        commandCorrect = true;
+
+        ConfigLoader.loadConfig(program)
+        .then(function(config: Config) { return SendVoteorder.doAction(config, voteorder); })
+        .then(() => console.log(""))
+        .catch(error => { console.error(error); process.exit(1); });
+    });
 
 program
     .command("sync-rules [rules]")

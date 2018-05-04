@@ -25,7 +25,6 @@ In order to use app easily and safely in a standarized environment, please insta
 - [NPM](https://www.npmjs.com/)
 
     - Type "npm install" to install both dev & production dependencies
-    - Type "npm install --production" to install only production dependencies
 
 
 ### Usage:
@@ -35,10 +34,16 @@ In order to use app easily and safely in a standarized environment, please insta
 $ ./smartvotes
 
 # Updates rules in blockchain if the file was changed
-$ ./smartvotes -f [path/to/config.json] sync-rules [/path/to/rulesets/file.json] 
+$ ./smartvotes -f [path/to/config.json] sync-rules [path/to/rulesets/file.json] 
 
 # Updates rules in blockchain (if they were changed) using given JSON array string
-$ ./smartvotes -f [path/to/config.json] sync-rules "[{\"name\": \"rulesetA\" \"rules\": [...]},{\"name\": \"Another ruleset\" \"rules\": [...]}]"
+$ ./smartvotes -f [path/to/config.json] sync-rules "[{\"name\": \"rulesetA\", \"rules\": [...]},{\"name\": \"Another ruleset\", \"rules\": [...]}]"
+
+# Sends voteorder using file
+$ ./smartvotes -f [path/to/config.json] send-voteorder [path/to/voteorder.json]
+
+# Sends voteorder using given JSON object
+$ ./smartvotes -f [path/to/config.json] send-voteorder "[{\"delegator\": \"...\", \"ruleset_name\": \"...\", ...}"
 ```
 
 ### Config file
