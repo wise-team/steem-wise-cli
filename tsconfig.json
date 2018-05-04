@@ -2,21 +2,23 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "allowJs": true,
+        "declaration": true,
         "strict": true,
         "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
+        "allowSyntheticDefaultImports": false,
+        "noImplicitAny": true,
+        "allowJs": false,
         "sourceMap": true,
-        "outDir": "dist/js",
-        "baseUrl": ".",
+        "outDir": "dist",
+        "baseUrl": "src/",
         "paths": {
             "*": [
                 "node_modules/*",
-                "src/ts/types/*"
+                "src/types/*"
             ]
         }
     },
     "include": [
-      "src/ts/**/*"
+      "src/**/*"
     ]
 }

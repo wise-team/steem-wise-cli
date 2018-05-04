@@ -10,18 +10,20 @@
     "node": ">=9.11"
   },
   "dependencies": {
+    "@types/bluebird": "^3.5.20",
+    "bluebird": "^3.5.1",
     "commander": "^2.15.1",
-    "steem": "^0.7.1"
+    "steem-smartvotes": "../steem-smartvotes-core"
   },
   "devDependencies": {
-    "@types/node": "^9.4.6",
-    "ts-node": "^5.0.0",
-    "tslint": "^5.9.1",
-    "typescript": "^2.7.2"
+    "@types/node": "^9.6.11",
+    "ts-node": "^6.0.2",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
   },
   "scripts": {
-    "start": "node dist/js/app.js",
-    "build": "npm run build-ts && npm run tslint",
+    "start": "node dist/app.js",
+    "build": "rm -rf dist && npm run build-ts && npm run tslint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",

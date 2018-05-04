@@ -1,0 +1,46 @@
+[
+    {
+        "name": "I allow you, guest 123, to use my vote in the tag #steemprojects. Use it carefully.",
+        "voter": "guest123",
+        "total_weight": 1,
+        "action": "upvote",
+        "rules": [
+            {
+                "type": "tags",
+                "mode": "require",
+                "tags": [
+                    "steemprojects"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Upvote, no rules, max total weight 20",
+        "voter": "guest123",
+        "total_weight": 20,
+        "action": "upvote",
+        "rules": []
+    },
+    {
+        "name": "Upvote, two rules joined",
+        "voter": "guest123",
+        "total_weight": 1,
+        "action": "upvote",
+        "rules": [
+            {
+                "type": "authors",
+                "mode": "allow",
+                "authors": [
+                    "noisy"
+                ]
+            },
+            {
+                "type": "tags",
+                "mode": "require",
+                "tags": [
+                    "steemprojects"
+                ]
+            }
+        ]
+    }
+]

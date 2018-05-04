@@ -1,5 +1,6 @@
 # Application specific
 /config.json
+/dist
 
 ##Mac OS X Stuff
 .DS_Store
