@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import * as program from "commander";
-import { SyncRules } from "./SyncRules";
-import { SendVoteorder } from "./SendVoteorder";
-import SyncVotes from "./SyncVotes";
+
 import { Config, ConfigLoader } from "./Config";
+import { SyncRules } from "./SyncRules";
+import { SyncVotes } from "./SyncVotes";
+import { SendVoteorder } from "./SendVoteorder";
+
+// TODO steem-smartvotes dependency: replace path with github link to stable release
 
 /*
  * CLI setup
@@ -43,10 +46,14 @@ program
 
 program
     .command("sync-votes")
-    .description("Send issued votes to blockchain")
+    .description("Send issued vote orders to blockchain")
     .action(function() {
         commandCorrect = true;
-        console.log("Sync-all is not yet supported");
+
+        ConfigLoader.loadConfig(program)
+        .then(function(config: Config) { return SyncVotes.doAction(config); })
+        .then(() => console.log(""))
+        .catch(error => { console.error(error); process.exit(1); });
     });
 
 program
