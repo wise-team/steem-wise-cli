@@ -20,7 +20,7 @@ program
     .description("Synchronize rules from config file to blockchain")
     .action(function() {
         commandCorrect = true;
-        new SyncRules().exec(program);
+        SyncRules.syncRules(program);
     });
 
 program
@@ -28,7 +28,7 @@ program
     .description("Send issued votes to blockchain")
     .action(function() {
         commandCorrect = true;
-        new SyncVotes().exec(program);
+        SyncVotes.syncVotes(program);
     });
 
 program
@@ -36,8 +36,7 @@ program
     .description("sync-rules + sync-votes")
     .action(function() {
         commandCorrect = true;
-        new SyncRules().exec(program);
-        new SyncVotes().exec(program);
+        console.log("Sync-all is not yet supported");
     });
 
 program
