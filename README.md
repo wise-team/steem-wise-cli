@@ -31,9 +31,25 @@ In order to use app easily and safely in a standarized environment, please insta
 ### Usage:
 
 ```bash
-./smartvotes
+# Shows help
+$ ./smartvotes
+
+# Updates rules in blockchain if the file was changed
+$ ./smartvotes -f [path/to/config.json] sync-rules [/path/to/rulesets/file.json] 
+
+# Updates rules in blockchain (if they were changed) using given JSON array string
+$ ./smartvotes -f [path/to/config.json] sync-rules "[{\"name\": \"rulesetA\" \"rules\": [...]},{\"name\": \"Another ruleset\" \"rules\": [...]}]"
 ```
 
+### Config file
+This is the config file format:
+
+```json
+{
+    "username": "",
+    "postingWif": ""
+}
+```
 
 
 ## Thank you
