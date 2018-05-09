@@ -8,12 +8,14 @@ import { SteemSmartvotes, smartvotes_ruleset, smartvotes_operation, smartvotes_v
 
 export class SyncVotes { // TODO
     public static doAction(config: Config): Promise<void> {
-        throw new Error("Not yet suported");
-        // return SyncVotes.loadRulesHistory(config)
-        // .then(SyncVotes.loadVoteOrdersForAllUsers)
-        // .then(SyncRules.loadVotesHistory)
-        // .then(SyncRules.);
-        // TODO include voteorder tx id in vote metadata (to prevent vote duplication)
-        // TODO dig only to the newest vote with smartvotes metadata.
+        return new Promise((resolve, reject) => {
+            const smartvotes = new SteemSmartvotes(config.username, config.postingWif);
+            smartvotes.synchronizeSmartvotes((error: Error | undefined, synced: any [] | undefined): void => {
+                if (error) reject(error);
+                else resolve();
+            }, (msg: string, proggress: number): void => {
+                console.log("Synchronization: " + msg);
+            });
+        });
     }
 }
