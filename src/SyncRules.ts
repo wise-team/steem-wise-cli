@@ -59,8 +59,8 @@ export class SyncRules {
     private static loadOldRules(input: {config: Config, newRulesets: smartvotes_ruleset []}): Promise<{config: Config, newRulesets: smartvotes_ruleset [], oldRulesets: smartvotes_ruleset []}> {
         return new Promise(function(resolve, reject) {
             console.log("Loading old rulesets...");
-
-            SteemSmartvotes.getRulesetsOfUser(input.config.username, new Date(), function(error: Error | undefined, rulesets: smartvotes_ruleset []): void {
+            const smartvotes = new SteemSmartvotes(input.config.username, input.config.postingWif);
+            smartvotes.getRulesetsOfUser(input.config.username, function(error: Error | undefined, rulesets: smartvotes_ruleset []): void {
                 if (error) reject(error);
                 else resolve({config: input.config, newRulesets: input.newRulesets, oldRulesets: rulesets});
             });
