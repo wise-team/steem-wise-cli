@@ -7,7 +7,7 @@ import { SyncRules } from "./SyncRules";
 import { SyncVotes } from "./SyncVotes";
 import { SendVoteorder } from "./SendVoteorder";
 
-// TODO steem-smartvotes dependency: replace path with github link to stable release
+// TODO publish as npm global cli
 
 /*
  * CLI setup

@@ -13,7 +13,7 @@
     "@types/bluebird": "^3.5.20",
     "bluebird": "^3.5.1",
     "commander": "^2.15.1",
-    "steem-smartvotes": "^v0.13.0-alpha"
+    "steem-smartvotes": "^0.13.2"
   },
   "devDependencies": {
     "@types/node": "^9.6.11",
