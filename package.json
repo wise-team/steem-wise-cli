@@ -1,11 +1,8 @@
 {
   "name": "steem-smartvotes-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
-  "main": "dist/js/app.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "main": "dist/app.js",
   "engines": {
     "node": ">=9.11"
   },
@@ -28,7 +25,8 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "debug": "npm run build && npm run watch-debug"
+    "debug": "npm run build && npm run watch-debug",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
