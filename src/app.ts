@@ -3,11 +3,9 @@
 import * as program from "commander";
 
 import { Config, ConfigLoader } from "./Config";
-import { SyncRules } from "./SyncRules";
-import { SyncVotes } from "./SyncVotes";
-import { SendVoteorder } from "./SendVoteorder";
-
-// TODO publish as npm global cli
+import { SyncRulesAction } from "./SyncRulesAction";
+import { SendVoteorderAction } from "./SendVoteorder";
+import { DaemonAction } from "./DaemonAction";
 
 /*
  * CLI setup
@@ -16,7 +14,7 @@ let commandCorrect = false;
 
 const version = require("../package.json").version;
 program
-    .name("smartvotes")
+    .name("wise")
     .version(version, "-v, --version")
     .option("-c, --config-file [path]", "Use specific config file");
 
@@ -27,7 +25,7 @@ program
         commandCorrect = true;
 
         ConfigLoader.loadConfig(program)
-        .then(function(config: Config) { return SendVoteorder.doAction(config, voteorder); })
+        .then(function(config: Config) { return SendVoteorderAction.doAction(config, voteorder); })
         .then(() => console.log(""))
         .catch(error => { console.error(error); process.exit(1); });
     });
@@ -39,29 +37,9 @@ program
         commandCorrect = true;
 
         ConfigLoader.loadConfig(program)
-        .then(function(config: Config) { return SyncRules.doAction(config, rules); })
+        .then(function(config: Config) { return SyncRulesAction.doAction(config, rules); })
         .then(() => console.log(""))
         .catch(error => { console.error(error); process.exit(1); });
-    });
-
-program
-    .command("sync-votes")
-    .description("Send issued vote orders to blockchain")
-    .action(function() {
-        commandCorrect = true;
-
-        ConfigLoader.loadConfig(program)
-        .then(function(config: Config) { return SyncVotes.doAction(config); })
-        .then(() => console.log(""))
-        .catch(error => { console.error(error); process.exit(1); });
-    });
-
-program
-    .command("sync-all")
-    .description("sync-rules + sync-votes")
-    .action(function() {
-        commandCorrect = true;
-        console.log("Sync-all is not yet supported");
     });
 
 program

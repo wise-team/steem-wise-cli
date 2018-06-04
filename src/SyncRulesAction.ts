@@ -3,7 +3,7 @@ import * as program from "commander";
 
 import { objectEquals } from "./util";
 import { ConfigLoader, Config } from "./Config";
-import { SteemSmartvotes, smartvotes_ruleset, smartvotes_operation } from "steem-smartvotes";
+import { Wise, DirectBlockchainApi, SetRules, EffectuatedSetRules } from "steem-wise-core";
 
 
 export class SyncRules {
@@ -30,7 +30,9 @@ export class SyncRules {
 
             let data: object [] | undefined = undefined;
             try {
-                data = JSON.parse(jsonStr) as object [];
+                const input: object = JSON.parse(jsonStr);
+                if (!(Object.prototype.toString.call(input) === "[object Array]")) throw new Error("Rules should be an array");
+                data = input  as object [];
             }
             catch (e) {
                 reject(e);
@@ -40,8 +42,9 @@ export class SyncRules {
         });
     }
 
-    private static parseNewRules(input: {config: Config, rawRulesets: object []}): Promise<{config: Config, newRulesets: smartvotes_ruleset []}> {
+    private static parseNewRules(input: {config: Config, rawRules: object []}): Promise<{config: Config, newRulesets: EffectuatedSetRules [] []}> {
         return new Promise(function(resolve, reject) {
+            
             const rulesets: smartvotes_ruleset [] = input.rawRulesets as smartvotes_ruleset [];
             const op: smartvotes_operation = {
                 name: "set_rules",
@@ -59,7 +62,8 @@ export class SyncRules {
     private static loadOldRules(input: {config: Config, newRulesets: smartvotes_ruleset []}): Promise<{config: Config, newRulesets: smartvotes_ruleset [], oldRulesets: smartvotes_ruleset []}> {
         return new Promise(function(resolve, reject) {
             console.log("Loading old rulesets...");
-            const smartvotes = new SteemSmartvotes(input.config.username, input.config.postingWif);
+            const wise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+            
             smartvotes.getRulesetsOfUser(input.config.username, function(error: Error | undefined, rulesets: smartvotes_ruleset []): void {
                 if (error) reject(error);
                 else resolve({config: input.config, newRulesets: input.newRulesets, oldRulesets: rulesets});
