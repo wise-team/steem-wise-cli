@@ -7,14 +7,11 @@ import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "
 
 
 export class SendVoteorderAction {
-    public static doAction(config: Config, voteorderIn: string): Promise<void> {
+    public static doAction(config: Config, voteorderIn: string): Promise<string> {
         return SendVoteorderAction.loadJSON(config, voteorderIn)
         .then(SendVoteorderAction.sendVoteorder)
         .then((moment: SteemOperationNumber) => {
-            console.log("Voteorder sent: " + moment);
-        }, error => {
-            console.error(error);
-            process.exit(1);
+            return "Voteorder sent: " + moment;
         });
     }
 

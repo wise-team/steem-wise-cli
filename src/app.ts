@@ -25,9 +25,15 @@ program
         commandCorrect = true;
 
         ConfigLoader.loadConfig(program)
-        .then(function(config: Config) { return SendVoteorderAction.doAction(config, voteorder); })
-        .then(() => console.log(""))
-        .catch(error => { console.error(error); process.exit(1); });
+        .then((config: Config) => SendVoteorderAction.doAction(config, voteorder))
+        .then((msg: string) => {
+            console.log(msg);
+            console.log();
+        })
+        .catch(error => {
+            console.error(error);
+            process.exit(1);
+        });
     });
 
 program
@@ -37,17 +43,33 @@ program
         commandCorrect = true;
 
         ConfigLoader.loadConfig(program)
-        .then(function(config: Config) { return SyncRulesAction.doAction(config, rules); })
-        .then(() => console.log(""))
-        .catch(error => { console.error(error); process.exit(1); });
+        .then((config: Config) => SyncRulesAction.doAction(config, rules))
+        .then((msg: string) => {
+            console.log(msg);
+            console.log();
+        })
+        .catch(error => {
+            console.error(error);
+            process.exit(1);
+        });
     });
 
 program
     .command("daemon")
-    .description("sync-all in a loop")
+    .description("reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain")
     .action(function() {
         commandCorrect = true;
-        console.log("daemon not yet supported");
+
+        ConfigLoader.loadConfig(program)
+        .then((config: Config) => DaemonAction.doAction(config))
+        .then((msg: string) => {
+            console.log(msg);
+            console.log();
+        })
+        .catch(error => {
+            console.error(error);
+            process.exit(1);
+        });
     });
 
 program.parse(process.argv);

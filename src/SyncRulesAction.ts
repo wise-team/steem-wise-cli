@@ -8,15 +8,12 @@ import { Rules } from "./Rules";
 
 
 export class SyncRulesAction {
-    public static doAction(config: Config, rulesIn: string): Promise<void> {
+    public static doAction(config: Config, rulesIn: string): Promise<string> {
         return SyncRulesAction.loadJSON(config, rulesIn)
         .then(SyncRulesAction.syncRules)
         .then((result: SteemOperationNumber | true) => {
-            if (result === true) console.log("Rules were up to date");
-            else console.log("Rules updated: " + result);
-        }, (error: Error) => {
-            console.error(error);
-            process.exit(1);
+            if (result === true) return "Rules were up to date";
+            else return "Rules updated: " + result;
         });
     }
 
