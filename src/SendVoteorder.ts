@@ -3,14 +3,13 @@ import * as program from "commander";
 
 import { objectEquals } from "./util";
 import { ConfigLoader, Config } from "./Config";
-import { SteemSmartvotes, smartvotes_operation, smartvotes_voteorder } from "steem-smartvotes";
+import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
 
 
-export class SendVoteorder {
+export class SendVoteorderAction {
     public static doAction(config: Config, voteorderIn: string): Promise<void> {
-        return SendVoteorder.loadJSON(config, voteorderIn)
-        .then(SendVoteorder.parseJSON)
-        .then(SendVoteorder.sendVoteorder);
+        return SendVoteorderAction.loadJSON(config, voteorderIn)
+        .then(SendVoteorderAction.sendVoteorder);
     }
 
     private static loadJSON(config: Config, voteorderIn: string): Promise<{config: Config, rawVoteorder: object}> {
@@ -39,38 +38,25 @@ export class SendVoteorder {
         });
     }
 
-    private static parseJSON(input: {config: Config, rawVoteorder: object}): Promise<{config: Config, voteorder: smartvotes_voteorder}> {
-        return new Promise(function(resolve, reject) {
-            const voteorder: smartvotes_voteorder = input.rawVoteorder as smartvotes_voteorder;
-            const op: smartvotes_operation = {
-                name: "send_voteorder",
-                voteorder: voteorder
-            };
-            if (SteemSmartvotes.validateJSON(JSON.stringify(op))) {
-                resolve({config: input.config, voteorder: voteorder});
-            }
-            else {
-                reject(new Error("Voteorder syntax is invalid"));
-            }
-        });
-    }
-
-    private static sendVoteorder(input: {config: Config, voteorder: smartvotes_voteorder}): Promise<void> {
-        return new Promise(function(resolve, reject) {
-            console.log("Sending voteorder...");
-            const smartvotes = new SteemSmartvotes(input.config.username, input.config.postingWif);
-            smartvotes.sendVoteOrder(input.voteorder, function(error: Error | undefined, result: any) {
-                if (error) {
-                    reject(error);
-                }
-                else {
-                    console.log("Voteorder sent. You can see it on https://steemd.com/@" + input.config.username + ".");
-                    console.log(result);
-                    resolve();
-                }
-            }, function(msg: string, proggress: number) {
-                console.log("Sending voteorder: " + msg);
+    private static sendVoteorder(input: {config: Config, rawVoteorder: object}): Promise<void> {
+        return Promise.resolve()
+        .then(() => {
+            const voteorder: VoteorderWithDelegator = input.rawVoteorder as VoteorderWithDelegator;
+            if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
+            const wise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+            return wise.sendVoteorderAsync(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
+                console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
+        })
+        .then((moment: SteemOperationNumber) => {
+            console.log("Voteorder sent: " + moment);
+        }, error => {
+            console.error(error);
+            process.exit(1);
         });
     }
+}
+
+export interface VoteorderWithDelegator extends SendVoteorder {
+    delegator: string;
 }
