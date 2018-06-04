@@ -15,3 +15,5 @@ RUN bash -c 'set -o pipefail && \
 RUN npm install
 
 CMD ["npm", "start"]
+
+// TODO update Dockerfile
