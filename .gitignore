@@ -1,6 +1,7 @@
 # Application specific
 /config.json
 /dist
+/wise-synced-block-num.txt
 
 ##Mac OS X Stuff
 .DS_Store
