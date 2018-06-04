@@ -95,7 +95,7 @@ This is the config file format:
 {
     "username": "",
     "postingWif": "",
-  	"syncedBlockNumFile": "~/.wise-synced-block-num.txt"
+    "syncedBlockNumFile": "./wise-synced-block-num.txt"
 }
 ```
 
