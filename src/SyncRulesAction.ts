@@ -3,7 +3,7 @@ import * as program from "commander";
 
 import { objectEquals } from "./util";
 import { ConfigLoader, Config } from "./Config";
-import { Wise, DirectBlockchainApi, SetRules, EffectuatedSetRules, SteemOperationNumber } from "steem-wise-core";
+import { Wise, DirectBlockchainApi, SetRules, SetRulesForVoter, EffectuatedSetRules, SteemOperationNumber, SmartvotesOperation } from "steem-wise-core";
 import { Rules } from "./Rules";
 
 
@@ -12,7 +12,7 @@ export class SyncRulesAction {
         return SyncRulesAction.loadJSON(config, rulesIn)
         .then(SyncRulesAction.syncRules)
         .then((result: SteemOperationNumber | true) => {
-            if (result === true) return "Rules were up to date";
+            if (result === true) return "Rules are up to date";
             else return "Rules updated: " + result;
         });
     }
@@ -41,20 +41,22 @@ export class SyncRulesAction {
                 reject(e);
             }
             if (data) resolve({config: config, rawRulesets: data});
-            else throw new Error("Could not load rulesets");
+            else throw new Error("Could not load rulesets from file/json");
         });
     }
 
     private static syncRules(input: {config: Config, rawRulesets: object []}): Promise<SteemOperationNumber | true> {
         return Promise.resolve()
         .then(() => {
-            const newRules: Rules = input.rawRulesets as Rules;
-            newRules.forEach(element => {
+            const newRules: SetRulesForVoter [] = input.rawRulesets as SetRulesForVoter [];
+
+            newRules.forEach((element: SetRulesForVoter) => {
                 if (!element.voter) return Promise.reject(new Error("Voter should be specified for each SetRules"));
-                if (!element.rules) return Promise.reject(new Error("SetRules(.rules) should be specified for each voter"));
+                if (!element.rulesets) return Promise.reject(new Error("Rulesets should be specified for each voter"));
             });
 
             const delegatorWise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+
             return delegatorWise.diffAndUpdateRulesAsync(newRules, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
