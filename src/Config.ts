@@ -13,7 +13,7 @@ export interface Config {
 const defaultConfig: Config = {
     username: "",
     postingWif: "",
-    syncedBlockNumFile: "~/.wise-synced-block-num.txt"
+    syncedBlockNumFile: "./wise-synced-block-num.txt"
 };
 
 export class ConfigLoader {
@@ -38,6 +38,7 @@ export class ConfigLoader {
                     }
                 });
             }
+            else throw new Error("No config specified");
         });
     }
 

@@ -55,13 +55,16 @@ program
     });
 
 program
-    .command("daemon")
+    .command("daemon [sinceBlockNum]")
     .description("reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain")
-    .action(function() {
+    .action(function(sinceBlockNum) {
         commandCorrect = true;
 
+        if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum);
+        else sinceBlockNum = undefined;
+
         ConfigLoader.loadConfig(program)
-        .then((config: Config) => DaemonAction.doAction(config))
+        .then((config: Config) => DaemonAction.doAction(config, sinceBlockNum))
         .then((msg: string) => {
             console.log(msg);
             console.log();

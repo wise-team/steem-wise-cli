@@ -1,6 +1,6 @@
 {
   "name": "steem-wise-cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
   "main": "dist/app.js",
   "bin": {
@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "node dist/app.js",
+    "run": "ts-node src/app.ts",
     "build": "rm -rf dist && npm run build-ts && npm run tslint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "tsc",
