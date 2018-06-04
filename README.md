@@ -95,17 +95,13 @@ This is the config file format:
 {
     "username": "",
     "postingWif": "",
-    "syncedBlockNumFile": "./wise-synced-block-num.txt"
+		"syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }
 ```
 
 ## Thank you
 
-I would like to thank [@noisy](https://steemit.com/@noisy) ([github.com/noisy](https://github.com/noisy)) who invented smartvotes 
-and is a total backer of this project. 
-Let the light of his wisdom shine down upon steem community for ever ;)
-
-I also send many thanks to the authors of vendor dependencies of the project. You are the ones, who made development of this tool so joyful and smooth. Many thanks to the contributors of:
+I send many thanks to the authors of vendor dependencies of the project. You are the ones, who made development of this tool so joyful and smooth. Many thanks to the contributors of:
 
 - [steem-js](https://github.com/steemit/steem-js)
 - [node](https://nodejs.org/en/)
