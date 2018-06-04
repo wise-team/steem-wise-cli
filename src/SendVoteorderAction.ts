@@ -9,7 +9,13 @@ import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "
 export class SendVoteorderAction {
     public static doAction(config: Config, voteorderIn: string): Promise<void> {
         return SendVoteorderAction.loadJSON(config, voteorderIn)
-        .then(SendVoteorderAction.sendVoteorder);
+        .then(SendVoteorderAction.sendVoteorder)
+        .then((moment: SteemOperationNumber) => {
+            console.log("Voteorder sent: " + moment);
+        }, error => {
+            console.error(error);
+            process.exit(1);
+        });
     }
 
     private static loadJSON(config: Config, voteorderIn: string): Promise<{config: Config, rawVoteorder: object}> {
@@ -38,7 +44,7 @@ export class SendVoteorderAction {
         });
     }
 
-    private static sendVoteorder(input: {config: Config, rawVoteorder: object}): Promise<void> {
+    private static sendVoteorder(input: {config: Config, rawVoteorder: object}): Promise<SteemOperationNumber> {
         return Promise.resolve()
         .then(() => {
             const voteorder: VoteorderWithDelegator = input.rawVoteorder as VoteorderWithDelegator;
@@ -47,12 +53,6 @@ export class SendVoteorderAction {
             return wise.sendVoteorderAsync(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
-        })
-        .then((moment: SteemOperationNumber) => {
-            console.log("Voteorder sent: " + moment);
-        }, error => {
-            console.error(error);
-            process.exit(1);
         });
     }
 }

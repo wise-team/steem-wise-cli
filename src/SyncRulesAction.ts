@@ -3,15 +3,21 @@ import * as program from "commander";
 
 import { objectEquals } from "./util";
 import { ConfigLoader, Config } from "./Config";
-import { Wise, DirectBlockchainApi, SetRules, EffectuatedSetRules } from "steem-wise-core";
+import { Wise, DirectBlockchainApi, SetRules, EffectuatedSetRules, SteemOperationNumber } from "steem-wise-core";
+import { Rules } from "./Rules";
 
 
-export class SyncRules {
+export class SyncRulesAction {
     public static doAction(config: Config, rulesIn: string): Promise<void> {
-        return SyncRules.loadJSON(config, rulesIn)
-        .then(SyncRules.parseNewRules)
-        .then(SyncRules.loadOldRules)
-        .then(SyncRules.compareAndSync);
+        return SyncRulesAction.loadJSON(config, rulesIn)
+        .then(SyncRulesAction.syncRules)
+        .then((result: SteemOperationNumber | true) => {
+            if (result === true) console.log("Rules were up to date");
+            else console.log("Rules updated: " + result);
+        }, (error: Error) => {
+            console.error(error);
+            process.exit(1);
+        });
     }
 
     private static loadJSON(config: Config, rulesIn: string): Promise<{config: Config, rawRulesets: object []}> {
@@ -42,56 +48,19 @@ export class SyncRules {
         });
     }
 
-    private static parseNewRules(input: {config: Config, rawRules: object []}): Promise<{config: Config, newRulesets: EffectuatedSetRules [] []}> {
-        return new Promise(function(resolve, reject) {
-            
-            const rulesets: smartvotes_ruleset [] = input.rawRulesets as smartvotes_ruleset [];
-            const op: smartvotes_operation = {
-                name: "set_rules",
-                rulesets: input.rawRulesets as smartvotes_ruleset []
-            };
-            if (SteemSmartvotes.validateJSON(JSON.stringify(op))) {
-                resolve({config: input.config, newRulesets: rulesets});
-            }
-            else {
-                reject(new Error("Rulesets are invalid"));
-            }
-        });
-    }
-
-    private static loadOldRules(input: {config: Config, newRulesets: smartvotes_ruleset []}): Promise<{config: Config, newRulesets: smartvotes_ruleset [], oldRulesets: smartvotes_ruleset []}> {
-        return new Promise(function(resolve, reject) {
-            console.log("Loading old rulesets...");
-            const wise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
-            
-            smartvotes.getRulesetsOfUser(input.config.username, function(error: Error | undefined, rulesets: smartvotes_ruleset []): void {
-                if (error) reject(error);
-                else resolve({config: input.config, newRulesets: input.newRulesets, oldRulesets: rulesets});
+    private static syncRules(input: {config: Config, rawRulesets: object []}): Promise<SteemOperationNumber | true> {
+        return Promise.resolve()
+        .then(() => {
+            const newRules: Rules = input.rawRulesets as Rules;
+            newRules.forEach(element => {
+                if (!element.voter) return Promise.reject(new Error("Voter should be specified for each SetRules"));
+                if (!element.rules) return Promise.reject(new Error("SetRules(.rules) should be specified for each voter"));
             });
-        });
-    }
 
-    private static compareAndSync(input: {config: Config, oldRulesets: smartvotes_ruleset [], newRulesets: smartvotes_ruleset []}): Promise<void> {
-        return new Promise(function(resolve, reject) {
-            if (objectEquals(input.oldRulesets, input.newRulesets)) {
-                console.log("Rulesets are up to date.");
-                resolve();
-            }
-            else {
-                console.log("Updating rulesets...");
-                const smartvotes = new SteemSmartvotes(input.config.username, input.config.postingWif);
-                smartvotes.sendRulesets(input.newRulesets, function(error: Error | undefined, result: any) {
-                    if (error) {
-                        reject(error);
-                    }
-                    else {
-                        console.log("Rulesets sent. You can see then on https://steemd.com/@" + input.config.username + ".");
-                        console.log(result);
-                        resolve();
-                    }
-
-                });
-            }
+            const delegatorWise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+            return delegatorWise.diffAndUpdateRulesAsync(newRules, (msg: string, proggress: number) => {
+                console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
+            });
         });
     }
 }

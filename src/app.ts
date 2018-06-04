@@ -4,7 +4,7 @@ import * as program from "commander";
 
 import { Config, ConfigLoader } from "./Config";
 import { SyncRulesAction } from "./SyncRulesAction";
-import { SendVoteorderAction } from "./SendVoteorder";
+import { SendVoteorderAction } from "./SendVoteorderAction";
 import { DaemonAction } from "./DaemonAction";
 
 /*
