@@ -94,7 +94,7 @@ This is the config file format:
 ```json
 {
     "username": "",
-    "postingWif": ""
+    "postingWif": "",
   	"syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }
 ```
