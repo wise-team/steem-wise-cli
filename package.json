@@ -1,18 +1,21 @@
 {
-  "name": "steem-smartvotes-cli",
+  "name": "steem-wise-cli",
   "version": "0.2.1",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
   "main": "dist/app.js",
+  "bin": {
+    "wise": "./dist/app.js"
+  },
   "engines": {
     "node": ">=9.11"
   },
   "dependencies": {
-    "@types/bluebird": "^3.5.20",
     "bluebird": "^3.5.1",
     "commander": "^2.15.1",
-    "steem-smartvotes": "^0.13.2"
+    "steem-wise-core": "^0.16.2"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.20",
     "@types/node": "^9.6.11",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
@@ -30,18 +33,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/noisy-witness/steem-smartvotes-cli.git"
+    "url": "git+https://github.com/noisy-witness/steem-wise-cli.git"
   },
   "keywords": [
     "steem",
     "blockchain",
-    "smartvotes",
+    "wise",
     "cli"
   ],
   "author": "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/noisy-witness/steem-smartvotes-cli/issues"
+    "url": "https://github.com/noisy-witness/steem-wise-cli/issues"
   },
-  "homepage": "https://github.com/noisy-witness/steem-smartvotes-cli#readme"
+  "homepage": "https://github.com/noisy-witness/steem-wise-cli#readme"
 }
