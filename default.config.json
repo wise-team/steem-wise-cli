@@ -1,4 +1,5 @@
 {
     "username": "",
-    "postingWif": ""
+    "postingWif": "",
+    "syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }

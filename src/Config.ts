@@ -6,12 +6,14 @@ import { objectAssign } from "./util";
 export interface Config {
     username: string;
     postingWif: string;
+    syncedBlockNumFile: string;
     [x: string]: any; // any other attribute
 }
 
 const defaultConfig: Config = {
     username: "",
-    postingWif: ""
+    postingWif: "",
+    syncedBlockNumFile: "~/.wise-synced-block-num.txt"
 };
 
 export class ConfigLoader {
