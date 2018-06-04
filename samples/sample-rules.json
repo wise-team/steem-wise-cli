@@ -1,45 +1,49 @@
 [
     {
-        "name": "I allow you, guest 123, to use my vote in the tag #steemprojects. Use it carefully.",
-        "voter": "guest123",
-        "total_weight": 1,
-        "action": "upvote",
-        "rules": [
+        "voter": "steemprojects1",
+        "rulesets": [
+            { 
+                "name": "Vote WISEly",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 100
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "require",
+                        "tags": [
+                            "steemprojects"
+                        ]
+                    }
+                ]
+            },
             {
-                "type": "tags",
-                "mode": "require",
-                "tags": [
-                    "steemprojects"
+                "name": "Something else",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "allow",
+                        "tags": [
+                            "noisy"
+                        ]
+                    }
                 ]
             }
         ]
     },
     {
-        "name": "Upvote, no rules, max total weight 20",
-        "voter": "guest123",
-        "total_weight": 20,
-        "action": "upvote",
-        "rules": []
-    },
-    {
-        "name": "Upvote, two rules joined",
-        "voter": "guest123",
-        "total_weight": 1,
-        "action": "upvote",
-        "rules": [
+        "voter": "noisy",
+        "rulesets": [
             {
-                "type": "authors",
-                "mode": "allow",
-                "authors": [
-                    "noisy"
-                ]
-            },
-            {
-                "type": "tags",
-                "mode": "require",
-                "tags": [
-                    "steemprojects"
-                ]
+                "name": "Anything you want, any amount you'd love to",
+                "rules": []
             }
         ]
     }
