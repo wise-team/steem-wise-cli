@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as program from "commander";
 
-import { objectEquals } from "./util";
 import { ConfigLoader, Config } from "./Config";
 import { Wise, DirectBlockchainApi, SetRules, SetRulesForVoter, EffectuatedSetRules, SteemOperationNumber, SmartvotesOperation } from "steem-wise-core";
 import { Rules } from "./Rules";
