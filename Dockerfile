@@ -11,6 +11,7 @@ RUN bash -c 'set -o pipefail && \
        echo "Node version correct"; else echo "Node version in .nvmrc is different. Please update Dockerfile" && exit 1; fi \
     ) \
     && npm install \
+    && npm run build \
     && npm install -g'
 
 CMD ["wise daemon"]
