@@ -1,10 +1,12 @@
 import * as fs from "fs";
 import * as program from "commander";
 import * as _ from "lodash";
+import { Constants } from "./Constants";
 
 export interface Config {
     username: string;
     postingWif: string;
+    defaultSyncStartBlockNum: number;
     syncedBlockNumFile: string;
     [x: string]: any; // any other attribute
 }
@@ -12,6 +14,7 @@ export interface Config {
 const envMappings: [string, string][] = [
     ["WISE_STEEM_USERNAME", "username"],
     ["WISE_STEEM_POSTINGWIF", "postingWif"],
+    ["WISE_DEFAULT_SYNC_START_BLOCK_NUM", "defaultSyncStartBlockNum"],
     ["WISE_SYNCED_BLOCK_NUM_FILE", "syncedBlockNumFile"],
 ];
 
@@ -30,6 +33,7 @@ export class ConfigLoader {
         return {
             username: "",
             postingWif: "",
+            defaultSyncStartBlockNum: 0, // introduction of smartvotes
             syncedBlockNumFile: "./wise-synced-block-num.txt"
         };
     }
