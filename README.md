@@ -1,12 +1,8 @@
 # Steem WISE Cli
 
-[![Known Vulnerabilities](https://snyk.io/test/github/noisy-witness/steem-WISE-cli/badge.svg?targetFile=package.json)](https://snyk.io/test/github/noisy-witness/steem-WISE-cli?targetFile=package.json)
-
 Vote delegation system for STEEM blockchain: cli tool for delegators.
 
 More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/noisy-witness/steem-wise-core](https://github.com/noisy-witness/steem-wise-core). Other components of WISE system are listed there.
-
-
 
 ## How to use?
 
@@ -43,8 +39,6 @@ wise -c ../path/to/your/config.json daemon & wise -c ../path/to/your/config.json
 ## Coming soon...
 ```
 
-
-
 ### Requirements
 
 STEEM WISE cli is a **node.js** app, 
@@ -61,8 +55,6 @@ to activate proper version of node
 - [NPM](https://www.npmjs.com/)
 
   - Type "npm install" to install both dev & production dependencies
-
-
 
 ### Usage:
 
@@ -87,8 +79,6 @@ $ wise -c [path/to/config.json] send-voteorder "[{\"delegator\": \"...\", \"rule
 $ wise -c [path/to/config.json] daemon
 ```
 
-
-
 ### Config file
 
 This is the config file format:
@@ -101,13 +91,9 @@ This is the config file format:
 }
 ```
 
-
-
 ## Like the project? Let @noisy-witness become your favourite witness!
 
 If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: \[https://steemit.com/~witnesses\](https://steemit.com/~witnesses).
-
-
 
 ## Thank you
 
