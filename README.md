@@ -1,10 +1,10 @@
-# steem-smartvotes-cli
+# Steem WISE Cli
 
-[![Known Vulnerabilities](https://snyk.io/test/github/noisy-witness/steem-smartvotes-cli/badge.svg?targetFile=package.json)](https://snyk.io/test/github/noisy-witness/steem-smartvotes-cli?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/noisy-witness/steem-WISE-cli/badge.svg?targetFile=package.json)](https://snyk.io/test/github/noisy-witness/steem-WISE-cli?targetFile=package.json)
 
 Vote delegation system for STEEM blockchain: cli tool for delegators.
 
-More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/noisy-witness/steem-wise-core](https://github.com/noisy-witness/steem-wise-core). Other components of smartvotes system are listed there.
+More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/noisy-witness/steem-wise-core](https://github.com/noisy-witness/steem-wise-core). Other components of WISE system are listed there.
 
 
 
@@ -18,7 +18,7 @@ $ npm install -g steem-wise-cli
 
 Play with samples:
 
-``` bash
+```bash
 npm install -g steem-wise-cli
 git clone https://github.com/noisy-witness/steem-wise-cli
 cd samples
@@ -47,7 +47,7 @@ wise -c ../path/to/your/config.json daemon & wise -c ../path/to/your/config.json
 
 ### Requirements
 
-STEEM smartvotes cli is a **node.js** app, 
+STEEM WISE cli is a **node.js** app, 
 it uses **nvm** for local node version management
 and **npm** for dependencies.
 
@@ -87,6 +87,8 @@ $ wise -c [path/to/config.json] send-voteorder "[{\"delegator\": \"...\", \"rule
 $ wise -c [path/to/config.json] daemon
 ```
 
+
+
 ### Config file
 
 This is the config file format:
@@ -95,9 +97,17 @@ This is the config file format:
 {
     "username": "",
     "postingWif": "",
-		"syncedBlockNumFile": "~/.wise-synced-block-num.txt"
+    "syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }
 ```
+
+
+
+## Like the project? Let @noisy-witness become your favourite witness!
+
+If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: \[https://steemit.com/~witnesses\](https://steemit.com/~witnesses).
+
+
 
 ## Thank you
 
