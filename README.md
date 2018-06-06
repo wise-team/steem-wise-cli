@@ -36,7 +36,8 @@ wise -c ../path/to/your/config.json daemon
 wise -c ../path/to/your/config.json daemon & wise -c ../path/to/your/config.json daemon
 
 # Using Dockerfile (no setup required!)
-## Coming soon...
+docker-compose up
+## Configuration is done via ENV variables (in docker-compose.yml). Last synced block num is saved to Docker's named volume "wise_synced_block_num_volume"
 ```
 
 ### Requirements
