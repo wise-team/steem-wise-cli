@@ -28,7 +28,7 @@
                         "max": 10000
                     },
                     {
-                        "rule": "tags",
+                        "rule": "authors",
                         "mode": "allow",
                         "tags": [
                             "noisy"
