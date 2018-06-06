@@ -1,0 +1,14 @@
+version: "3"
+services:
+  wise-daemon:
+    build: ./
+    command: bash -c "wise sync-rules rules.json && wise daemon"
+    environment:
+      WISE_STEEM_USERNAME: guest123
+      WISE_STEEM_POSTINGWIF: 5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg
+      WISE_DEFAULT_SYNC_START_BLOCK_NUM: 23085852
+    volumes:
+      - ${PWD}/samples/sample-rules.json:/app/rules.json:ro
+      - wise_synced_block_num_volume:/wise-synced-block-num.txt
+volumes:
+  wise_synced_block_num_volume:
