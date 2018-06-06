@@ -58,7 +58,7 @@ export class SyncRulesAction {
             const delegatorWise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
 
             return delegatorWise.diffAndUpdateRulesAsync(newRules, (msg: string, proggress: number) => {
-                console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
+                console.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });
     }
