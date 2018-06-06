@@ -30,7 +30,7 @@
                     {
                         "rule": "authors",
                         "mode": "allow",
-                        "tags": [
+                        "authors": [
                             "noisy"
                         ]
                     }
