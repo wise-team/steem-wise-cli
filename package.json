@@ -13,7 +13,7 @@
     "bluebird": "^3.5.1",
     "commander": "^2.15.1",
     "lodash": "^4.17.10",
-    "steem-wise-core": "^0.17.2"
+    "steem-wise-core": "^0.17.5"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",
