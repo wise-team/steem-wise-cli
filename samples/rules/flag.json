@@ -1,0 +1,26 @@
+[
+    {
+        "voter": "nicniezgrublem",
+        "rulesets": [
+            {
+                "name": "Flag on Polish",
+                "description": "You can use my flag any polish post",
+                "rules": [
+                    {
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "require",
+                        "tags": [
+                            "polish"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

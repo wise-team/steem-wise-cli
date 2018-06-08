@@ -1,0 +1,25 @@
+[
+    {
+        "voter": "andrejcibik",
+        "rulesets": [
+            {
+                "name": "Self-boost",
+                "description": "You can use my 0-100% vote for own post",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "authors",
+                        "mode": "allow",
+                        "authors": [
+                            "andrejcibik"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
