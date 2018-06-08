@@ -1,0 +1,32 @@
+[
+    {
+        "voter": "andrejcibik",
+        "rulesets": [
+            {
+                "name": "SFW DLive",
+                "description": "You can use my full vote for any dlive post, which is not Not-Safe-For-Work",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "require",
+                        "tags": [
+                            "dlive"
+                        ]
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "deny",
+                        "tags": [
+                            "nsfw"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

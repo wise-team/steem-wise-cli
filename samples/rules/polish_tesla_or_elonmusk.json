@@ -1,0 +1,34 @@
+[
+    {
+        "voter": "nicniezgrublem",
+        "rulesets": [
+            {
+                "name": "Polish, Tesla or Elon Musk",
+                "description": "You can use my full vote on any polish post about Tesla or Elon Musk",
+                "rules": [
+                    {
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "require",
+                        "tags": [
+                            "polish"
+                        ]
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "any",
+                        "tags": [
+                            "tesla",
+                            "elonmusk"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

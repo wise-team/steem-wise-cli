@@ -1,0 +1,24 @@
+[
+    {
+        "voter": "andrejcibik",
+        "rulesets": [
+            {
+                "name": "Graphics, Design, Webdesign",
+                "description": "You can use my 0-20% vote on posts which has at least one of those tags: graphics, design or webdesign",
+                "rules": [
+                    {
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 2000
+                    },
+                    {
+                        "rule": "tags",
+                        "mode": "any",
+                        "tags": ["graphics", "design", "webdesign"]
+                    }
+                ]
+            }
+        ]
+    }
+]
