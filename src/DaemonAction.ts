@@ -51,11 +51,11 @@ export class DaemonAction {
 
                 }
                 else if (event.type === Synchronizer.EventType.VoteorderPassed) {
-                    console.log("[Synchronization] " + event.message);
+                    console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
                     console.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
                 else if (event.type === Synchronizer.EventType.VoteorderRejected) {
-                    console.log("[Synchronization] " + event.message);
+                    console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
                     console.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
                 else if (event) {
