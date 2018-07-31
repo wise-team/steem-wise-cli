@@ -1,0 +1,29 @@
+[
+    {
+        "voter": "jblew",
+        "rulesets": [
+            {
+                "name": "Vote only before payout for poor posts",
+                "description": "You can use my full vote for any post, that is no older than 7 days and has payout less than 9.5 SBD",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "age_of_post",
+                        "mode": "younger_than",
+                        "unit": "day",
+                        "value": 7
+                    },
+                    {
+                        "rule": "payout",
+                        "mode": "less_than",
+                        "value": 9.5
+                    }
+                ]
+            }
+        ]
+    }
+]

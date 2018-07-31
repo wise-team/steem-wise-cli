@@ -1,0 +1,24 @@
+[
+    {
+        "voter": "perduta",
+        "rulesets": [
+            {
+                "name": "Wote for anything",
+                "description": "You can use my full upvote 8 times in a week",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 9999,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "weight_for_period",
+                        "unit": "day",
+                        "period": 7,
+                        "weight": 80000
+                    }
+                ]
+            }
+        ]
+    }
+]

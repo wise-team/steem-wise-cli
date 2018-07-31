@@ -1,0 +1,30 @@
+[
+    {
+        "voter": "nicniezgrublem",
+        "rulesets": [
+            {
+                "name": "Wise moderation team",
+                "description": "You can use my full vote for any post, that is has not been voted on by any of your team peers and has no more than 100 voters.",
+                "rules": [{
+                        "rule": "weight",
+                        "mode": "single_vote_weight",
+                        "min": 0,
+                        "max": 10000
+                    },
+                    {
+                        "rule": "voters",
+                        "mode": "none",
+                        "usernames": [
+                            "noisy", "perduta", "jblew", "smashedturtle", "andrej.cibik"
+                        ]
+                    },
+                    {
+                        "rule": "votes_count",
+                        "mode": "less_than",
+                        "value": 100
+                    }
+                ]
+            }
+        ]
+    }
+]
