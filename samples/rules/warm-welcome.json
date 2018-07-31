@@ -8,11 +8,11 @@
                 "rules": [{
                         "rule": "weight",
                         "mode": "single_vote_weight",
-                        "min": 9999,
+                        "min": 10000,
                         "max": 10000
                     },
                     {
-                        "rule": "firstpost"
+                        "rule": "first_post"
                     },
                     {
                         "rule": "voting_power",

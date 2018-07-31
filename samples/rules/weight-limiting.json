@@ -3,12 +3,12 @@
         "voter": "perduta",
         "rulesets": [
             {
-                "name": "Wote for anything",
+                "name": "Vote for anything",
                 "description": "You can use my full upvote 8 times in a week",
                 "rules": [{
                         "rule": "weight",
                         "mode": "single_vote_weight",
-                        "min": 9999,
+                        "min": 0,
                         "max": 10000
                     },
                     {
