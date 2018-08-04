@@ -1,7 +1,9 @@
 version: "3"
 services:
   wise-daemon:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: bash -c "wise sync-rules rules.json && wise daemon"
     environment:
       WISE_STEEM_USERNAME: guest123
