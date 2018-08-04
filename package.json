@@ -14,6 +14,7 @@
     "commander": "^2.15.1",
     "lodash": "^4.17.10",
     "steem-wise-core": "^0.19.2"
+    "loglevel": "^1.6.1",
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",
