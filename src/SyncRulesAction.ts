@@ -54,7 +54,9 @@ export class SyncRulesAction {
                 if (!element.rulesets) return Promise.reject(new Error("Rulesets should be specified for each voter"));
             });
 
-            const delegatorWise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+            const api: DirectBlockchainApi = new DirectBlockchainApi(input.config.username, input.config.postingWif);
+            if (input.config.disableSend) api.setSendEnabled(false);
+            const delegatorWise = new Wise(input.config.username, api);
 
             return delegatorWise.diffAndUpdateRulesAsync(newRules, (msg: string, proggress: number) => {
                 console.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);

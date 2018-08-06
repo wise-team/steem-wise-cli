@@ -9,7 +9,10 @@ import { Constants } from "./Constants";
 export class DaemonAction {
     public static doAction(config: Config, sinceBlockNum: undefined | number): Promise<string> {
         const lastBlockFile = config.syncedBlockNumFile ? config.syncedBlockNumFile : "";
-        const delegatorWise = new Wise(config.username, new DirectBlockchainApi(config.username, config.postingWif));
+
+        const api: DirectBlockchainApi = new DirectBlockchainApi(config.username, config.postingWif);
+        if (config.disableSend) api.setSendEnabled(false);
+        const delegatorWise = new Wise(config.username, api);
 
         return Promise.resolve()
         .then(() => {

@@ -46,7 +46,9 @@ export class SendVoteorderAction {
             const voteorder: VoteorderWithDelegator = input.rawVoteorder as VoteorderWithDelegator;
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
-            const wise = new Wise(input.config.username, new DirectBlockchainApi(input.config.username, input.config.postingWif));
+            const api: DirectBlockchainApi = new DirectBlockchainApi(input.config.username, input.config.postingWif);
+            if (input.config.disableSend) api.setSendEnabled(false);
+            const wise = new Wise(input.config.username, api);
 
             return wise.sendVoteorderAsync(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);

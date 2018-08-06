@@ -8,6 +8,7 @@ export interface Config {
     postingWif: string;
     defaultSyncStartBlockNum: number;
     syncedBlockNumFile: string;
+    disableSend: boolean;
     [x: string]: any; // any other attribute
 }
 
@@ -34,7 +35,8 @@ export class ConfigLoader {
             username: "",
             postingWif: "",
             defaultSyncStartBlockNum: 0, // introduction of smartvotes
-            syncedBlockNumFile: "./wise-synced-block-num.txt"
+            syncedBlockNumFile: "./wise-synced-block-num.txt",
+            disableSend: false
         };
     }
 
