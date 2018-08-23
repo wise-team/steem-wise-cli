@@ -35,6 +35,7 @@ export class PrioritizedFileObjectLoader {
                     // if continue was not called, try to load as JSON:
                     try {
                         const loadedObj = JSON.parse(fileContents) as T;
+                        log.debug("Successfully parsed " + filePath + " as JSON");
                         if (merge) return _.merge({}, defaultObject, loadedObj);
                         else return loadedObj;
                     }
@@ -44,6 +45,7 @@ export class PrioritizedFileObjectLoader {
                     // try to load as YAML:
                     try {
                         const loadedObj = yaml.safeLoad(fileContents) as T;
+                        log.debug("Successfully parsed " + filePath + " as YAML");
                         if (merge) return _.merge({}, defaultObject, loadedObj);
                         else return loadedObj;
                     }

@@ -13,7 +13,7 @@ export class Log {
                     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
                     winston.format.printf(info => {
                         if (verboseOrDebug) {
-                            return `${info.timestamp} [${info.level}]: ${info.message} ${info.stack} ERR`;
+                            return `${info.timestamp} [${info.level}]: ${info.message}`;
                         }
                         else {
                             return `${info.message}`;

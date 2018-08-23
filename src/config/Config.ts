@@ -62,7 +62,7 @@ export class ConfigLoader {
     }
 
     private static validateConfig(config: Config): Config {
-        if (config.username.length == 0) throw new Error("Invalid config: Username cannot be empty");
+        if (!config.username || config.username.length == 0) throw new Error("Invalid config: Username cannot be empty");
         return config;
     }
 }
