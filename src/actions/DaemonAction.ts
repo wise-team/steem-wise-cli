@@ -3,7 +3,7 @@ import * as program from "commander";
 
 import { ConfigLoader, Config } from "../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, Synchronizer } from "steem-wise-core";
-import { Constants } from "../config/Constants";
+import { StaticConfig } from "../config/StaticConfig";
 
 
 export class DaemonAction {
@@ -27,7 +27,8 @@ export class DaemonAction {
             }
             else {
                 return delegatorWise.getLastConfirmationMomentAsync()
-                .then((moment: SteemOperationNumber | undefined) => (moment ? moment : new SteemOperationNumber(Constants.INTRODUCTION_OF_WISE_BLOCK_NUM, 0, 0)));
+                .then((moment: SteemOperationNumber | undefined) =>
+                     (moment ? moment : new SteemOperationNumber(StaticConfig.INTRODUCTION_OF_WISE_BLOCK_NUM, 0, 0)));
             }
         })
         .then((since: SteemOperationNumber) => {
