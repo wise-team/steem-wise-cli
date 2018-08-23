@@ -10,11 +10,16 @@ export class DaemonAction {
     public static doAction(config: Config, sinceBlockNum: undefined | number): Promise<string> {
         const lastBlockFile = config.syncedBlockNumFile ? config.syncedBlockNumFile : "";
 
-        const api: DirectBlockchainApi = new DirectBlockchainApi(config.username, config.postingWif);
-        if (config.disableSend) api.setSendEnabled(false);
-        const delegatorWise = new Wise(config.username, api);
+        let api: DirectBlockchainApi;
+        let delegatorWise: Wise;
 
         return Promise.resolve()
+        .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
+        .then(() => {
+            api = new DirectBlockchainApi(config.username, config.postingWif);
+            if (config.disableSend) api.setSendEnabled(false);
+            delegatorWise = new Wise(config.username, api);
+        })
         .then(() => {
             if (sinceBlockNum) {
                 return new SteemOperationNumber(sinceBlockNum, 0, 0);

@@ -1,6 +1,7 @@
 import * as program from "commander";
 import * as _ from "lodash";
 import * as Promise from "bluebird";
+import * as prompt from "prompt";
 
 import { Log } from "../log"; const log = Log.getLogger();
 import { StaticConfig } from "./StaticConfig";
@@ -62,7 +63,49 @@ export class ConfigLoader {
     }
 
     private static validateConfig(config: Config): Config {
-        if (!config.username || config.username.length == 0) throw new Error("Invalid config: Username cannot be empty");
         return config;
+    }
+
+    public static askForCredentialsIfEmpty(config: Config): Promise<Config> {
+        return Promise.resolve().then((): Promise<Config> => {
+            const askForUsername = (!config.username || config.username.trim().length == 0);
+            const askForPostingWif = (!config.postingWif || config.postingWif.trim().length == 0);
+            if (!askForUsername && !askForPostingWif) return Promise.resolve(config);
+
+            const propertiesToAsk: any = {};
+
+            if (askForUsername) {
+                propertiesToAsk.username = {
+                    description: "Enter your steem username (without @)",
+                    required: true,
+                    type: "string",
+                    pattern: /^[0-9a-z-]{3,24}$/,
+                };
+            }
+
+            if (askForPostingWif) {
+                propertiesToAsk.postingWif = {
+                    description: "Enter " + (askForUsername ? "your" : "your (@" + config.username + ")") + " steem posting key Wif \n(Here is an instruction where to find it: https://steemit.com/security/@noisy/public-and-private-keys-how-they-are-used-by-steem-making-all-of-these-possible-you-can-find-answer-here)",
+                    required: true,
+                    hidden: true,
+                    type: "string",
+                    pattern: /^[0-9A-Za-z-]+$/,
+                };
+            }
+            return new Promise((resolve, reject) => {
+                prompt.start({});
+                prompt.get({
+                    properties: propertiesToAsk
+                }, (error: Error, result: { username: string, postingWif: string }) => {
+                    if (error) reject(error);
+                    else {
+                        if (askForUsername) config.username = result.username;
+                        if (askForPostingWif) config.postingWif = result.postingWif;
+                        resolve(config);
+                    }
+                });
+            });
+        })
+        .then(config => config);
     }
 }

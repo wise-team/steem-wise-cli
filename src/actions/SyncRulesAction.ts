@@ -48,7 +48,8 @@ export class SyncRulesAction {
 
     private static syncRules(config: Config, rawRulesets: object []): Promise<SteemOperationNumber | true> {
         return Promise.resolve()
-        .then(() => {
+        .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
+        .then(config => {
             const newRules: SetRulesForVoter [] = rawRulesets as SetRulesForVoter [];
 
             newRules.forEach((element: SetRulesForVoter) => {
