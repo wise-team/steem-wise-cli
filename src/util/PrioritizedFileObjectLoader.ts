@@ -37,6 +37,7 @@ export class PrioritizedFileObjectLoader {
                     }
                     catch (error) {
                         log.debug("Failed to parse " + descriptionForWarnings + " (" + filePath + ") as YAML " + error.message);
+                        throw new Error("The " + descriptionForWarnings + " file " + filePath + " is malformed. Failed to parse it as JSON or YAML.");
                     }
                 }
             }
