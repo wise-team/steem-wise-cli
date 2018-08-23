@@ -6,7 +6,7 @@ import { Config, ConfigLoader } from "./config/Config";
 import { SyncRulesAction } from "./actions/SyncRulesAction";
 import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
-import { Log } from "./log";
+import { Log } from "./log"; const log = Log.getLogger();
 
 /*
  * CLI setup
@@ -35,7 +35,7 @@ program
             console.log();
         })
         .catch(error => {
-            console.error(error);
+            Log.exception(error);
             process.exit(1);
         });
     });
@@ -54,7 +54,7 @@ program
             console.log();
         })
         .catch(error => {
-            console.error(error);
+            Log.exception(error);
             process.exit(1);
         });
     });
@@ -76,7 +76,7 @@ program
             console.log();
         })
         .catch(error => {
-            console.error(error);
+            Log.exception(error);
             process.exit(1);
         });
     });
