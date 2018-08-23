@@ -1,11 +1,10 @@
-import * as fs from "fs";
 import * as program from "commander";
 import * as _ from "lodash";
 import * as Promise from "bluebird";
-import * as yaml from "js-yaml";
 
 import { Log } from "../log"; const log = Log.getLogger();
 import { StaticConfig } from "./StaticConfig";
+import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
 /**
  * Config parameters.
@@ -47,50 +46,10 @@ export class ConfigLoader {
         if (program.configFile) configFiles.unshift(program.configFile);
 
         return Promise.resolve(StaticConfig.DEFAULT_CONFIG)
-        .then(config => ConfigLoader.tryLoadFromFiles(config, configFiles))
+        .then(config => PrioritizedFileObjectLoader.loadFromFiles(config, configFiles, "config"))
         .then(config => ConfigLoader.loadEnv(config))
         .then(config => ConfigLoader.validateConfig(config))
         .then(config => { log.debug("Loaded config: " + JSON.stringify(config)); return config; });
-    }
-
-    private static tryLoadFromFiles(prevConfig: Config, configFiles: string []): Promise<Config> {
-        return Promise.resolve().then(() => {
-            for (let i = 0; i < configFiles.length; i++) {
-                const configPath = configFiles[i];
-                if (fs.existsSync(configPath)) {
-                    log.debug("Trying to read config from " + configPath);
-                    let configFileContents: string;
-                    try {
-                        configFileContents = fs.readFileSync(configPath, "utf8").toString();
-                        log.debug("--- Config file contents: ---\n" + configFileContents + "\n---");
-                    }
-                    catch (error) {
-                        log.debug("Could not read config file (" + configPath + "): " + error.message);
-                        continue; // continue to next file
-                    }
-                    // if continue was not called, try to load as JSON:
-                    try {
-                        const loadedConfig = JSON.parse(configFileContents) as Config;
-                        const config = _.merge({}, prevConfig, loadedConfig);
-                        return config;
-                    }
-                    catch (error) {
-                        log.debug("Failed to parse config (" + configPath + ") as JSON " + error.message);
-                    }
-                    // try to load as YAML:
-                    try {
-                        const loadedConfig = yaml.safeLoad(configFileContents) as Config;
-                        const config = _.merge({}, prevConfig, loadedConfig);
-                        return config;
-                    }
-                    catch (error) {
-                        log.debug("Failed to parse config (" + configPath + ") as YAML " + error.message);
-                    }
-                }
-            }
-            log.warn("No config was loaded");
-            return prevConfig;
-        });
     }
 
     private static loadEnv(config: Config): Config {
