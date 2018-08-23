@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as program from "commander";
 
-import { ConfigLoader, Config } from "./Config";
+import { ConfigLoader, Config } from "../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, Synchronizer } from "steem-wise-core";
-import { Constants } from "./Constants";
+import { Constants } from "../config/Constants";
 
 
 export class DaemonAction {

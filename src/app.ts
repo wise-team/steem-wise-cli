@@ -2,10 +2,10 @@
 
 import * as program from "commander";
 
-import { Config, ConfigLoader } from "./Config";
-import { SyncRulesAction } from "./SyncRulesAction";
-import { SendVoteorderAction } from "./SendVoteorderAction";
-import { DaemonAction } from "./DaemonAction";
+import { Config, ConfigLoader } from "./config/Config";
+import { SyncRulesAction } from "./actions/SyncRulesAction";
+import { SendVoteorderAction } from "./actions/SendVoteorderAction";
+import { DaemonAction } from "./actions/DaemonAction";
 import { Log } from "./log";
 
 /*

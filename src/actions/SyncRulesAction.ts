@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as program from "commander";
 
-import { ConfigLoader, Config } from "./Config";
+import { ConfigLoader, Config } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRules, SetRulesForVoter, EffectuatedSetRules, SteemOperationNumber, SmartvotesOperation } from "steem-wise-core";
-import { Rules } from "./Rules";
+import { Rules } from "../types/Rules";
 
 
 export class SyncRulesAction {
