@@ -43,6 +43,7 @@ export class SendVoteorderAction {
 
     private static sendVoteorder(config: Config, rawVoteorder: object): Promise<SteemOperationNumber> {
         return Promise.resolve()
+        .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(() => {
             const voteorder: VoteorderWithDelegator = rawVoteorder as VoteorderWithDelegator;
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
