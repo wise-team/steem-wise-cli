@@ -1,54 +1,55 @@
 import * as fs from "fs";
-import * as program from "commander";
+import * as _ from "lodash";
 
-import { ConfigLoader, Config } from "../config/Config";
 import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
+
+import { Log } from "../log"; const log = Log.getLogger();
+import { ConfigLoader, Config } from "../config/Config";
+import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
 
 export class SendVoteorderAction {
     public static doAction(config: Config, voteorderIn: string): Promise<string> {
-        return SendVoteorderAction.loadJSON(config, voteorderIn)
-        .then(SendVoteorderAction.sendVoteorder)
+        return SendVoteorderAction.loadVoteorder(config, voteorderIn)
+        .then(rawVoteorder => SendVoteorderAction.sendVoteorder(config, rawVoteorder))
         .then((moment: SteemOperationNumber) => {
             return "Voteorder sent: " + moment;
         });
     }
 
-    private static loadJSON(config: Config, voteorderIn: string): Promise<{config: Config, rawVoteorder: object}> {
-        return new Promise(function(resolve, reject): void {
-            if (!voteorderIn || voteorderIn.length == 0) throw new Error("You must specify voteorder to send (either JSON or path to JSON file)");
+    private static loadVoteorder(config: Config, voteordetIn: string): Promise<object> {
+        const voteorderPaths: string [] = [];
 
-            let jsonStr: string = "";
-
-            const potentialPath: string = voteorderIn;
-            if (fs.existsSync(potentialPath)) {
-                jsonStr = fs.readFileSync(potentialPath).toString();
-            }
-            else {
-                jsonStr = voteorderIn;
-            }
-
-            let data: object | undefined = undefined;
+        if (voteordetIn && voteordetIn.length > 0) {
             try {
-                data = JSON.parse(jsonStr) as object;
+                let data: object [] | undefined = undefined;
+                const input: object = JSON.parse(voteordetIn);
+                data = input  as object [];
+
+                return Promise.resolve(data); // succes parsing inline json
             }
-            catch (e) {
-                reject(e);
+            catch (error) {
+                log.debug("Failed to parse " + voteordetIn + " as inline JSON. Proceeding to loading files. " + voteorderPaths + " will be loaded as file.");
+                voteorderPaths.unshift(voteordetIn);
             }
-            if (data) resolve({config: config, rawVoteorder: data});
-            else throw new Error("Could not load voteorder");
+        }
+
+        return PrioritizedFileObjectLoader.loadFromFilesNoMerge({}, voteorderPaths, "voteorder")
+        .then((result: object | undefined) => {
+            if (!result) throw new Error("Could not load rulesets from any of the files: " + _.join(voteorderPaths, ", "));
+            return result;
         });
     }
 
-    private static sendVoteorder(input: {config: Config, rawVoteorder: object}): Promise<SteemOperationNumber> {
+    private static sendVoteorder(config: Config, rawVoteorder: object): Promise<SteemOperationNumber> {
         return Promise.resolve()
         .then(() => {
-            const voteorder: VoteorderWithDelegator = input.rawVoteorder as VoteorderWithDelegator;
+            const voteorder: VoteorderWithDelegator = rawVoteorder as VoteorderWithDelegator;
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(input.config.username, input.config.postingWif);
-            if (input.config.disableSend) api.setSendEnabled(false);
-            const wise = new Wise(input.config.username, api);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(config.username, config.postingWif);
+            if (config.disableSend) api.setSendEnabled(false);
+            const wise = new Wise(config.username, api);
 
             return wise.sendVoteorderAsync(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);

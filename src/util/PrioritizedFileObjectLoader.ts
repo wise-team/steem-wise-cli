@@ -26,7 +26,6 @@ export class PrioritizedFileObjectLoader {
                     let fileContents: string;
                     try {
                         fileContents = fs.readFileSync(filePath, "utf8").toString();
-                        log.debug("--- " + descriptionForWarnings + " file contents: ---\n" + fileContents + "\n---");
                     }
                     catch (error) {
                         log.debug("Could not read " + descriptionForWarnings + " file (" + filePath + "): " + error.message);

@@ -1,6 +1,4 @@
-import * as fs from "fs";
 import * as _ from "lodash";
-import * as program from "commander";
 
 import { Log } from "../log"; const log = Log.getLogger();
 import { ConfigLoader, Config } from "../config/Config";
