@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-node dist/app.js "$@"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+node "${DIR}/dist/app.js" "$@"

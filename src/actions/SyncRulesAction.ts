@@ -2,8 +2,7 @@ import * as _ from "lodash";
 
 import { Log } from "../log"; const log = Log.getLogger();
 import { ConfigLoader, Config } from "../config/Config";
-import { Wise, DirectBlockchainApi, SetRules, SetRulesForVoter, EffectuatedSetRules, SteemOperationNumber, SmartvotesOperation } from "steem-wise-core";
-import { Rules } from "../types/Rules";
+import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
