@@ -3,7 +3,7 @@
 import * as program from "commander";
 import * as Promise from "bluebird";
 
-import { Config, ConfigLoader } from "./config/Config";
+import { ConfigLoadedFromFile, ConfigLoader } from "./config/Config";
 import { StaticConfig } from "./config/StaticConfig";
 import { SyncRulesAction } from "./actions/SyncRulesAction";
 import { SendVoteorderAction } from "./actions/SendVoteorderAction";
@@ -15,11 +15,11 @@ import { Log } from "./log"; const log = Log.getLogger();
  * Action hooks
  */
 let commandCorrect = false;
-const prepareAction = (program: program.Command, loadConfig: boolean = true): Promise<Config> => {
+const prepareAction = (program: program.Command, loadConfig: boolean = true): Promise<ConfigLoadedFromFile> => {
     commandCorrect = true;
     Log.configureLoggers(program);
     if (loadConfig) return ConfigLoader.loadConfig(program);
-    else return Promise.resolve(StaticConfig.DEFAULT_CONFIG);
+    else return Promise.resolve({ ...StaticConfig.DEFAULT_CONFIG, configFilePath: process.cwd() });
 };
 const actionDone = (msg: String) => {
     console.log(msg);
@@ -47,7 +47,7 @@ program
     .description("Sends a voteorder. You can pass path to a JSON file or pass JSON directly")
     .action(voteorder => {
         prepareAction(program)
-        .then((config: Config) => SendVoteorderAction.doAction(config, voteorder))
+        .then((config: ConfigLoadedFromFile) => SendVoteorderAction.doAction(config, voteorder))
         .then(actionDone, actionError);
     });
 
@@ -56,7 +56,7 @@ program
     .description("Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly")
     .action(rules => {
         prepareAction(program)
-        .then((config: Config) => SyncRulesAction.doAction(config, rules))
+        .then((config: ConfigLoadedFromFile) => SyncRulesAction.doAction(config, rules))
         .then(actionDone, actionError);
     });
 
@@ -68,7 +68,7 @@ program
         else sinceBlockNum = undefined;
 
         prepareAction(program)
-        .then((config: Config) => DaemonAction.doAction(config, sinceBlockNum))
+        .then((config: ConfigLoadedFromFile) => DaemonAction.doAction(config, sinceBlockNum))
         .then(actionDone, actionError);
     });
 
@@ -85,7 +85,7 @@ program
     .option("-s, --synced-block-num-path [path]", "Path to file, which stores number of last synced block [default: synced-block-num.txt]")
     .action((path, options) => {
         prepareAction(program, false)
-        .then((config: Config) => InitAction.doAction(options, path))
+        .then((config: ConfigLoadedFromFile) => InitAction.doAction(options, path))
         .then(actionDone, actionError);
     });
 

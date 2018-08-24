@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as program from "commander";
 import * as _ from "lodash";
 import * as Promise from "bluebird";
@@ -14,9 +15,14 @@ export interface Config {
     username: string;
     postingWif: string;
     defaultSyncStartBlockNum: number;
+    defaultRulesPath: string;
     syncedBlockNumFile: string;
     disableSend: boolean;
     [x: string]: any; // any other attribute
+}
+
+export interface ConfigLoadedFromFile extends Config {
+    configFilePath: string;
 }
 
 /**
@@ -42,18 +48,25 @@ const envMappings: [string, string][] = [
  */
 
 export class ConfigLoader {
-    public static loadConfig(program: program.Command): Promise<Config> {
+    public static loadConfig(program: program.Command): Promise<ConfigLoadedFromFile> {
         const configFiles: string [] = _.cloneDeep(StaticConfig.DEFAULT_CONFIG_FILE_PATHS);
         if (program.configFile) configFiles.unshift(program.configFile);
 
         return Promise.resolve(StaticConfig.DEFAULT_CONFIG)
         .then(config => PrioritizedFileObjectLoader.loadFromFiles(config, configFiles, "config"))
+        .then(result => {
+            const configLoadedFromFile: ConfigLoadedFromFile = {
+                ...result.loadedObject,
+                configFilePath: path.resolve((result.path ? result.path : "."))
+            };
+            return configLoadedFromFile;
+        })
         .then(config => ConfigLoader.loadEnv(config))
         .then(config => ConfigLoader.validateConfig(config))
         .then(config => { log.debug("Loaded config: " + JSON.stringify(config)); return config; });
     }
 
-    private static loadEnv(config: Config): Config {
+    private static loadEnv(config: ConfigLoadedFromFile): ConfigLoadedFromFile {
         envMappings.forEach(pair => {
             if (process.env[pair[0]]) {
                 config = _.set(config, pair[1], process.env[pair[0]]);
@@ -62,7 +75,7 @@ export class ConfigLoader {
         return config;
     }
 
-    private static validateConfig(config: Config): Config {
+    private static validateConfig(config: ConfigLoadedFromFile): ConfigLoadedFromFile {
         return config;
     }
 

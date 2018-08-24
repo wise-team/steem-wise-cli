@@ -21,6 +21,7 @@ export class StaticConfig {
         username: "",
         postingWif: "",
         defaultSyncStartBlockNum: 0, // introduction of smartvotes
+        defaultRulesPath: "",
         syncedBlockNumFile: "./wise-synced-block-num.txt",
         disableSend: false
     };

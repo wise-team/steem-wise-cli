@@ -1,14 +1,15 @@
+import * as path from "path";
 import * as _ from "lodash";
 
 import { Log } from "../log"; const log = Log.getLogger();
-import { ConfigLoader, Config } from "../config/Config";
+import { ConfigLoader, Config, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
 
 export class SyncRulesAction {
-    public static doAction(config: Config, rulesIn: string): Promise<string> {
+    public static doAction(config: ConfigLoadedFromFile, rulesIn: string): Promise<string> {
         return SyncRulesAction.loadRules(config, rulesIn)
         .then((rawRulesets: object []) => SyncRulesAction.syncRules(config, rawRulesets))
         .then((result: SteemOperationNumber | true) => {
@@ -17,8 +18,13 @@ export class SyncRulesAction {
         });
     }
 
-    private static loadRules(config: Config, rulesIn: string): Promise<object []> {
-        const rulesPaths: string [] = _.cloneDeep(StaticConfig.DEFAULT_RULES_FILE_PATHS);
+    private static loadRules(config: ConfigLoadedFromFile, rulesIn: string): Promise<object []> {
+        let rulesPaths: string [];
+        if (config.defaultRulesPath && config.defaultRulesPath.length > 0) {
+            rulesPaths = [ path.dirname(config.configFilePath) + "/" + config.defaultRulesPath ];
+        } else {
+            rulesPaths = _.cloneDeep(StaticConfig.DEFAULT_RULES_FILE_PATHS);
+        }
 
         if (rulesIn && rulesIn.length > 0) {
             try {
@@ -36,10 +42,10 @@ export class SyncRulesAction {
         }
 
         return PrioritizedFileObjectLoader.loadFromFilesNoMerge([], rulesPaths, "rules")
-        .then((result: object [] | undefined) => {
-            if (!result) throw new Error("Could not load rulesets from any of the files: " + _.join(rulesPaths, ", "));
-            if (!(Object.prototype.toString.call(result) === "[object Array]")) throw new Error("Rules should be an array");
-            return result;
+        .then((result: { loadedObject: object [] | undefined, path: string | undefined}) => {
+            if (!result.loadedObject) throw new Error("Could not load rulesets from any of the files: " + _.join(rulesPaths, ", "));
+            if (!(Object.prototype.toString.call(result.loadedObject) === "[object Array]")) throw new Error("Rules should be an array");
+            return result.loadedObject;
         });
     }
 
