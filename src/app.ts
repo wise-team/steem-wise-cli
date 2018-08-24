@@ -74,7 +74,7 @@ program
 
 program
     .command("init [path]")
-    .description("Creates default rules.yml, config.yml, synced-block-num.txt in specified location")
+    .description("Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise help init' To get a list of the options.")
     .option("-g, --global", "Puts config and rules in home directory (~/.wise/)")
     .option("-n, --config [path]", "Specify path for config.yml [default:config.yml]")
     .option("-r, --rules [path]", "Specify path for rules.yml [defualt:rules.yml]")
