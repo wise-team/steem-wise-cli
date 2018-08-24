@@ -86,6 +86,19 @@ export class InitAction {
             });
         });
 
+        console.log("--- Settings: ---");
+        console.log(JSON.stringify({
+            wisePath: wisePath + " (" + path.resolve(wisePath) + ")",
+            configPath: configPath + " (" + path.resolve(configPath) + ")",
+            rulesPath: rulesPath + " (" + path.resolve(rulesPath) + ")",
+            syncedBlockNumPath: syncedBlockNumPath + " (" + path.resolve(syncedBlockNumPath) + ")",
+            username: username,
+            savePostingKey: savePostingKey,
+            postingKey: (postingKey ? "*".repeat((postingKey as string).length) : ""),
+            sinceBlock: sinceBlock
+        }, undefined, 2));
+        console.log("------");
+
         if (fs.existsSync(wisePath)) {
             if (!fs.lstatSync(wisePath).isDirectory()) throw new Error("Path " + wisePath + " is not a directory");
             try {
