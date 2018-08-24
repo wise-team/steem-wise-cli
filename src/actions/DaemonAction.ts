@@ -1,14 +1,15 @@
 import * as fs from "fs";
+import * as path from "path";
 import * as program from "commander";
 
-import { ConfigLoader, Config } from "../config/Config";
+import { ConfigLoader, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, Synchronizer } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 
 
 export class DaemonAction {
-    public static doAction(config: Config, sinceBlockNum: undefined | number): Promise<string> {
-        const lastBlockFile = config.syncedBlockNumFile ? config.syncedBlockNumFile : "";
+    public static doAction(config: ConfigLoadedFromFile, sinceBlockNum: undefined | number): Promise<string> {
+        const lastBlockFile = config.syncedBlockNumFile ? (path.dirname(config.configFilePath) + "/" + config.syncedBlockNumFile) : "";
 
         let api: DirectBlockchainApi;
         let delegatorWise: Wise;
