@@ -1,4 +1,4 @@
-# Contributing to Steem WISE
+# Contributing to Steem WISE (cli)
 
 Thank you for contributing to Steem Wise. Together we can make Steem curations more effective.
 
@@ -19,7 +19,6 @@ Please follow the contributing guidelines as it saves both your and maintainers 
 ## Ground Rules
 
 - Ensure you did `npm run build` to test if your change compiles well, and is compliant with tslint clean code rules
-- Do `npm run test` to perform unit tests. See [Common issues with unit tests](#common-issues-with-unit-tests).
 - Create an issue (add tag enhancement or bug) before adding a pull request
 - Think twice before adding a new file, but do not hesitate to do that if it increases the readability of the code.
 - Your code tells who you are. Make it art. Keep it quality and beautiful.
@@ -28,7 +27,6 @@ Please follow the contributing guidelines as it saves both your and maintainers 
 
 
 - Ensure you did `npm run build` to test if your change compiles well, and is compliant with tslint clean code rules
-- Do `npm run test` to perform unit tests. See [Common issues with unit tests](#common-issues-with-unit-tests).
 - Create an issue (add tag enhancement or bug) before adding a pull request
 - Think twice before adding a new file, but do not hesitate to do that if it increases readability of the code.
 - Your code tells who you are. Make it art. Keep it quality and beautiful.
@@ -52,7 +50,6 @@ Small contributions such as fixing spelling errors, where the content is small e
 2. Do the changes in your fork
 3. If you like the change and think the project could use it:
    - Run `npm run build` to check compilation errors. Build also runs the linter that ensures the quality of the code.
-   - Run `npm run test`. See [Common issues with unit tests](#common-issues-with-unit-tests).
    - See our [Code of conduct](https://github.com/noisy-witness/steem-wise-core/blob/master/CODE_OF_CONDUCT.md).
 4. Send a pull request.
 
@@ -87,6 +84,7 @@ When creating an issue please fill the following template:
 > **Version of steem-wise-core**: 
 > **Version of nodejs**:
 > **Links to gist with output / logs (or at least a picture):**
+> **Links to transactions on steemd.com:**
 
 Also please properly **tag the issue**. E.g. with the tag "bug".
 
@@ -102,22 +100,6 @@ Add an issue in issues panel on GitHub, and describe what feature would you like
 
 Feel free to talk with us on our #wise channel on steem.chat: https://steem.chat/channel/wise .
 You can also contact Jędrzej at jedrzejblew@gmail.com.
-
-
-
-## Common issues with unit tests
-
-1. **Some tests fail when the internet connection is poor**. Although it is generally thought to be a bad practice to make unit tests rely on the external resources, in this early stage of development this is just handier. We plan to separate unit tests from integration tests shortly. If this happens, check your internet connection and re-run the tests. Check if steemit RPC works correctly. If not — wait a few hours and try to rerun the tests. If it persists, do not bother to rerun the tests.
-
-2. **(rarely) Tests that check if confirm_vote operations are correctly bound with vote operations may fail**. They may fail due to processing operations in batches. Rarely vote_operation may be in different batch than confirm_vote. These tests are:
-
-   1. \[in test/api.spec.ts\]: Api#getWiseOperationsRelatedToDelegatorInBlock returns ConfirmVoteBoundWithVote instead of pure ConfirmVote
-   2. \[in test/api.spec.ts\] Api#getWiseOperations Returns ConfirmVoteBoundWithVote instead of pure ConfirmVote (when accepted = true)
-   3. \[in test/rule-weightforperiod.spec.ts\] ValidationContext.getWiseOperations(delegator, until=50 days) returns correct number of confirmations, all bound with vote operation
-
-   Simply ignore this failing tests, or run them again.
-
-
 
 
 
