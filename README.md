@@ -73,6 +73,48 @@ After installation you can:
 
 Congratulations! You are a delegator now.
 
+
+
+## Commands
+
+### Initialising config (wise init)
+
+```bash
+$ wise init --help
+
+  Usage: init [options] [path]
+
+  Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' To get a list of the options.
+
+  Options:
+
+    -g, --global                        Puts config and rules in home directory (~/.wise/)
+    -n, --config [path]                 Specify path for config.yml [default:config.yml]
+    -r, --rules [path]                  Specify path for rules.yml [defualt:rules.yml]
+    -u, --username [account]            Account name
+    -k, --save-posting-key              Saves private post key in config file
+    -d, --dont-save-posting-key         Do not save posting key in config file
+    -b, --since-block [block-num]       Number of block, from which synchronisation starts [default: head]
+    -s, --synced-block-num-path [path]  Path to file, which stores number of last synced block [default: synced-block-num.txt]
+    -h, --help                          output usage information
+```
+
+`wise init` creates default config files. These files are:
+
+- config.yml — wise cli configuration (steem username, optional posting key, etc.). See [config.yml details](#config.yml).
+- rules.yml — stores the rules that are synchronised to the blockchain. Storing it in file allows easy synchronisation of changes. See [rules.yml details](#rules.yml).
+- synced-block-num.txt — stores the number of last processed block. Allows the daemon to continue the synchronisation from a saved point. See [synced-block-num.txt details](#synced-block-num.txt).
+
+You can run `wise init` in two modes.
+
+- Local mode: `$ wise init` — creates all the files in current directory
+- Global mode: `$ wise init --global` — creates the files in `$HOME/.wise`.
+
+Furthermore, you can manually specify locations of each of the files separately using command options. If any of the informations is missing, wise-init will ask you for it. But, if you specify all the files, the username, and decide weather to save posting key or not, `wise init` will not ask you for anything simply creating all necessary files.
+
+Wise-init will ask you if you want to store your posting key, but you don't have to. If you choose not to save the posting key — you will be prompted for it when running a cli command. Read more about [security of storing the posting key](#how-is-posting-key-stored).
+
+
 ## How to use?
 
 Installation:
