@@ -28,6 +28,31 @@ Important links:
 - **Voteorder** — a request from the voter to the delegator to vote for a given post. Contains name of the ruleset, author and permlink of the post.
 
 
+
+## The WISE CLI
+
+This is a fully featured tool for using WISE system. It allows to perform all possible Wise operations. Possible commands are:
+
+```bash
+$ wise
+ Usage: wise [options] [command]
+
+  Options:
+
+    --version                   output the version number
+    -v, --verbose               Verbose mode (log level: INFO)
+    --debug                     Debug verbosity mode (log level: DEBUG)
+    -c, --config-file [path]    Use specific config file
+    -h, --help                  output usage information
+
+  Commands:
+
+    send-voteorder [voteorder]  Sends a voteorder. You can pass path to a JSON file or pass JSON directly
+    sync-rules [rules]          Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly
+    daemon [sinceBlockNum]      Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain
+    init [options] [path]       Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise help init' To get a list of the options.
+
+```
 ## How to use?
 
 Installation:
