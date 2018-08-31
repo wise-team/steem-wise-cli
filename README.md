@@ -145,6 +145,26 @@ There are three ways to pass the rules to the command:
    ```
 
 
+
+### Running the daemon (wise daemon)
+
+```bash
+$ wise daemon --help
+
+  Usage: daemon [options] [sinceBlockNum]
+
+  Reads all blocks since last confirmation (or saved state) in a loop and sends votes/confirmations to the blockchain
+
+  Options:
+
+    -h, --help  output usage information
+```
+
+Starts the daemon. The daemon loops through all the block since the specified one looking for wise transactions sent by you or your voters. When it comes across a voteorder — it runs validation of the rules. If the validation is passed, the vote is cast, and confirmation is sent to the blockchain. If the validation fails — a confirm_vote is placed on the blockchain with an information why the voteorder was rejected.
+
+Remember, that you can change and syhchronise the rules while the daemon is operating. There is no need to shut it down for rules synchronisation. The daemon will fetch your new rules and validate the subsequent voteorders using the new rules. Rules are deterministic, which means that they have their place on the blockchain timeline which is marked with a block number and transaction number. A voteorder is always validated using the rules that were the most up-to-date rules at the moment (block_num, trx_num) of the voteorder.
+
+
 ## Contribute to steem Wise
 
 We welcome warmly:
