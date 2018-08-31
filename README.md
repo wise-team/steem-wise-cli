@@ -115,6 +115,36 @@ Furthermore, you can manually specify locations of each of the files separately 
 Wise-init will ask you if you want to store your posting key, but you don't have to. If you choose not to save the posting key — you will be prompted for it when running a cli command. Read more about [security of storing the posting key](#how-is-posting-key-stored).
 
 
+
+### Synchronising rules (wise sync-rules)
+
+```bash
+$ wise sync-rules --help
+
+  Usage: sync-rules [options] [rules]
+
+  Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly
+
+  Options:
+
+    -h, --help  output usage information
+```
+
+This command synchronises the rules with the blockchain. It calculates the difference between provided rules and the rules that are present on the blockchain. It sends only those set_rules operations that are needed to make the rules on the blockchain up-to-date with the provided ones.
+
+There are three ways to pass the rules to the command:
+
+1. Yaml file: `$ wise sync-rules rules.yml` — See [rules.yml details](#rules.yml).
+
+2. JSON file: `$ wise sync-rules rules.json` — See [JSON rules details](#JSON-rules).
+
+3. Inline JSON:
+
+   ```bash
+   $ wise -c [path/to/config.json] sync-rules "[{\"name\": \"rulesetA\", \"rules\": [...]},{\"name\": \"Another ruleset\", \"rules\": [...]}]"
+   ```
+
+
 ## Contribute to steem Wise
 
 We welcome warmly:
