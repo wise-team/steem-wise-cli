@@ -115,6 +115,27 @@ Furthermore, you can manually specify locations of each of the files separately 
 Wise-init will ask you if you want to store your posting key, but you don't have to. If you choose not to save the posting key — you will be prompted for it when running a cli command. Read more about [security of storing the posting key](#how-is-posting-key-stored).
 
 
+## Contribute to steem Wise
+
+We welcome warmly:
+
+- Bug reports via [issues](https://github.com/noisy-witness/steem-wise-cli/issues).
+- Enhancement requests via via [issues](https://github.com/noisy-witness/steem-wise-cli/issues).
+- [Pull requests](https://github.com/noisy-witness/steem-wise-cli/pulls)
+- Security reports to _jedrzejblew@gmail.com_.
+
+**Before** contributing please **read [Wise CONTRIBUTING guide](https://github.com/noisy-witness/steem-wise-cli/blob/master/CONTRIBUTING.md)**.
+
+Thank you for developing it together!
+
+
+
+## Like the project? Let @noisy-witness become your favourite witness!
+
+If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: [https://steemit.com/~witnesses](https://steemit.com/~witnesses).
+
+
+
 ## How to use?
 
 Installation:
