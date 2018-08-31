@@ -164,6 +164,8 @@ Starts the daemon. The daemon loops through all the block since the specified on
 
 Remember, that you can change and syhchronise the rules while the daemon is operating. There is no need to shut it down for rules synchronisation. The daemon will fetch your new rules and validate the subsequent voteorders using the new rules. Rules are deterministic, which means that they have their place on the blockchain timeline which is marked with a block number and transaction number. A voteorder is always validated using the rules that were the most up-to-date rules at the moment (block_num, trx_num) of the voteorder.
 
+After each processed block the daemon saves the number of the block to the file that is specified in config.yml. The default path is "./synced-block-num.txt". When you resume the daemon — it reads the file and continues processing starting at theblock with number: read value plus one.
+
 
 ## Contribute to steem Wise
 
