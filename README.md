@@ -53,6 +53,26 @@ $ wise
     init [options] [path]       Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise help init' To get a list of the options.
 
 ```
+
+
+
+## How to install
+
+To install WISE CLI:
+
+1. Install NodeJS
+2. Install wise cli tool: `npm install -g steem-wise-cli`
+3. Setup wise configuration files: `$ wise init`
+
+Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://noisy-witness.github.io/steem-wise-handbook/installation. 
+
+After installation you can:
+
+1. Synchronise the rules (rules can be changed in rules.yml file): `$ wise sync-rules`
+2. Run the daemon (which will synchronise voteorders from your voters): `$ wise daemon`
+
+Congratulations! You are a delegator now.
+
 ## How to use?
 
 Installation:
