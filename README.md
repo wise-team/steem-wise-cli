@@ -1,8 +1,11 @@
-# Steem WISE Cli
+# Steem WISE (cli tool)
 
-Vote delegation system for STEEM blockchain: cli tool for delegators.
 
-More **general info** on the system ( why-s & how-s) can be found in core repository: [github.com/noisy-witness/steem-wise-core](https://github.com/noisy-witness/steem-wise-core). Other components of WISE system are listed there.
+Vote delegation system for STEEM blockchain: cli tool.
+
+Wise allows you to securely grant other users your voting power under conditions specified by you.
+
+What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/noisy-witness/steem-wise-core#how-does-wise-work) and [Handbook](https://noisy-witness.github.io/steem-wise-handbook/introduction).
 
 ## How to use?
 
