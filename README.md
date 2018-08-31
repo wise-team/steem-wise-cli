@@ -8,6 +8,14 @@ Wise allows you to securely grant other users your voting power under conditions
 
 What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/noisy-witness/steem-wise-core#how-does-wise-work) and [Handbook](https://noisy-witness.github.io/steem-wise-handbook/introduction).
 
+Important links:
+
+- [Wise home page](https://noisy-witness.github.io/steem-wise-handbook/)
+- [Voting page](https://wise.vote/)  — how to vote
+- [Daemon installation](https://noisy-witness.github.io/steem-wise-handbook/installation) — how to delegate
+- [Wise handbook (manual)](https://noisy-witness.github.io/steem-wise-handbook/introduction) — details about wise
+- [Wise core library](https://github.com/noisy-witness/steem-wise-core)
+
 ## How to use?
 
 Installation:
