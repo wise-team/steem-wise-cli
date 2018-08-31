@@ -167,6 +167,37 @@ Remember, that you can change and syhchronise the rules while the daemon is oper
 After each processed block the daemon saves the number of the block to the file that is specified in config.yml. The default path is "./synced-block-num.txt". When you resume the daemon — it reads the file and continues processing starting at theblock with number: read value plus one.
 
 
+
+### Sending a voteorder (wise send-voteorder)
+
+```bash
+$ wise send-voteorder --help
+
+  Usage: send-voteorder [options] [voteorder]
+
+  Sends a voteorder. You can pass path to a JSON file or pass JSON directly
+
+  Options:
+
+    -h, --help  output usage information
+```
+
+This command sends a voteorder. You can either pass a link to YAML/JSON file, or you can pass an inline JSON.
+
+This is the format of the voteorder:
+
+```yaml
+rulesetName: Vote WISEly
+author: noisy
+permlink: >-
+  what-we-can-say-about-steem-users-based-on-traffic-generated-to-steemprojects-com-after-being-3-days-on-top-of-trending-page
+delegator: steemprojects1
+weight: 100
+```
+
+The JSON format and inline JSON is analogous. Inline JSON has to be escaped.
+
+
 ## Contribute to steem Wise
 
 We welcome warmly:
