@@ -6,14 +6,14 @@ Vote delegation system for STEEM blockchain: cli tool.
 
 Wise allows you to securely grant other users your voting power under conditions specified by you.
 
-What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/noisy-witness/steem-wise-core#how-does-wise-work) and [Handbook](https://noisy-witness.github.io/steem-wise-handbook/introduction).
+What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/noisy-witness/steem-wise-core#how-does-wise-work) and [Manual](https://noisy-witness.github.io/steem-wise-manual/introduction).
 
 Important links:
 
-- [Wise home page](https://noisy-witness.github.io/steem-wise-handbook/)
+- [Wise home page](https://noisy-witness.github.io/steem-wise-manual/)
 - [Voting page](https://wise.vote/)  — how to vote
-- [Daemon installation](https://noisy-witness.github.io/steem-wise-handbook/installation) — how to delegate
-- [Wise handbook (manual)](https://noisy-witness.github.io/steem-wise-handbook/introduction) — details about wise
+- [Daemon installation](https://noisy-witness.github.io/steem-wise-manual/installation) — how to delegate
+- [Wise manual](https://noisy-witness.github.io/steem-wise-manual/introduction) — details about wise
 - [Wise core library](https://github.com/noisy-witness/steem-wise-core)
 
 
@@ -64,7 +64,7 @@ To install WISE CLI:
 2. Install wise cli tool: `npm install -g steem-wise-cli`
 3. Setup wise configuration files: `$ wise init`
 
-Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://noisy-witness.github.io/steem-wise-handbook/installation. 
+Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://noisy-witness.github.io/steem-wise-manual/installation. 
 
 After installation you can:
 
@@ -198,6 +198,33 @@ weight: 100
 The JSON format and inline JSON is analogous. Inline JSON has to be escaped.
 
 
+
+## Configuration files
+
+### config.yml
+
+### rules.yml
+
+Writing rules — link to manual
+
+#### JSON rules
+
+
+
+### synced-block-num.txt
+
+
+
+## Security
+
+### How is the posting key stored
+
+
+
+## Where to get help?
+
+
+
 ## Contribute to steem Wise
 
 We welcome warmly:
@@ -218,6 +245,14 @@ Thank you for developing it together!
 If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: [https://steemit.com/~witnesses](https://steemit.com/~witnesses).
 
 
+
+
+
+
+
+
+
+***
 
 ## How to use?
 
@@ -255,22 +290,7 @@ docker-compose up
 ## Configuration is done via ENV variables (in docker-compose.yml). Last synced block num is saved to Docker's named volume "wise_synced_block_num_volume"
 ```
 
-### Requirements
 
-STEEM WISE cli is a **node.js** app, 
-it uses **nvm** for local node version management
-and **npm** for dependencies.
-
-In order to use app easily and safely in a standarized environment, please install the following:
-
-- [NVM](https://github.com/creationix/nvm)
-
-  - After installation type "nvm use" in project directory
-to activate proper version of node
-
-- [NPM](https://www.npmjs.com/)
-
-  - Type "npm install" to install both dev & production dependencies
 
 ### Usage:
 
@@ -306,21 +326,3 @@ This is the config file format:
     "syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }
 ```
-
-## Like the project? Let @noisy-witness become your favourite witness!
-
-If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: \[https://steemit.com/~witnesses](https://steemit.com/~witnesses).
-
-## Thank you
-
-I send many thanks to the authors of vendor dependencies of the project. You are the ones, who made development of this tool so joyful and smooth. Many thanks to the contributors of:
-
-- [steem-js](https://github.com/steemit/steem-js)
-- [node](https://nodejs.org/en/)
-- [npm](https://www.npmjs.com/)
-- [nvm](https://github.com/creationix/nvm)
-- [snyk](https://snyk.io/)
-- [docker](https://www.docker.com/)
-
-*I owe you a lot,<br />*
- *Jędrzej*

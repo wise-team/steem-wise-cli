@@ -141,6 +141,6 @@ export class InitAction {
             + "  1. Run 'wise sync-rules' to publish the rules to the blockchain.\n"
             + "  2. Run 'wise daemon' to start the daemon.\n"
             + " That's all what is required for the daemon to work. If you would like a more complex setup \n"
-            + " (e.g. Docker compose) please refer to the \"The Wise Handbook\".";
+            + " (e.g. Docker compose) please refer to the \"The Wise Manual\".";
     }
 }
