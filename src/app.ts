@@ -10,6 +10,7 @@ import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
 import { InitAction } from "./actions/InitAction";
 import { Log } from "./log"; const log = Log.getLogger();
+import * as eastereggs from "./eastereggs";
 
 /**
  * Action hooks
@@ -27,6 +28,8 @@ const actionDone = (msg: String) => {
 };
 const actionError = (error: Error) => {
     Log.exception(error);
+    console.log();
+    console.log(">  " + eastereggs.wisdomQuote());
     process.exit(1);
 };
 
@@ -89,6 +92,13 @@ program
         .then(actionDone, actionError);
     });
 
+eastereggs.appendEasterEggCommands(program, prepareAction, actionDone, actionError);
+
 program.parse(process.argv);
 
-if (!program.args.length || !commandCorrect) program.help();
+if (!program.args.length || !commandCorrect) {
+    program.outputHelp();
+
+    console.log();
+    console.log(">  " + eastereggs.wisdomQuote());
+}
