@@ -8,10 +8,10 @@ import { StaticConfig } from "../config/StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
 
-export class SyncRulesAction {
+export class UploadRulesAction {
     public static doAction(config: ConfigLoadedFromFile, rulesIn: string): Promise<string> {
-        return SyncRulesAction.loadRules(config, rulesIn)
-        .then((rawRulesets: object []) => SyncRulesAction.syncRules(config, rawRulesets))
+        return UploadRulesAction.loadRules(config, rulesIn)
+        .then((rawRulesets: object []) => UploadRulesAction.syncRules(config, rawRulesets))
         .then((result: SteemOperationNumber | true) => {
             if (result === true) return "Rules are up to date";
             else return "Rules updated: " + result;
@@ -30,7 +30,7 @@ export class SyncRulesAction {
             try {
                 let data: object [] | undefined = undefined;
                 const input: object = JSON.parse(rulesIn);
-                if (!(Object.prototype.toString.call(input) === "[object Array]")) throw new Error("Rules should be an array");
+                if (!(Object.prototype.toString.call(input) === "[object Array]")) throw new Error("Rules should be an array (incorrect type: " + Object.prototype.toString.call(input) + ")");
                 data = input  as object [];
 
                 return Promise.resolve(data); // succes parsing inline json
@@ -44,7 +44,7 @@ export class SyncRulesAction {
         return PrioritizedFileObjectLoader.loadFromFilesNoMerge([], rulesPaths, "rules")
         .then((result: { loadedObject: object [] | undefined, path: string | undefined}) => {
             if (!result.loadedObject) throw new Error("Could not load rulesets from any of the files: " + _.join(rulesPaths, ", "));
-            if (!(Object.prototype.toString.call(result.loadedObject) === "[object Array]")) throw new Error("Rules should be an array");
+            if (!(Object.prototype.toString.call(result.loadedObject) === "[object Array]")) throw new Error("Rules should be an array (incorrect type: " + Object.prototype.toString.call(result.loadedObject) + ") json=" + JSON.stringify(result.loadedObject));
             return result.loadedObject;
         });
     }

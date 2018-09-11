@@ -5,7 +5,7 @@ import * as Promise from "bluebird";
 
 import { ConfigLoadedFromFile, ConfigLoader } from "./config/Config";
 import { StaticConfig } from "./config/StaticConfig";
-import { SyncRulesAction } from "./actions/SyncRulesAction";
+import { UploadRulesAction } from "./actions/UploadRulesAction";
 import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
 import { InitAction } from "./actions/InitAction";
@@ -52,11 +52,11 @@ program
     });
 
 program
-    .command("sync-rules [rules]")
-    .description("Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly")
+    .command("upload-rules [rules]")
+    .description("uploads rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly")
     .action(rules => {
         prepareAction(program)
-        .then((config: ConfigLoadedFromFile) => SyncRulesAction.doAction(config, rules))
+        .then((config: ConfigLoadedFromFile) => UploadRulesAction.doAction(config, rules))
         .then(actionDone, actionError);
     });
 
@@ -91,6 +91,4 @@ program
 
 program.parse(process.argv);
 
-if (!commandCorrect) {
-    program.outputHelp();
-}
+if (!program.args.length || !commandCorrect) program.help();
