@@ -4,7 +4,6 @@
       description: You can use my full vote on any polish post about tesla
       rules:
         - rule: weight
-          mode: single_vote_weight
           min: 0
           max: 10000
         - rule: tags

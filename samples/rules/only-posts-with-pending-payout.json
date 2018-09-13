@@ -7,7 +7,6 @@
                 "description": "You can use my full vote for any post, that is no older than 7 days and has payout less than 9.5 SBD",
                 "rules": [{
                         "rule": "weight",
-                        "mode": "single_vote_weight",
                         "min": 0,
                         "max": 10000
                     },

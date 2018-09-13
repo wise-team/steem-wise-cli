@@ -6,7 +6,6 @@
         any of your team peers and has no more than 100 voters.
       rules:
         - rule: weight
-          mode: single_vote_weight
           min: 0
           max: 10000
         - rule: voters

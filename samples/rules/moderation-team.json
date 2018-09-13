@@ -7,7 +7,6 @@
                 "description": "You can use my full vote for any post, that is has not been voted on by any of your team peers and has no more than 100 voters.",
                 "rules": [{
                         "rule": "weight",
-                        "mode": "single_vote_weight",
                         "min": 0,
                         "max": 10000
                     },

@@ -6,7 +6,6 @@
         graphics, design or webdesign
       rules:
         - rule: weight
-          mode: single_vote_weight
           min: 0
           max: 2000
         - rule: tags

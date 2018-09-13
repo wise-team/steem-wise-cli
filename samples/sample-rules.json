@@ -6,7 +6,6 @@
                 "name": "Vote WISEly",
                 "rules": [{
                         "rule": "weight",
-                        "mode": "single_vote_weight",
                         "min": 0,
                         "max": 100
                     },
@@ -23,7 +22,6 @@
                 "name": "Something else",
                 "rules": [{
                         "rule": "weight",
-                        "mode": "single_vote_weight",
                         "min": 0,
                         "max": 10000
                     },

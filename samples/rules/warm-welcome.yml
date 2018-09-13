@@ -6,7 +6,6 @@
         voting power.
       rules:
         - rule: weight
-          mode: single_vote_weight
           min: 10000
           max: 10000
         - rule: first_post

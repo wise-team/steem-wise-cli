@@ -6,7 +6,6 @@
         Not-Safe-For-Work
       rules:
         - rule: weight
-          mode: single_vote_weight
           min: 0
           max: 10000
         - rule: tags
