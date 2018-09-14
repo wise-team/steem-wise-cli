@@ -17,7 +17,7 @@ export class DaemonAction {
         return Promise.resolve()
         .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(() => {
-            api = new DirectBlockchainApi(config.username, config.postingWif);
+            api = new DirectBlockchainApi(config.postingWif);
             if (config.disableSend) api.setSendEnabled(false);
             delegatorWise = new Wise(config.username, api);
         })
@@ -32,7 +32,7 @@ export class DaemonAction {
                 return new SteemOperationNumber(parseInt(config.defaultSyncStartBlockNum + ""), 0, 0);
             }
             else {
-                return delegatorWise.getLastConfirmationMomentAsync()
+                return delegatorWise.getLastConfirmationMoment(config.username)
                 .then((moment: SteemOperationNumber | undefined) =>
                      (moment ? moment : new SteemOperationNumber(StaticConfig.INTRODUCTION_OF_WISE_BLOCK_NUM, 0, 0)));
             }
@@ -40,7 +40,7 @@ export class DaemonAction {
         .then((since: SteemOperationNumber) => {
             console.log("Synchronization starting at: " + since);
 
-            delegatorWise.runSynchronizerLoop(since, (error: Error | undefined, event: Synchronizer.Event) => {
+            delegatorWise.startDaemon(since, (error: Error | undefined, event: Synchronizer.Event) => {
                 if (error) {
                     console.error(error);
                 }

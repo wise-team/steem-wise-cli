@@ -17,6 +17,9 @@ export class StaticConfig {
         StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.json", StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.yml"
     ];
 
+    public static DEFAULT_DOWNLOAD_RULES_PATH_YML = "rules.yml";
+    public static DEFAULT_DOWNLOAD_RULES_PATH_JSON = "rules.json";
+
     public static DEFAULT_CONFIG: Config = {
         username: "",
         postingWif: "",

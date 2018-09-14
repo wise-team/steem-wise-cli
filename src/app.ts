@@ -6,6 +6,7 @@ import * as Promise from "bluebird";
 import { ConfigLoadedFromFile, ConfigLoader } from "./config/Config";
 import { StaticConfig } from "./config/StaticConfig";
 import { UploadRulesAction } from "./actions/UploadRulesAction";
+import { DownloadRulesAction } from "./actions/DownloadRulesAction";
 import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
 import { InitAction } from "./actions/InitAction";
@@ -29,7 +30,7 @@ const actionDone = (msg: String) => {
 const actionError = (error: Error) => {
     Log.exception(error);
     console.log();
-    console.log(">  " + eastereggs.wisdomQuote());
+    console.log(">  We apologize for this error. Maybe this wise sentence will improve your mood: " + eastereggs.wisdomQuote());
     process.exit(1);
 };
 
@@ -56,10 +57,23 @@ program
 
 program
     .command("upload-rules [rules]")
-    .description("uploads rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly")
+    .description("Uploads rules to blockchain. You can pass path to a JSON file or pass JSON directly")
     .action(rules => {
         prepareAction(program)
         .then((config: ConfigLoadedFromFile) => UploadRulesAction.doAction(config, rules))
+        .then(actionDone, actionError);
+    });
+
+program
+    .command("download-rules [file]")
+    .description("Downloads rules from blockchain to the file. Type 'wise download-rules --help' to list options.")
+    .option("-f, --format <format>", "Format of the output file (yml|json) [yml]", "yml")
+    .option("-o, --override", "Override the file if it exists. If this option is not set you will be prompted.")
+    .option("-a, --account [username]", "Account to download rules from")
+    .option("--stdout", "Print rules to stdout")
+    .action((file, options) => {
+        prepareAction(program)
+        .then((config: ConfigLoadedFromFile) => DownloadRulesAction.doAction(config, file, options))
         .then(actionDone, actionError);
     });
 
@@ -77,7 +91,7 @@ program
 
 program
     .command("init [path]")
-    .description("Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise help init' To get a list of the options.")
+    .description("Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' to list options.")
     .option("-g, --global", "Puts config and rules in home directory (~/.wise/)")
     .option("-n, --config [path]", "Specify path for config.yml [default:config.yml]")
     .option("-r, --rules [path]", "Specify path for rules.yml [defualt:rules.yml]")
@@ -102,3 +116,9 @@ if (!program.args.length || !commandCorrect) {
     console.log();
     console.log(">  " + eastereggs.wisdomQuote());
 }
+
+/**
+ * Prayer:
+ *  Gloria Patri, et Filio, et Spiritui Sancto, sicut erat in principio et nunc et semper et in saecula
+ *  saeculorum. Amen. In te, Domine, speravi: non confundar in aeternum.
+ */

@@ -22,9 +22,9 @@ export class SendVoteorderAction {
 
         if (voteordetIn && voteordetIn.length > 0) {
             try {
-                let data: object [] | undefined = undefined;
+                let data: object | undefined = undefined;
                 const input: object = JSON.parse(voteordetIn);
-                data = input  as object [];
+                data = input  as { loadedObject: object | undefined, path: string | undefined};
 
                 return Promise.resolve(data); // succes parsing inline json
             }
@@ -35,9 +35,9 @@ export class SendVoteorderAction {
         }
 
         return PrioritizedFileObjectLoader.loadFromFilesNoMerge({}, voteorderPaths, "voteorder")
-        .then((result: object | undefined) => {
-            if (!result) throw new Error("Could not load rulesets from any of the files: " + _.join(voteorderPaths, ", "));
-            return result;
+        .then((result: { loadedObject: object | undefined; path: string | undefined } | undefined) => {
+            if (!result || !result.loadedObject) throw new Error("Could not load rulesets from any of the files: " + _.join(voteorderPaths, ", "));
+            return result.loadedObject;
         });
     }
 
@@ -46,13 +46,14 @@ export class SendVoteorderAction {
         .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(() => {
             const voteorder: VoteorderWithDelegator = rawVoteorder as VoteorderWithDelegator;
+            console.log(JSON.stringify(voteorder));
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(config.username, config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(config.postingWif);
             if (config.disableSend) api.setSendEnabled(false);
             const wise = new Wise(config.username, api);
 
-            return wise.sendVoteorderAsync(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
+            return wise.sendVoteorder(voteorder.delegator, voteorder, undefined, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });

@@ -79,10 +79,10 @@ export class ConfigLoader {
         return config;
     }
 
-    public static askForCredentialsIfEmpty(config: Config): Promise<Config> {
+    public static askForCredentialsIfEmpty(config: Config, username: boolean = true, postingKey: boolean = true): Promise<Config> {
         return Promise.resolve().then((): Promise<Config> => {
-            const askForUsername = (!config.username || config.username.trim().length == 0);
-            const askForPostingWif = (!config.postingWif || config.postingWif.trim().length == 0);
+            const askForUsername = username && (!config.username || config.username.trim().length == 0);
+            const askForPostingWif = postingKey && (!config.postingWif || config.postingWif.trim().length == 0);
             if (!askForUsername && !askForPostingWif) return Promise.resolve(config);
 
             const propertiesToAsk: any = {};

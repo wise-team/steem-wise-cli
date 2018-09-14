@@ -60,11 +60,11 @@ export class UploadRulesAction {
                 if (!element.rulesets) return Promise.reject(new Error("Rulesets should be specified for each voter"));
             });
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(config.username, config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(config.postingWif);
             if (config.disableSend) api.setSendEnabled(false);
             const delegatorWise = new Wise(config.username, api);
 
-            return delegatorWise.diffAndUpdateRulesAsync(newRules, (msg: string, proggress: number) => {
+            return delegatorWise.uploadAllRulesets(newRules, undefined, (msg: string, proggress: number) => {
                 console.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });

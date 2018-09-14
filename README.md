@@ -35,23 +35,24 @@ This is a fully featured tool for using WISE system. It allows to perform all po
 
 ```bash
 $ wise
- Usage: wise [options] [command]
+ 
+  Usage: wise [options] [command]
 
   Options:
 
-    --version                   output the version number
-    -v, --verbose               Verbose mode (log level: INFO)
-    --debug                     Debug verbosity mode (log level: DEBUG)
-    -c, --config-file [path]    Use specific config file
-    -h, --help                  output usage information
+    --version                        output the version number
+    -v, --verbose                    Verbose mode (log level: INFO)
+    --debug                          Debug verbosity mode (log level: DEBUG)
+    -c, --config-file [path]         Use specific config file
+    -h, --help                       output usage information
 
   Commands:
 
-    send-voteorder [voteorder]  Sends a voteorder. You can pass path to a JSON file or pass JSON directly
-    sync-rules [rules]          Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly
-    daemon [sinceBlockNum]      Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain
-    init [options] [path]       Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise help init' To get a list of the options.
-
+    send-voteorder [voteorder]       Sends a voteorder. You can pass path to a JSON file or pass JSON directly
+    upload-rules [rules]             Uploads rules to blockchain. You can pass path to a JSON file or pass JSON directly
+    download-rules [options] [file]  Downloads rules from blockchain to the file. Type 'wise init --help' To get a list of the options.
+    daemon [sinceBlockNum]           Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain
+    init [options] [path]            Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' To get a list of the options.
 ```
 
 
@@ -116,14 +117,14 @@ Wise-init will ask you if you want to store your posting key, but you don't have
 
 
 
-### Synchronising rules (wise sync-rules)
+### Uploading rules (wise upload-rules)
 
 ```bash
-$ wise sync-rules --help
+$ wise upload-rules --help
 
-  Usage: sync-rules [options] [rules]
+  Usage: upload-rules [options] [rules]
 
-  Synchronize rules from config file to blockchain. You can pass path to a JSON file or pass JSON directly
+  Uploads rules to blockchain. You can pass path to a JSON file or pass JSON directly
 
   Options:
 
@@ -134,16 +135,47 @@ This command synchronises the rules with the blockchain. It calculates the diffe
 
 There are three ways to pass the rules to the command:
 
-1. Yaml file: `$ wise sync-rules rules.yml` — See [rules.yml details](#rules.yml).
+1. Yaml file: `$ wise upload-rules rules.yml` — See [rules.yml details](#rules.yml).
 
-2. JSON file: `$ wise sync-rules rules.json` — See [JSON rules details](#JSON-rules).
+2. JSON file: `$ wise upload-rules rules.json` — See [JSON rules details](#JSON-rules).
 
 3. Inline JSON:
 
    ```bash
-   $ wise -c [path/to/config.json] sync-rules "[{\"name\": \"rulesetA\", \"rules\": [...]},{\"name\": \"Another ruleset\", \"rules\": [...]}]"
+   $ wise -c [path/to/config.json] upload-rules "[{\"name\": \"rulesetA\", \"rules\": [...]},{\"name\": \"Another ruleset\", \"rules\": [...]}]"
    ```
 
+### Downloading rules (wise download-rules)
+
+```bash
+$ wise download-rules --help
+
+  Usage: download-rules [options] [file]
+
+  Downloads rules from blockchain to the file. Type 'wise download-rules --help' To list options.
+
+  Options:
+
+    -f, --format <format>  Format of the output file (yml|json) [yml] (default: yml)
+    -o, --override         Override the file if it exists. If this option is not set you will be prompted.
+    -a, --account          Account to download rules from
+    --stdout               Print rules to stdout
+    -h, --help             output usage information
+```
+
+This command synchronises the rules with the blockchain. It calculates the difference between provided rules and the rules that are present on the blockchain. It sends only those set_rules operations that are needed to make the rules on the blockchain up-to-date with the provided ones.
+
+There are three ways to pass the rules to the command:
+
+1. Yaml file: `$ wise upload-rules rules.yml` — See [rules.yml details](#rules.yml).
+
+2. JSON file: `$ wise upload-rules rules.json` — See [JSON rules details](#JSON-rules).
+
+3. Inline JSON:
+
+   ```bash
+   $ wise -c [path/to/config.json] upload-rules "[{\"name\": \"rulesetA\", \"rules\": [...]},{\"name\": \"Another ruleset\", \"rules\": [...]}]"
+   ```
 
 
 ### Running the daemon (wise daemon)
@@ -326,3 +358,5 @@ This is the config file format:
     "syncedBlockNumFile": "~/.wise-synced-block-num.txt"
 }
 ```
+
+<!-- Prayer: Gloria Patri, et Filio, et Spiritui Sancto, sicut erat in principio et nunc et semper et in saecula saeculorum. Amen. In te, Domine, speravi: non confundar in aeternum. -->
