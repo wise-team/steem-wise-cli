@@ -15,7 +15,7 @@
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
     "prompt": "^1.0.0",
-    "steem-wise-core": "^1.1.0",
+    "steem-wise-core": "^1.1.2",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -25,18 +25,30 @@
     "@types/node": "^9.6.31",
     "ts-node": "^6.2.0",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "conventional-changelog-cli": "^2.0.5",
+    "husky": "^0.14.3",
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2"
   },
   "scripts": {
+    "check": "if ! [[ \"$(node --version)\" = \"$(cat .nvmrc)\"* ]]; then echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
     "start": "node dist/app.js",
     "run": "ts-node src/app.ts",
     "build": "rm -rf dist && npm run build-ts && npm run tslint",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-ts": "tsc",
-    "watch-ts": "tsc -w",
+    "build-ts": "npm run check && tsc",
+    "watch-ts": "npm run check && tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "debug": "npm run build && npm run watch-debug",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+    "commitmsg": "commitlint -E GIT_PARAMS"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "repository": {
     "type": "git",
