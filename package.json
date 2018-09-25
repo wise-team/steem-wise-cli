@@ -32,7 +32,7 @@
     "@commitlint/config-conventional": "^7.1.2"
   },
   "scripts": {
-    "check": "if ! [[ \"$(node --version)\" = \"$(cat .nvmrc)\"* ]]; then echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
+    "check": "if echo \"$(node --version)\" | grep -q \"$(cat .nvmrc)\"; then echo \"Node version correct\"; else echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
     "start": "node dist/app.js",
     "run": "ts-node src/app.ts",
     "build": "rm -rf dist && npm run build-ts && npm run tslint",
