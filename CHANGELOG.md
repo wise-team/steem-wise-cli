@@ -1,3 +1,8 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/noisy-witness/steem-wise-cli/compare/v1.2.0...v1.2.1) (2018-09-26)
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/noisy-witness/steem-wise-cli/compare/v1.1.2...v1.2.0) (2018-09-26)
 
