@@ -11,7 +11,7 @@ What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/wi
 Important links:
 
 - [Wise home page](https://wise.vote/)
-- [Voting page](https://wise.vote/)  — how to vote
+- [Voting page](https://wise.vote/voting-page/)  — how to vote
 - [Daemon installation](https://wise.vote/installation) — how to delegate
 - [Wise manual](https://wise.vote/introduction) — details about wise
 - [Wise core library](https://github.com/wise-team/steem-wise-core)
