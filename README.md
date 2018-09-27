@@ -6,15 +6,15 @@ Vote delegation system for STEEM blockchain: cli tool.
 
 Wise allows you to securely grant other users your voting power under conditions specified by you.
 
-What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/noisy-witness/steem-wise-core#how-does-wise-work) and [Manual](https://noisy-witness.github.io/steem-wise-manual/introduction).
+What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/wise-team/steem-wise-core#how-does-wise-work) and [Manual](https://wise-team.github.io/steem-wise-manual/introduction).
 
 Important links:
 
-- [Wise home page](https://noisy-witness.github.io/steem-wise-manual/)
+- [Wise home page](https://wise-team.github.io/steem-wise-manual/)
 - [Voting page](https://wise.vote/)  — how to vote
-- [Daemon installation](https://noisy-witness.github.io/steem-wise-manual/installation) — how to delegate
-- [Wise manual](https://noisy-witness.github.io/steem-wise-manual/introduction) — details about wise
-- [Wise core library](https://github.com/noisy-witness/steem-wise-core)
+- [Daemon installation](https://wise-team.github.io/steem-wise-manual/installation) — how to delegate
+- [Wise manual](https://wise-team.github.io/steem-wise-manual/introduction) — details about wise
+- [Wise core library](https://github.com/wise-team/steem-wise-core)
 
 
 
@@ -65,7 +65,7 @@ To install WISE CLI:
 2. Install wise cli tool: `npm install -g steem-wise-cli`
 3. Setup wise configuration files: `$ wise init`
 
-Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://noisy-witness.github.io/steem-wise-manual/installation. 
+Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://wise-team.github.io/steem-wise-manual/installation. 
 
 After installation you can:
 
@@ -258,7 +258,7 @@ Available properties in config file:
 
 You can write rules both in YaML or JSON format. Yaml is more human readable and it is the default format.
 
-A detailed **[guide on writing rules](https://noisy-witness.github.io/steem-wise-manual/rules)** can be found in [manual](https://noisy-witness.github.io/steem-wise-manual/rules).
+A detailed **[guide on writing rules](https://wise-team.github.io/steem-wise-manual/rules)** can be found in [manual](https://wise-team.github.io/steem-wise-manual/rules).
 
 ```yaml
 - voter: jblew
@@ -340,7 +340,7 @@ This is very a very handy way to run the daemon. You do not need to install anyt
 
 ```bash
 # First, clone the repo
-$ git clone https://github.com/noisy-witness/Steem-wise-cli
+$ git clone https://github.com/wise-team/Steem-wise-cli
 $ cd Steem-wise-cli
 
 # Enter (1) username and (2) posting key, (3) current block number as WISE_DEFAULT_SYNC_START_BLOCK_NUM (you can find what is current block e.g. num at steemd.com)
@@ -380,7 +380,7 @@ A block number that you can see above is the number of block, in which there is 
 Feel free to talk with us on our #wise channel on steem.chat: https://steem.chat/channel/wise .
 You can also contact Jędrzej at jedrzejblew@gmail.com.
 
-You can also ask questions as issues in appropriate repository: See [issues for this repository](https://github.com/noisy-witness/steem-wise-core/issues).
+You can also ask questions as issues in appropriate repository: See [issues for this repository](https://github.com/wise-team/steem-wise-core/issues).
 
 
 
@@ -388,20 +388,20 @@ You can also ask questions as issues in appropriate repository: See [issues for 
 
 We welcome warmly:
 
-- Bug reports via [issues](https://github.com/noisy-witness/steem-wise-cli/issues).
-- Enhancement requests via via [issues](https://github.com/noisy-witness/steem-wise-cli/issues).
-- [Pull requests](https://github.com/noisy-witness/steem-wise-cli/pulls)
+- Bug reports via [issues](https://github.com/wise-team/steem-wise-cli/issues).
+- Enhancement requests via via [issues](https://github.com/wise-team/steem-wise-cli/issues).
+- [Pull requests](https://github.com/wise-team/steem-wise-cli/pulls)
 - Security reports to _jedrzejblew@gmail.com_.
 
-**Before** contributing please **read [Wise CONTRIBUTING guide](https://github.com/noisy-witness/steem-wise-cli/blob/master/CONTRIBUTING.md)**.
+**Before** contributing please **read [Wise CONTRIBUTING guide](https://github.com/wise-team/steem-wise-cli/blob/master/CONTRIBUTING.md)**.
 
 Thank you for developing it together!
 
 
 
-## Like the project? Let @noisy-witness become your favourite witness!
+## Like the project? Let @wise-team become your favourite witness!
 
-If you use & appreciate our software — you can easily support us. Just cast a vote for "noisy-witness" on your steem account. You can do it here: [https://steemit.com/~witnesses](https://steemit.com/~witnesses).
+If you use & appreciate our software — you can easily support us. Just cast a vote for "wise-team" on your steem account. You can do it here: [https://steemit.com/~witnesses](https://steemit.com/~witnesses).
 
 
 
