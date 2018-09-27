@@ -6,14 +6,14 @@ Vote delegation system for STEEM blockchain: cli tool.
 
 Wise allows you to securely grant other users your voting power under conditions specified by you.
 
-What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/wise-team/steem-wise-core#how-does-wise-work) and [Manual](https://wise-team.github.io/steem-wise-manual/introduction).
+What is WISE? — see [steem-wise-core#how-does-wise-work](https://github.com/wise-team/steem-wise-core#how-does-wise-work) and [Manual](https://wise.vote/introduction).
 
 Important links:
 
-- [Wise home page](https://wise-team.github.io/steem-wise-manual/)
+- [Wise home page](https://wise.vote/)
 - [Voting page](https://wise.vote/)  — how to vote
-- [Daemon installation](https://wise-team.github.io/steem-wise-manual/installation) — how to delegate
-- [Wise manual](https://wise-team.github.io/steem-wise-manual/introduction) — details about wise
+- [Daemon installation](https://wise.vote/installation) — how to delegate
+- [Wise manual](https://wise.vote/introduction) — details about wise
 - [Wise core library](https://github.com/wise-team/steem-wise-core)
 
 
@@ -65,7 +65,7 @@ To install WISE CLI:
 2. Install wise cli tool: `npm install -g steem-wise-cli`
 3. Setup wise configuration files: `$ wise init`
 
-Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://wise-team.github.io/steem-wise-manual/installation. 
+Detailed instructions on how to install CLI and how to become a delegator (sync the rules and run the daemon) are here: https://wise.vote/installation.
 
 After installation you can:
 
@@ -258,7 +258,7 @@ Available properties in config file:
 
 You can write rules both in YaML or JSON format. Yaml is more human readable and it is the default format.
 
-A detailed **[guide on writing rules](https://wise-team.github.io/steem-wise-manual/rules)** can be found in [manual](https://wise-team.github.io/steem-wise-manual/rules).
+A detailed **[guide on writing rules](https://wise.vote/rules)** can be found in [manual](https://wise.vote/rules).
 
 ```yaml
 - voter: jblew
