@@ -52,7 +52,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/noisy-witness/steem-wise-cli.git"
+    "url": "git+https://github.com/wise-team/steem-wise-cli.git"
   },
   "keywords": [
     "steem",
@@ -63,7 +63,7 @@
   "author": "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/noisy-witness/steem-wise-cli/issues"
+    "url": "https://github.com/wise-team/steem-wise-cli/issues"
   },
-  "homepage": "https://github.com/noisy-witness/steem-wise-cli#readme"
+  "homepage": "https://github.com/wise-team/steem-wise-cli#readme"
 }
