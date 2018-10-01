@@ -55,15 +55,15 @@
     "url": "git+https://github.com/wise-team/steem-wise-cli.git"
   },
   "keywords": [
-    "steem",
-    "blockchain",
-    "wise",
-    "cli"
+    "steem", "blockchain", "wise"
   ],
-  "author": "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)",
+  "author": "The Wise Team (https://wise-team.io/)",
+  "contributors": [
+    "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)"
+  ],
   "license": "MIT",
+  "homepage": "https://wise.vote/",
   "bugs": {
     "url": "https://github.com/wise-team/steem-wise-cli/issues"
-  },
-  "homepage": "https://github.com/wise-team/steem-wise-cli#readme"
+  }
 }
