@@ -4,6 +4,9 @@ export const hooks = [];
 export const data = {
     repository: {
         name: "steem-wise-cli"
+    },
+    npm: {
+        package: "steem-wise-cli"
     }
 };
 export const excludes = [ "dist", ".vscode", "coverage" ];
