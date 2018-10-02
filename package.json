@@ -1,6 +1,6 @@
 {
   "name": "steem-wise-cli",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
   "main": "dist/app.js",
   "bin": {
@@ -55,7 +55,9 @@
     "url": "git+https://github.com/wise-team/steem-wise-cli.git"
   },
   "keywords": [
-    "steem", "blockchain", "wise"
+    "steem",
+    "blockchain",
+    "wise"
   ],
   "author": "The Wise Team (https://wise-team.io/)",
   "contributors": [
