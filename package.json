@@ -1,6 +1,6 @@
 {
   "name": "steem-wise-cli",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
   "main": "dist/app.js",
   "bin": {
@@ -15,7 +15,7 @@
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
     "prompt": "^1.0.0",
-    "steem-wise-core": "^2.2.4"
+    "steem-wise-core": "^2.2.5"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
