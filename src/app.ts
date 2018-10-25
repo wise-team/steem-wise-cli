@@ -10,7 +10,7 @@ import { DownloadRulesAction } from "./actions/DownloadRulesAction";
 import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
 import { InitAction } from "./actions/InitAction";
-import { Log } from "./log"; const log = Log.getLogger();
+import { Log } from "./log";
 import * as eastereggs from "./eastereggs";
 
 /**
@@ -19,7 +19,7 @@ import * as eastereggs from "./eastereggs";
 let commandCorrect = false;
 const prepareAction = (program: program.Command, loadConfig: boolean = true): Promise<ConfigLoadedFromFile> => {
     commandCorrect = true;
-    Log.configureLoggers(program);
+    Log.log().initialize(!!program.debug, !!program.verbose);
     if (loadConfig) return ConfigLoader.loadConfig(program);
     else return Promise.resolve({ ...StaticConfig.DEFAULT_CONFIG, configFilePath: process.cwd() });
 };
@@ -28,7 +28,7 @@ const actionDone = (msg: String) => {
     console.log();
 };
 const actionError = (error: Error) => {
-    Log.exception(error);
+    Log.log().exception(Log.level.error, error);
     console.log();
     console.log(">  We apologize for this error. Maybe this wise sentence will improve your mood: " + eastereggs.wisdomQuote());
     process.exit(1);

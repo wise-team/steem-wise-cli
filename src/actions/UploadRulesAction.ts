@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as _ from "lodash";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 import { ConfigLoader, Config, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
@@ -36,7 +36,7 @@ export class UploadRulesAction {
                 return Promise.resolve(data); // succes parsing inline json
             }
             catch (error) {
-                log.debug("Failed to parse " + rulesIn + " as inline JSON. Proceeding to loading files. Adding " + rulesIn + " as top-priority file.");
+                Log.log().debug("Failed to parse " + rulesIn + " as inline JSON. Proceeding to loading files. Adding " + rulesIn + " as top-priority file.");
                 rulesPaths.unshift(rulesIn);
             }
         }
@@ -60,11 +60,11 @@ export class UploadRulesAction {
                 if (!element.rulesets) return Promise.reject(new Error("Rulesets should be specified for each voter"));
             });
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif);
             if (config.disableSend) api.setSendEnabled(false);
             const delegatorWise = new Wise(config.username, api);
 
-            return delegatorWise.uploadAllRulesets(newRules, undefined, (msg: string, proggress: number) => {
+            return delegatorWise.uploadAllRulesets(newRules, (msg: string, proggress: number) => {
                 console.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });

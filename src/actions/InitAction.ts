@@ -6,7 +6,7 @@ import * as yaml from "js-yaml";
 
 import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 import { Config } from "../config/Config";
 import { StaticConfig } from "../config/StaticConfig";
 import { DefaultRules } from "../config/DefaultRules";
@@ -116,7 +116,7 @@ export class InitAction {
 
         if (sinceBlock === undefined) {
             console.log("Fetching HEAD block number...");
-            sinceBlock = (await new DirectBlockchainApi().getDynamicGlobalProperties()).head_block_number;
+            sinceBlock = (await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number;
             console.log("HEAB block number is " + sinceBlock);
         }
 

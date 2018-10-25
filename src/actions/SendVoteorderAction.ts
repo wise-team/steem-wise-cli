@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 import { ConfigLoader, Config } from "../config/Config";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
@@ -29,7 +29,7 @@ export class SendVoteorderAction {
                 return Promise.resolve(data); // succes parsing inline json
             }
             catch (error) {
-                log.debug("Failed to parse " + voteordetIn + " as inline JSON. Proceeding to loading files. " + voteorderPaths + " will be loaded as file.");
+                Log.log().debug("Failed to parse " + voteordetIn + " as inline JSON. Proceeding to loading files. " + voteorderPaths + " will be loaded as file.");
                 voteorderPaths.unshift(voteordetIn);
             }
         }
@@ -49,11 +49,11 @@ export class SendVoteorderAction {
             console.log(JSON.stringify(voteorder));
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif);
             if (config.disableSend) api.setSendEnabled(false);
             const wise = new Wise(config.username, api);
 
-            return wise.sendVoteorder(voteorder.delegator, voteorder, undefined, (msg: string, proggress: number) => {
+            return wise.sendVoteorder(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
                 console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });

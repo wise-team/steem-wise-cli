@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import * as Promise from "bluebird";
 import * as prompt from "prompt";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 import { StaticConfig } from "./StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
 
@@ -63,7 +63,7 @@ export class ConfigLoader {
         })
         .then(config => ConfigLoader.loadEnv(config))
         .then(config => ConfigLoader.validateConfig(config))
-        .then(config => { log.debug("Loaded config: " + JSON.stringify(config)); return config; });
+        .then(config => { Log.log().debug("Loaded config: " + JSON.stringify(config)); return config; });
     }
 
     private static loadEnv(config: ConfigLoadedFromFile): ConfigLoadedFromFile {

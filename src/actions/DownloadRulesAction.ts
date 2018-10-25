@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import * as prompt from "prompt";
 import * as yaml from "js-yaml";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 import { ConfigLoader, Config, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber, SetRules, EffectuatedSetRules } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
@@ -60,7 +60,7 @@ export class DownloadRulesAction {
     }
 
     private static downloadRules(username: string): Promise<EffectuatedSetRules []> {
-        const delegatorWise = new Wise(username, new DirectBlockchainApi());
+        const delegatorWise = new Wise(username, new DirectBlockchainApi(Wise.constructDefaultProtocol()));
         return delegatorWise.downloadAllRulesets(username);
     }
 

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import * as yaml from "js-yaml";
 
-import { Log } from "../log"; const log = Log.getLogger();
+import { Log } from "../log";
 
 export class PrioritizedFileObjectLoader {
     public static loadFromFiles<T>(defaultObject: T, filePaths: string [], descriptionForWarnings: string): Promise<{ loadedObject: T, path: string | undefined }> {
@@ -22,39 +22,39 @@ export class PrioritizedFileObjectLoader {
             for (let i = 0; i < filePaths.length; i++) {
                 const filePath = filePaths[i];
                 if (fs.existsSync(filePath)) {
-                    log.debug("Trying to read " + descriptionForWarnings + " from " + filePath);
+                    Log.log().debug("Trying to read " + descriptionForWarnings + " from " + filePath);
                     let fileContents: string;
                     try {
                         fileContents = fs.readFileSync(filePath, "utf8").toString();
                     }
                     catch (error) {
-                        log.debug("Could not read " + descriptionForWarnings + " file (" + filePath + "): " + error.message);
+                        Log.log().debug("Could not read " + descriptionForWarnings + " file (" + filePath + "): " + error.message);
                         continue; // continue to next file
                     }
                     // if continue was not called, try to load as JSON:
                     try {
                         const loadedObj = JSON.parse(fileContents) as T;
-                        log.debug("Successfully parsed " + filePath + " as JSON");
+                        Log.log().debug("Successfully parsed " + filePath + " as JSON");
                         if (merge) return { loadedObject: _.merge({}, defaultObject, loadedObj), path: filePath };
                         else return { loadedObject: loadedObj, path: filePath };
                     }
                     catch (error) {
-                        log.debug("Failed to parse " + descriptionForWarnings + " (" + filePath + ") as JSON: " + error.message);
+                        Log.log().debug("Failed to parse " + descriptionForWarnings + " (" + filePath + ") as JSON: " + error.message);
                     }
                     // try to load as YAML:
                     try {
                         const loadedObj = yaml.safeLoad(fileContents) as T;
-                        log.debug("Successfully parsed " + filePath + " as YAML");
+                        Log.log().debug("Successfully parsed " + filePath + " as YAML");
                         if (merge) return { loadedObject: _.merge({}, defaultObject, loadedObj), path: filePath };
                         else return { loadedObject: loadedObj, path: filePath };
                     }
                     catch (error) {
-                        log.debug("Failed to parse " + descriptionForWarnings + " (" + filePath + ") as YAML: " + error.message);
+                        Log.log().debug("Failed to parse " + descriptionForWarnings + " (" + filePath + ") as YAML: " + error.message);
                         throw new Error("The " + descriptionForWarnings + " file " + filePath + " is malformed. Failed to parse it as JSON or YAML.");
                     }
                 }
             }
-            log.warn("No " + descriptionForWarnings + " was loaded");
+            Log.log().warn("No " + descriptionForWarnings + " was loaded");
             if (merge) return { loadedObject: defaultObject, path: undefined };
             else return { loadedObject: undefined, path: undefined };
         });
