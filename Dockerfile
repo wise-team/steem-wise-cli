@@ -1,5 +1,5 @@
 #§ 'FROM node:' + data.config.npm.node.version + '-slim'
-FROM node:9.11-slim
+FROM node:10.12-slim
 
 LABEL maintainer="Jędrzej Lewandowski <jedrzejblew@gmail.com>"
 
@@ -20,7 +20,7 @@ CMD ["wise daemon"]
 
 ##§ '\n' + data.config.docker.generateDockerfileFrontMatter(data) + '\n' §##
 LABEL maintainer="The Wise Team (https://wise-team.io/) <jedrzejblew@gmail.com>"
-LABEL vote.wise.wise-version="1.2.2"
+LABEL vote.wise.wise-version="2.2.2"
 LABEL vote.wise.license="MIT"
 LABEL vote.wise.repository="steem-wise-cli"
 ##§ §.##
