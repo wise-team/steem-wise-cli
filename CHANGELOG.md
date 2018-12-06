@@ -1,3 +1,14 @@
+<a name="3.0.5"></a>
+## [3.0.5](https://github.com/wise-team/steem-wise-cli/compare/v3.0.4...v3.0.5) (2018-12-06)
+
+
+### Bug Fixes
+
+* set defaultSyncStartBlockNum in init config ([1fde6a4](https://github.com/wise-team/steem-wise-cli/commit/1fde6a4))
+* use the steemApi config option ([37b0176](https://github.com/wise-team/steem-wise-cli/commit/37b0176))
+
+
+
 <a name="3.0.4"></a>
 ## [3.0.4](https://github.com/wise-team/steem-wise-cli/compare/v1.2.1...v3.0.4) (2018-12-06)
 
