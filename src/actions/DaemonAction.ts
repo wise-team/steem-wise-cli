@@ -3,7 +3,7 @@ import * as path from "path";
 import * as program from "commander";
 
 import { ConfigLoader, ConfigLoadedFromFile } from "../config/Config";
-import { Wise, DirectBlockchainApi, SteemOperationNumber, Synchronizer } from "steem-wise-core";
+import { Wise, DirectBlockchainApi, SteemOperationNumber, SingleDaemon } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 
 
@@ -40,12 +40,12 @@ export class DaemonAction {
         .then((since: SteemOperationNumber) => {
             console.log("Synchronization starting at: " + since);
 
-            delegatorWise.startDaemon(since, (error: Error | undefined, event: Synchronizer.Event) => {
+            delegatorWise.startDaemon(since, (error: Error | undefined, event: SingleDaemon.Event) => {
                 if (error) {
                     console.error(error);
                 }
 
-                if (event.type === Synchronizer.EventType.EndBlockProcessing) {
+                if (event.type === SingleDaemon.EventType.EndBlockProcessing) {
                     try {
                         fs.writeFileSync(lastBlockFile, "" + event.blockNum, { flag: "w+" });
                         console.log("Processed block " + event.blockNum);
@@ -54,17 +54,17 @@ export class DaemonAction {
                         console.error(error);
                     }
                 }
-                else if (event.type === Synchronizer.EventType.StartBlockProcessing) {
+                else if (event.type === SingleDaemon.EventType.StartBlockProcessing) {
 
                 }
-                else if (event.type === Synchronizer.EventType.SynchronizationStop) {
+                else if (event.type === SingleDaemon.EventType.SynchronizationStop) {
 
                 }
-                else if (event.type === Synchronizer.EventType.VoteorderPassed) {
+                else if (event.type === SingleDaemon.EventType.VoteorderPassed) {
                     console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
                     console.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
-                else if (event.type === Synchronizer.EventType.VoteorderRejected) {
+                else if (event.type === SingleDaemon.EventType.VoteorderRejected) {
                     console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
                     console.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
