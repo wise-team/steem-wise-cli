@@ -1,3 +1,26 @@
+<a name="3.0.4"></a>
+## [3.0.4](https://github.com/wise-team/steem-wise-cli/compare/v1.2.1...v3.0.4) (2018-12-06)
+
+
+### Bug Fixes
+
+* missing npm and PR badge ([6799fa1](https://github.com/wise-team/steem-wise-cli/commit/6799fa1))
+* repair invisible badges ([e327ceb](https://github.com/wise-team/steem-wise-cli/commit/e327ceb))
+* update cli for new version of core ([c73efcb](https://github.com/wise-team/steem-wise-cli/commit/c73efcb))
+
+
+### Features
+
+* add config option for steem api ([55594b3](https://github.com/wise-team/steem-wise-cli/commit/55594b3))
+* add wise-ci template to Dockerfile ([fc8c935](https://github.com/wise-team/steem-wise-cli/commit/fc8c935))
+* exclude node_modules from docker build ([e0deaf5](https://github.com/wise-team/steem-wise-cli/commit/e0deaf5))
+* update nodeJS to 10 ([f0d4edc](https://github.com/wise-team/steem-wise-cli/commit/f0d4edc))
+* update sql schema to https ([82ab266](https://github.com/wise-team/steem-wise-cli/commit/82ab266))
+* update steem-wise-core to 3.0.4 ([ce2d889](https://github.com/wise-team/steem-wise-cli/commit/ce2d889))
+* upgrade legacy Synchronizer to SingleDaemon ([5cf9bea](https://github.com/wise-team/steem-wise-cli/commit/5cf9bea))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/wise-team/steem-wise-cli/compare/v1.2.0...v1.2.1) (2018-09-26)
 
