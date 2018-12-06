@@ -49,7 +49,7 @@ export class SendVoteorderAction {
             console.log(JSON.stringify(voteorder));
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, { url: config.steemApi });
             if (config.disableSend) api.setSendEnabled(false);
             const wise = new Wise(config.username, api);
 

@@ -31,7 +31,7 @@ export class DownloadRulesAction {
         })
         .then((account: string) => {
             console.log("Downloading rules set by @" + account + "...");
-            return DownloadRulesAction.downloadRules(account);
+            return DownloadRulesAction.downloadRules(account, config);
         })
         .then((result: EffectuatedSetRules []): Promise<string> => {
             const rulesWithoutMoment = result.map(esr => {
@@ -59,8 +59,8 @@ export class DownloadRulesAction {
         });
     }
 
-    private static downloadRules(username: string): Promise<EffectuatedSetRules []> {
-        const delegatorWise = new Wise(username, new DirectBlockchainApi(Wise.constructDefaultProtocol()));
+    private static downloadRules(username: string, config: Config): Promise<EffectuatedSetRules []> {
+        const delegatorWise = new Wise(username, new DirectBlockchainApi(Wise.constructDefaultProtocol(), "", { url: config.steemApi }));
         return delegatorWise.downloadAllRulesets(username);
     }
 

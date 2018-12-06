@@ -60,7 +60,7 @@ export class UploadRulesAction {
                 if (!element.rulesets) return Promise.reject(new Error("Rulesets should be specified for each voter"));
             });
 
-            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif);
+            const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, { url: config.steemApi });
             if (config.disableSend) api.setSendEnabled(false);
             const delegatorWise = new Wise(config.username, api);
 

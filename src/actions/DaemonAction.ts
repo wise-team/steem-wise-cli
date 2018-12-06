@@ -17,7 +17,7 @@ export class DaemonAction {
         return Promise.resolve()
         .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(() => {
-            api = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif);
+            api = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, { url: config.steemApi });
             if (config.disableSend) api.setSendEnabled(false);
             delegatorWise = new Wise(config.username, api);
         })
