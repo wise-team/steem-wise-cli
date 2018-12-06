@@ -126,6 +126,7 @@ export class InitAction {
             username: username,
             postingWif: (savePostingKey ? postingKey : ""),
             defaultRulesPath: path.relative(path.dirname(configPath), rulesPath),
+            defaultSyncStartBlockNum: sinceBlock,
             syncedBlockNumFile: path.relative(path.dirname(configPath), syncedBlockNumPath),
         });
         fs.writeFileSync(configPath, yaml.safeDump(configObj));
