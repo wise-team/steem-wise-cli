@@ -14,6 +14,7 @@ import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader
 export interface Config {
     username: string;
     postingWif: string;
+    steemApi: string;
     defaultSyncStartBlockNum: number;
     defaultRulesPath: string;
     syncedBlockNumFile: string;
@@ -32,6 +33,7 @@ export interface ConfigLoadedFromFile extends Config {
 const envMappings: [string, string][] = [
     ["WISE_STEEM_USERNAME", "username"],
     ["WISE_STEEM_POSTINGWIF", "postingWif"],
+    ["WISE_STEEM_API", "steemApi"],
     ["WISE_DEFAULT_SYNC_START_BLOCK_NUM", "defaultSyncStartBlockNum"],
     ["WISE_SYNCED_BLOCK_NUM_FILE", "syncedBlockNumFile"],
 ];

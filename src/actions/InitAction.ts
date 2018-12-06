@@ -122,12 +122,12 @@ export class InitAction {
 
 
         console.log("Writing " + configPath + "");
-        const configObj = {
+        const configObj = _.merge({}, StaticConfig.DEFAULT_CONFIG, {
             username: username,
             postingWif: (savePostingKey ? postingKey : ""),
             defaultRulesPath: path.relative(path.dirname(configPath), rulesPath),
-            syncedBlockNumFile: path.relative(path.dirname(configPath), syncedBlockNumPath)
-        };
+            syncedBlockNumFile: path.relative(path.dirname(configPath), syncedBlockNumPath),
+        });
         fs.writeFileSync(configPath, yaml.safeDump(configObj));
 
 

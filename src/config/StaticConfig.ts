@@ -23,6 +23,7 @@ export class StaticConfig {
     public static DEFAULT_CONFIG: Config = {
         username: "",
         postingWif: "",
+        steemApi: /*§ §*/ "https://anyx.io" /*§ ' "' + data.config.steem.defaultApiUrl + '" ' §.*/,
         defaultSyncStartBlockNum: 0, // introduction of smartvotes
         defaultRulesPath: "",
         syncedBlockNumFile: "./wise-synced-block-num.txt",
