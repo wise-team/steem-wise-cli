@@ -87,6 +87,12 @@ export class InitAction {
             });
         });
 
+        if (sinceBlock === undefined) {
+            console.log("Fetching HEAD block number...");
+            sinceBlock = (await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number;
+            console.log("HEAB block number is " + sinceBlock);
+        }
+
         console.log("--- Your settings ---");
         console.log("Account name: " + username);
         console.log("Save posting key: " +
@@ -111,13 +117,6 @@ export class InitAction {
         else {
             console.log("Creating " + wisePath + ".");
             fs.mkdirSync(wisePath);
-        }
-
-
-        if (sinceBlock === undefined) {
-            console.log("Fetching HEAD block number...");
-            sinceBlock = (await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number;
-            console.log("HEAB block number is " + sinceBlock);
         }
 
 
