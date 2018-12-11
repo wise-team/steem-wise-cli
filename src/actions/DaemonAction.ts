@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as program from "commander";
+import ow from "ow";
 
 import { ConfigLoader, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, SingleDaemon } from "steem-wise-core";

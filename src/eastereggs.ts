@@ -3,24 +3,6 @@ import * as commander from "commander";
 import * as Promise from "bluebird";
 import { ConfigLoadedFromFile } from "./config/Config";
 
-export function appendEasterEggCommands(program: commander.Command, prepareAction: (p: commander.Command, loadConfig: boolean) => Promise<ConfigLoadedFromFile>, actionDone: (msg: string) => void, actionError: (error: Error) => void) {
-    program
-        .command("man", "", { noHelp: true })
-        .action((path, options) => {
-            prepareAction(program, false)
-            .then((config: ConfigLoadedFromFile) => "You are a wise gentleman")
-            .then(actionDone, actionError);
-        });
-
-    program
-        .command("woman", "", { noHelp: true })
-        .action((path, options) => {
-            prepareAction(program, false)
-            .then((config: ConfigLoadedFromFile) => "You are a wise lady")
-            .then(actionDone, actionError);
-        });
-}
-
 export function wisdomQuote(): string {
     return _.sample([
         "A wise man changes his mind sometimes, but a fool never. To change your mind is the best evidence you have one.  ~Desmond Ford",

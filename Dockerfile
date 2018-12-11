@@ -19,8 +19,8 @@ CMD ["wise daemon"]
 
 
 ##§ '\n' + data.config.docker.generateDockerfileFrontMatter(data) + '\n' §##
-LABEL maintainer="The Wise Team (https://wise-team.io/) <jedrzejblew@gmail.com>"
-LABEL vote.wise.wise-version="3.0.6-rc1"
+LABEL maintainer="The Wise Team (https://wise-team.io/) <contact@wiseteam.io>"
+LABEL vote.wise.wise-version="3.0.6-rc2"
 LABEL vote.wise.license="MIT"
 LABEL vote.wise.repository="steem-wise-cli"
 ##§ §.##

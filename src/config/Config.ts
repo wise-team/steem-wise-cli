@@ -1,8 +1,9 @@
 import * as path from "path";
 import * as program from "commander";
 import * as _ from "lodash";
-import * as Promise from "bluebird";
+import * as BluebirdPromise from "bluebird";
 import * as prompt from "prompt";
+import ow from "ow";
 
 import { Log } from "../log";
 import { StaticConfig } from "./StaticConfig";
@@ -50,22 +51,32 @@ const envMappings: [string, string][] = [
  */
 
 export class ConfigLoader {
-    public static loadConfig(program: program.Command): Promise<ConfigLoadedFromFile> {
+    public static async loadConfig(program: program.Command): Promise<ConfigLoadedFromFile> {
+        ow(program, ow.object.label("program"));
+
+        const config: Config = StaticConfig.DEFAULT_CONFIG;
+        let configLoadedFromFile: ConfigLoadedFromFile = await this.loadFromFilesBasedOnPriority(program, config);
+        configLoadedFromFile = ConfigLoader.loadEnv(configLoadedFromFile);
+
+        ConfigLoader.validateConfig(configLoadedFromFile);
+
         Log.log().debug("Loaded config: " + JSON.stringify(_.set(_.cloneDeep(config), "postingWif", "******")));
+        return configLoadedFromFile;
+    }
+
+    private static async loadFromFilesBasedOnPriority(program: program.Command, prevConfig: Config): Promise<ConfigLoadedFromFile> {
+        ow(program, ow.object.label("program"));
+        ow(prevConfig, ow.object.label("prevConfig"));
+
         const configFiles: string [] = _.cloneDeep(StaticConfig.DEFAULT_CONFIG_FILE_PATHS);
         if (program.configFile) configFiles.unshift(program.configFile);
 
-        return Promise.resolve(StaticConfig.DEFAULT_CONFIG)
-        .then(config => PrioritizedFileObjectLoader.loadFromFiles(config, configFiles, "config"))
-        .then(result => {
-            const configLoadedFromFile: ConfigLoadedFromFile = {
-                ...result.loadedObject,
-                configFilePath: path.resolve((result.path ? result.path : "."))
-            };
-            return configLoadedFromFile;
-        })
-        .then(config => ConfigLoader.loadEnv(config))
-        .then(config => ConfigLoader.validateConfig(config))
+        const newConfig = await PrioritizedFileObjectLoader.loadFromFiles(prevConfig, configFiles, "config");
+        const configLoadedFromFile: ConfigLoadedFromFile = {
+            ...newConfig.loadedObject,
+            configFilePath: path.resolve((newConfig.path ? newConfig.path : "."))
+        };
+        return configLoadedFromFile;
     }
 
     private static loadEnv(config: ConfigLoadedFromFile): ConfigLoadedFromFile {

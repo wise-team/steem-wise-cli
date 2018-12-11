@@ -1,10 +1,10 @@
 {
   "name": "steem-wise-cli",
-  "version": "3.0.6-rc1",
+  "version": "3.0.6-rc2",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "bin": {
-    "wise": "./dist/app.js"
+    "wise": "./dist/index.js"
   },
   "engines": {
     "node": ">=10.12"
@@ -14,40 +14,68 @@
     "commander": "^2.18.0",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
+    "ow": "^0.8.0",
     "prompt": "^1.0.0",
     "steem-wise-core": "^3.0.6-rc1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
     "@types/bluebird": "^3.5.24",
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.116",
+    "@types/mocha": "^5.2.5",
+    "@types/mock-fs": "^3.6.30",
+    "@types/nock": "^9.3.0",
     "@types/node": "^9.6.31",
-    "ts-node": "^6.2.0",
-    "tslint": "^5.11.0",
-    "typescript": "^2.9.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^2.0.5",
     "husky": "^0.14.3",
-    "@commitlint/cli": "^7.1.2",
-    "@commitlint/config-conventional": "^7.1.2"
+    "mocha": "^5.2.0",
+    "mock-fs": "^4.7.0",
+    "nock": "^10.0.4",
+    "nyc": "^13.1.0",
+    "ts-node": "^6.2.0",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
   },
   "scripts": {
     "check": "if echo \"$(node --version)\" | grep -q \"$(cat .nvmrc)\"; then echo \"Node version correct\"; else echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
-    "start": "node dist/app.js",
-    "run": "ts-node src/app.ts",
+    "start": "node dist/index.js",
+    "run": "ts-node src/index.ts",
     "build": "rm -rf dist && npm run build-ts && npm run tslint",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "npm run check && tsc",
     "watch-ts": "npm run check && tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "debug": "npm run build && npm run watch-debug",
     "prepare": "npm run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "commitmsg": "commitlint -E GIT_PARAMS"
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.ts"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.spec.ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "repository": {
     "type": "git",
