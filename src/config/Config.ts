@@ -51,6 +51,7 @@ const envMappings: [string, string][] = [
 
 export class ConfigLoader {
     public static loadConfig(program: program.Command): Promise<ConfigLoadedFromFile> {
+        Log.log().debug("Loaded config: " + JSON.stringify(_.set(_.cloneDeep(config), "postingWif", "******")));
         const configFiles: string [] = _.cloneDeep(StaticConfig.DEFAULT_CONFIG_FILE_PATHS);
         if (program.configFile) configFiles.unshift(program.configFile);
 
@@ -65,7 +66,6 @@ export class ConfigLoader {
         })
         .then(config => ConfigLoader.loadEnv(config))
         .then(config => ConfigLoader.validateConfig(config))
-        .then(config => { Log.log().debug("Loaded config: " + JSON.stringify(config)); return config; });
     }
 
     private static loadEnv(config: ConfigLoadedFromFile): ConfigLoadedFromFile {
