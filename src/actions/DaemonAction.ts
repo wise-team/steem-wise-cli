@@ -6,10 +6,16 @@ import ow from "ow";
 import { ConfigLoader, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, SingleDaemon } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
+import { Context } from "../Context";
 
 
 export class DaemonAction {
-    public static doAction(config: ConfigLoadedFromFile, sinceBlockNum: undefined | number): Promise<string> {
+    private context: Context;
+    public constructor(context: Context) {
+        this.context = context;
+    }
+
+    public doAction(config: ConfigLoadedFromFile, sinceBlockNum: undefined | number): Promise<string> {
         const lastBlockFile = config.syncedBlockNumFile ? (path.dirname(config.configFilePath) + "/" + config.syncedBlockNumFile) : "";
 
         let api: DirectBlockchainApi;
@@ -39,20 +45,20 @@ export class DaemonAction {
             }
         })
         .then((since: SteemOperationNumber) => {
-            console.log("Synchronization starting at: " + since);
+            this.context.log("Synchronization starting at: " + since);
 
             delegatorWise.startDaemon(since, (error: Error | undefined, event: SingleDaemon.Event) => {
                 if (error) {
-                    console.error(error);
+                    this.context.exception(error);
                 }
 
                 if (event.type === SingleDaemon.EventType.EndBlockProcessing) {
                     try {
                         fs.writeFileSync(lastBlockFile, "" + event.blockNum, { flag: "w+" });
-                        console.log("Processed block " + event.blockNum);
+                        this.context.log("Processed block " + event.blockNum);
                     }
                     catch (error) {
-                        console.error(error);
+                        this.context.error(error);
                     }
                 }
                 else if (event.type === SingleDaemon.EventType.StartBlockProcessing) {
@@ -62,15 +68,15 @@ export class DaemonAction {
 
                 }
                 else if (event.type === SingleDaemon.EventType.VoteorderPassed) {
-                    console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
-                    console.log(JSON.stringify(event.voteorder, undefined, 2));
+                    this.context.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
+                    this.context.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
                 else if (event.type === SingleDaemon.EventType.VoteorderRejected) {
-                    console.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
-                    console.log(JSON.stringify(event.voteorder, undefined, 2));
+                    this.context.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
+                    this.context.log(JSON.stringify(event.voteorder, undefined, 2));
                 }
                 else if (event) {
-                    console.log("[Synchronization] " + event.message);
+                    this.context.log("[Synchronization] " + event.message);
                 }
             });
 

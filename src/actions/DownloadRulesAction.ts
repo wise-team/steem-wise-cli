@@ -9,12 +9,18 @@ import { ConfigLoader, Config, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber, SetRules, EffectuatedSetRules } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
+import { Context } from "../Context";
 
 
 export class DownloadRulesAction {
-    public static doAction(config: ConfigLoadedFromFile, file: string, options: any): Promise<string> {
+    private context: Context;
+    public constructor(context: Context) {
+        this.context = context;
+    }
+
+    public doAction(config: ConfigLoadedFromFile, file: string, options: any): Promise<string> {
         let format: "yml" | "json" = "yml";
-        if (options.format) format = "yml";
+        if (options.format) format = options.format;
 
         const override: boolean = !!options.override;
 
@@ -30,7 +36,7 @@ export class DownloadRulesAction {
             }
         })
         .then((account: string) => {
-            console.log("Downloading rules set by @" + account + "...");
+            this.context.log("Downloading rules set by @" + account + "...");
             return DownloadRulesAction.downloadRules(account, config);
         })
         .then((result: EffectuatedSetRules []): Promise<string> => {
@@ -39,7 +45,13 @@ export class DownloadRulesAction {
                 return esr;
             });
 
-            const outStr = yaml.safeDump(rulesWithoutMoment);
+            let outStr: string;
+            if (format === "yml") {
+                outStr = yaml.safeDump(rulesWithoutMoment);
+            }
+            else {
+                outStr = JSON.stringify(rulesWithoutMoment, undefined, 2);
+            }
 
             if (options.stdout) {
                 return Promise.resolve(outStr + "\n");

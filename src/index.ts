@@ -5,27 +5,29 @@ import { Command } from "commander";
 import { App } from "./app";
 import { Log } from "./log";
 import * as eastereggs from "./eastereggs";
+import { Context } from "./Context";
 
 Log.log().initialize(false, false);
 
+const context = new Context();
 const commander: Command = new Command();
-const app: App = new App(commander, process.argv);
+const app: App = new App(context, commander, process.argv);
 
 (async () => {
     try {
         const result = await app.run();
-        console.log(result);
-        console.log();
+        context.log(result);
+        context.log("");
     }
     catch (error) {
         if (error.incorrect_command) {
-            console.log("Incorrect command.");
+            context.log("Incorrect command.");
             app.outputHelp();
         }
         else {
             Log.log().exception(Log.level.error, error);
-            console.log();
-            console.log(">  We apologize for this error. Maybe this wise sentence will improve your mood: " + eastereggs.wisdomQuote());
+            context.log("");
+            context.log(">  We apologize for this error. Maybe this wise sentence will improve your mood: " + eastereggs.wisdomQuote());
             process.exit(1);
         }
     }

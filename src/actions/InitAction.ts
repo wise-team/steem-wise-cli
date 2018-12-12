@@ -1,18 +1,25 @@
 import * as fs from "fs";
+import * as prompt from "prompt";
 import * as path from "path";
 import * as _ from "lodash";
-import * as prompt from "prompt";
 import * as yaml from "js-yaml";
 
 import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
 
+import { d } from "../util/util";
 import { Log } from "../log";
 import { Config } from "../config/Config";
 import { StaticConfig } from "../config/StaticConfig";
 import { DefaultRules } from "../config/DefaultRules";
+import { Context } from "../Context";
 
 export class InitAction {
-    public static async doAction(options: any, wisePath_: string): Promise<string> {
+    private context: Context;
+    public constructor(context: Context) {
+        this.context = context;
+    }
+
+    public async doAction(options: any, wisePath_: string): Promise<string> {
         let wisePath: string = ".";
         if (options.global) wisePath = StaticConfig.DEFAULT_GLOBAL_PATH;
         if (wisePath_) wisePath = wisePath_;
@@ -66,17 +73,18 @@ export class InitAction {
             hidden: true,
             type: "string",
             pattern: /^[0-9A-Za-z-]+$/,
-            ask: function() {
+            ask: () => {
                 if (savePostingKey !== undefined) return savePostingKey;
                 else return prompt.history("savePostingKey").value.toLowerCase().substr(0, 1) === "y";
             }
         };
 
         await new Promise((resolve, reject) => {
-            prompt.start({});
+            prompt.start({ stdin: this.context.stdin, stdout: this.context.stdout });
             prompt.get({
                 properties: propertiesToAsk
             }, (error: Error, result: { username: string, savePostingKey: string, postingWif: string }) => {
+                prompt.stop();
                 if (error) reject(error);
                 else {
                     if (!username) username = result.username;
@@ -88,23 +96,23 @@ export class InitAction {
         });
 
         if (sinceBlock === undefined) {
-            console.log("Fetching HEAD block number...");
-            sinceBlock = (await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number;
-            console.log("HEAB block number is " + sinceBlock);
+            this.context.log("Fetching HEAD block number...");
+            sinceBlock = d((await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number);
+            this.context.log("HEAD block number is " + sinceBlock);
         }
 
-        console.log("--- Your settings ---");
-        console.log("Account name: " + username);
-        console.log("Save posting key: " +
+        this.context.log("--- Your settings ---");
+        this.context.log("Account name: " + username);
+        this.context.log("Save posting key: " +
             (savePostingKey ? "Yes. Your posting key is saved to config file. You will not be prompted for it"
                            : "No. You will be asked for your posting key every time it is required")
         );
-        console.log("Daemon will start synchronisation from block " + sinceBlock);
-        console.log("Wise path: " + path.resolve(wisePath));
-        console.log("Config path: " + path.resolve(configPath));
-        console.log("Rules path: " + path.resolve(rulesPath));
-        console.log("Synced block num file path: " + path.resolve(syncedBlockNumPath));
-        console.log("");
+        this.context.log("Daemon will start synchronisation from block " + sinceBlock);
+        this.context.log("Wise path: " + path.resolve(wisePath));
+        this.context.log("Config path: " + path.resolve(configPath));
+        this.context.log("Rules path: " + path.resolve(rulesPath));
+        this.context.log("Synced block num file path: " + path.resolve(syncedBlockNumPath));
+        this.context.log("");
 
         if (fs.existsSync(wisePath)) {
             if (!fs.lstatSync(wisePath).isDirectory()) throw new Error("Path " + wisePath + " is not a directory");
@@ -115,12 +123,12 @@ export class InitAction {
             }
         }
         else {
-            console.log("Creating " + wisePath + ".");
+            this.context.log("Creating " + wisePath + ".");
             fs.mkdirSync(wisePath);
         }
 
 
-        console.log("Writing " + configPath + "");
+        this.context.log("Writing " + configPath + "");
         const configObj = _.merge({}, StaticConfig.DEFAULT_CONFIG, {
             username: username,
             postingWif: (savePostingKey ? postingKey : ""),
@@ -131,12 +139,12 @@ export class InitAction {
         fs.writeFileSync(configPath, yaml.safeDump(configObj));
 
 
-        console.log("Writing " + syncedBlockNumPath + "");
+        this.context.log("Writing " + syncedBlockNumPath + "");
         fs.writeFileSync(syncedBlockNumPath, sinceBlock + "");
 
-        console.log("Writing " + rulesPath + "");
+        this.context.log("Writing " + rulesPath + "");
         fs.writeFileSync(rulesPath, yaml.safeDump(DefaultRules.DEFAULT_RULES));
-        console.log("Done");
+        this.context.log("Done");
 
         return "Wise successfully set up in '" + wisePath + "'. Now you have to do two more actions to start the daemon: \n"
             + "  1. Run 'wise upload-rules' to publish the rules to the blockchain.\n"

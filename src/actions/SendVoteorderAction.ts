@@ -6,18 +6,24 @@ import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "
 import { Log } from "../log";
 import { ConfigLoader, Config } from "../config/Config";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
+import { Context } from "../Context";
 
 
 export class SendVoteorderAction {
-    public static doAction(config: Config, voteorderIn: string): Promise<string> {
-        return SendVoteorderAction.loadVoteorder(config, voteorderIn)
-        .then(rawVoteorder => SendVoteorderAction.sendVoteorder(config, rawVoteorder))
+    private context: Context;
+    public constructor(context: Context) {
+        this.context = context;
+    }
+
+    public doAction(config: Config, voteorderIn: string): Promise<string> {
+        return this.loadVoteorder(config, voteorderIn)
+        .then(rawVoteorder => this.sendVoteorder(config, rawVoteorder))
         .then((moment: SteemOperationNumber) => {
             return "Voteorder sent: " + moment;
         });
     }
 
-    private static loadVoteorder(config: Config, voteordetIn: string): Promise<object> {
+    private loadVoteorder(config: Config, voteordetIn: string): Promise<object> {
         const voteorderPaths: string [] = [];
 
         if (voteordetIn && voteordetIn.length > 0) {
@@ -29,7 +35,7 @@ export class SendVoteorderAction {
                 return Promise.resolve(data); // succes parsing inline json
             }
             catch (error) {
-                Log.log().debug("Failed to parse " + voteordetIn + " as inline JSON. Proceeding to loading files. " + voteorderPaths + " will be loaded as file.");
+                this.context.debug("Failed to parse " + voteordetIn + " as inline JSON. Proceeding to loading files. " + voteorderPaths + " will be loaded as file.");
                 voteorderPaths.unshift(voteordetIn);
             }
         }
@@ -41,12 +47,12 @@ export class SendVoteorderAction {
         });
     }
 
-    private static sendVoteorder(config: Config, rawVoteorder: object): Promise<SteemOperationNumber> {
+    private sendVoteorder(config: Config, rawVoteorder: object): Promise<SteemOperationNumber> {
         return Promise.resolve()
         .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(() => {
             const voteorder: VoteorderWithDelegator = rawVoteorder as VoteorderWithDelegator;
-            console.log(JSON.stringify(voteorder));
+            this.context.log(JSON.stringify(voteorder));
             if (!voteorder.delegator || voteorder.delegator.length == 0) throw new Error("You must specify delegator in voteorder JSON");
 
             const api: DirectBlockchainApi = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, { url: config.steemApi });
@@ -54,7 +60,7 @@ export class SendVoteorderAction {
             const wise = new Wise(config.username, api);
 
             return wise.sendVoteorder(voteorder.delegator, voteorder, (msg: string, proggress: number) => {
-                console.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
+                this.context.log("[voteorder sending][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });
     }

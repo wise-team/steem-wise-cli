@@ -11,16 +11,19 @@ import { SendVoteorderAction } from "./actions/SendVoteorderAction";
 import { DaemonAction } from "./actions/DaemonAction";
 import { InitAction } from "./actions/InitAction";
 import { Log } from "./log";
+import { Context } from "./Context";
 
 export class App {
     private static VERSION: string = require("../package.json").version;
+    private context: Context;
     private commander: Command;
     private argv: string [];
 
     private doneCallback: (error: any, result?: string) => void = () => {};
     private commandExecutionBegun: boolean = false;
 
-    public constructor(commander: Command, argv: string []) {
+    public constructor(context: Context, commander: Command, argv: string []) {
+        this.context = context;
         this.commander = commander;
         this.argv = argv;
 
@@ -41,7 +44,7 @@ export class App {
             .action(voteorder => this.actionWrapper(async () => {
                 ow(voteorder, ow.any(ow_extend.isValidJson("voteorder"), ow_extend.fileExists("voteorder")));
 
-                return SendVoteorderAction.doAction(await this.loadConfig(true), voteorder);
+                return new SendVoteorderAction(this.context).doAction(await this.loadConfig(true), voteorder);
             }));
 
         this.commander
@@ -50,7 +53,7 @@ export class App {
             .action(rules => this.actionWrapper(async () => {
                 if (rules) ow(rules, ow.any(ow_extend.isValidJson("rules"), ow_extend.fileExists("rules")));
 
-                return UploadRulesAction.doAction(await this.loadConfig(true), rules);
+                return new UploadRulesAction(this.context).doAction(await this.loadConfig(true), rules);
             }));
 
         this.commander
@@ -67,7 +70,7 @@ export class App {
                 if (options.account) ow(options.account, ow.string.minLength(3));
                 ow(options.stdout, ow.any(ow.undefined, ow.boolean.label("override")));
 
-                return DownloadRulesAction.doAction(await this.loadConfig(true), file, options);
+                return new DownloadRulesAction(this.context).doAction(await this.loadConfig(true), file, options);
             }));
 
         this.commander
@@ -79,7 +82,7 @@ export class App {
                 if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum);
                 else sinceBlockNum = undefined;
 
-                return DaemonAction.doAction(await this.loadConfig(true), sinceBlockNum);
+                return new DaemonAction(this.context).doAction(await this.loadConfig(true), sinceBlockNum);
             }));
 
         this.commander
@@ -104,7 +107,7 @@ export class App {
                 ow(options.sinceBlockNum, ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)));
                 if (options.syncedBlockNumPath) ow(options.syncedBlockNumPath, ow_extend.fileExists("syncedBlockNumPath"));
 
-                return InitAction.doAction(options, path);
+                return new InitAction(this.context).doAction(options, path);
             }));
 
         // easteregg

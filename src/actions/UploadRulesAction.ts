@@ -6,19 +6,25 @@ import { ConfigLoader, Config, ConfigLoadedFromFile } from "../config/Config";
 import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber } from "steem-wise-core";
 import { StaticConfig } from "../config/StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
+import { Context } from "../Context";
 
 
 export class UploadRulesAction {
-    public static doAction(config: ConfigLoadedFromFile, rulesIn: string): Promise<string> {
-        return UploadRulesAction.loadRules(config, rulesIn)
-        .then((rawRulesets: object []) => UploadRulesAction.syncRules(config, rawRulesets))
+    private context: Context;
+    public constructor(context: Context) {
+        this.context = context;
+    }
+
+    public doAction(config: ConfigLoadedFromFile, rulesIn: string): Promise<string> {
+        return this.loadRules(config, rulesIn)
+        .then((rawRulesets: object []) => this.syncRules(config, rawRulesets))
         .then((result: SteemOperationNumber | true) => {
             if (result === true) return "Rules are up to date";
             else return "Rules updated: " + result;
         });
     }
 
-    private static loadRules(config: ConfigLoadedFromFile, rulesIn: string): Promise<object []> {
+    private loadRules(config: ConfigLoadedFromFile, rulesIn: string): Promise<object []> {
         let rulesPaths: string [];
         if (config.defaultRulesPath && config.defaultRulesPath.length > 0) {
             rulesPaths = [ path.dirname(config.configFilePath) + "/" + config.defaultRulesPath ];
@@ -36,7 +42,7 @@ export class UploadRulesAction {
                 return Promise.resolve(data); // succes parsing inline json
             }
             catch (error) {
-                Log.log().debug("Failed to parse " + rulesIn + " as inline JSON. Proceeding to loading files. Adding " + rulesIn + " as top-priority file.");
+                this.context.debug("Failed to parse " + rulesIn + " as inline JSON. Proceeding to loading files. Adding " + rulesIn + " as top-priority file.");
                 rulesPaths.unshift(rulesIn);
             }
         }
@@ -49,7 +55,7 @@ export class UploadRulesAction {
         });
     }
 
-    private static syncRules(config: Config, rawRulesets: object []): Promise<SteemOperationNumber | true> {
+    private syncRules(config: Config, rawRulesets: object []): Promise<SteemOperationNumber | true> {
         return Promise.resolve()
         .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
         .then(config => {
@@ -65,7 +71,7 @@ export class UploadRulesAction {
             const delegatorWise = new Wise(config.username, api);
 
             return delegatorWise.uploadAllRulesets(newRules, (msg: string, proggress: number) => {
-                console.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);
+                this.context.log("[syncing a rule][" + Math.floor(proggress * 100) + "%]: " + msg);
             });
         });
     }
