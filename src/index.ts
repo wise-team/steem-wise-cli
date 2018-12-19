@@ -23,6 +23,7 @@ const app: App = new App(context, commander, process.argv);
         if (error.incorrect_command) {
             context.log("Incorrect command.");
             app.outputHelp();
+            process.exit(1);
         }
         else {
             Log.log().exception(Log.level.error, error);
