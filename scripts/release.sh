@@ -11,11 +11,19 @@ if [ -z "${VERSION}" ]; then
 fi
 
 
-REQUIRED_BRANCH="master"
-if [ "$(git rev-parse --abbrev-ref HEAD)" != "${REQUIRED_BRANCH}" ]; then
-    echo "You must be on a \"${REQUIRED_BRANCH}\" branch to do semver"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+echo "Branch: ${BRANCH}"
+if [ "${BRANCH}" == "master" ]; then
+    TAG="latest"
+elif [ "${BRANCH}" == "staging" ]; then
+    TAG="beta"
+elif [ "${BRANCH}" == "development" ]; then
+    TAG="alpha"
+else
+    echo "Error: Unknown branch"
     exit 1
 fi
+echo "Target tag: ${TAG}"
 
 if [[ "$(node --version)" = "$(cat .nvmrc)"* ]]; then
     echo "Node version correct ($(node --version))"
@@ -69,7 +77,7 @@ echo "Done creating tag"
 
 
 echo "Publishing to npmjs.com registry"
-npm publish
+npm publish --tag $TAG
 echo "Done publishing"
 
 
