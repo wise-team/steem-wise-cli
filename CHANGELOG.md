@@ -1,3 +1,21 @@
+<a name="3.1.0-rc.1"></a>
+# [3.1.0-rc.1](https://github.com/wise-team/steem-wise-cli/compare/v3.0.5...v3.1.0-rc.1) (2018-12-19)
+
+
+### Bug Fixes
+
+* exit with nonzero rc on invalid command ([c7a99f9](https://github.com/wise-team/steem-wise-cli/commit/c7a99f9))
+* fix [#27](https://github.com/wise-team/steem-wise-cli/issues/27): Daemon will start synchronisation from block undefined ([1b3d6f7](https://github.com/wise-team/steem-wise-cli/commit/1b3d6f7))
+* fix [#28](https://github.com/wise-team/steem-wise-cli/issues/28), do not display posting key in debug ([c426395](https://github.com/wise-team/steem-wise-cli/commit/c426395))
+
+
+### Features
+
+* add basic cli tests ([c83cf0b](https://github.com/wise-team/steem-wise-cli/commit/c83cf0b))
+* add context to App ([c929f14](https://github.com/wise-team/steem-wise-cli/commit/c929f14))
+
+
+
 <a name="3.0.5"></a>
 ## [3.0.5](https://github.com/wise-team/steem-wise-cli/compare/v3.0.4...v3.0.5) (2018-12-06)
 
