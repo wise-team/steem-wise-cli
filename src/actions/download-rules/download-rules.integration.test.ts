@@ -11,7 +11,7 @@ import * as yaml from "js-yaml";
 
 chaiUse(chaiAsPromised);
 
-import { CliTestHelper } from "../../_test/CliTestHelper";
+import { CliTestHelper } from "../../_test/CliTestHelper.test";
 
 describe("$ wise download-rules", function() {
     this.timeout(17000);

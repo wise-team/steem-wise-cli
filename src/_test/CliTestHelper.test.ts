@@ -1,4 +1,4 @@
-import { stdio as stdioMock, MockReadable, MockWritable } from "stdio-mock";
+import { stdio as stdioMock, MockReadable, MockWritable } from "stdio-mock--fork-by-wiseteam";
 import * as _ from "lodash";
 import * as os from "os";
 import * as fs from "fs";
@@ -8,6 +8,7 @@ import { Context } from "../Context";
 import { d } from "../util/util";
 import { App } from "../app";
 import { Command } from "commander";
+import { Config } from "../config/Config";
 
 export class CliTestHelper {
     private static REQUIRED_EXEC_ARGS = ["node", "index.js"];
@@ -51,7 +52,7 @@ export class CliTestHelper {
 
         const appContext = this.createTestAppContext();
 
-        const app = new App(appContext, new Command(), [...CliTestHelper.REQUIRED_EXEC_ARGS, "nonexistent-command"]);
+        const app = new App(appContext, new Command(), [...CliTestHelper.REQUIRED_EXEC_ARGS, ...this.args]);
 
         return { appContext, app, stdio: this.stdio };
     }
@@ -73,7 +74,11 @@ export class CliTestHelper {
     }
 
     public getStdoutLines(): string[] {
-        return this.stdio.stderr.data();
+        return this.stdio.stdout.data();
+    }
+
+    public getStdout(): string {
+        return this.getStdoutLines().join("\n");
     }
 
     public writeToStdin(str: string) {
@@ -84,12 +89,14 @@ export class CliTestHelper {
         this.stdio.stdin.end();
     }
 
-    public getStdout(): string {
-        return this.getStdoutLines().join("\n");
-    }
-
     public getTmpDir(): string {
         return this.tmpDir;
+    }
+
+    public writeFile(relativeFilePath: string, contents: string): string {
+        const filePath = `${this.getTmpDir()}/${relativeFilePath}`;
+        fs.writeFileSync(filePath, contents, "UTF-8");
+        return filePath;
     }
 
     private uniqueTmpDirName(): string {

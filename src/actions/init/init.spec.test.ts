@@ -8,7 +8,7 @@ import * as nock from "nock";
 import * as _ from "lodash";
 chaiUse(chaiAsPromised);
 
-import { CliTestHelper } from "../../_test/CliTestHelper";
+import { CliTestHelper } from "../../_test/CliTestHelper.test";
 
 import { StaticConfig } from "../../config/StaticConfig";
 import { DefaultRules } from "../../config/DefaultRules";

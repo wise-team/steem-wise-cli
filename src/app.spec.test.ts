@@ -4,7 +4,7 @@ import "mocha";
 import * as _ from "lodash";
 chaiUse(chaiAsPromised);
 
-import { CliTestHelper } from "./_test/CliTestHelper";
+import { CliTestHelper } from "./_test/CliTestHelper.test";
 
 describe("$ wise", () => {
     let helper: CliTestHelper;
