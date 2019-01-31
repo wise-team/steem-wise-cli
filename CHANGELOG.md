@@ -1,3 +1,20 @@
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/wise-team/steem-wise-cli/compare/v3.1.0...v3.1.1) (2019-01-31)
+
+
+### Bug Fixes
+
+* fix [#36](https://github.com/wise-team/steem-wise-cli/issues/36) this.getLogger is not a function ([8e7a672](https://github.com/wise-team/steem-wise-cli/commit/8e7a672))
+
+
+### Features
+
+* add mocked send-voteorder unit test ([5469ebf](https://github.com/wise-team/steem-wise-cli/commit/5469ebf))
+* split integration test with its coverage ([1d38f29](https://github.com/wise-team/steem-wise-cli/commit/1d38f29))
+* update nodeJS to 10.15 ([1225562](https://github.com/wise-team/steem-wise-cli/commit/1225562))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/wise-team/steem-wise-cli/compare/v3.1.0-rc.1...v3.1.0) (2018-12-20)
 
