@@ -2,6 +2,7 @@
 /config.json
 /dist
 /wise-synced-block-num.txt
+/.scannerwork
 
 ##Mac OS X Stuff
 .DS_Store
