@@ -6,12 +6,10 @@ import * as yaml from "js-yaml";
 
 import { Wise, DirectBlockchainApi, SendVoteorder, SteemOperationNumber } from "steem-wise-core";
 
-import { d } from "../util/util";
-import { Log } from "../log";
-import { Config } from "../config/Config";
-import { StaticConfig } from "../config/StaticConfig";
-import { DefaultRules } from "../config/DefaultRules";
-import { Context } from "../Context";
+import { d } from "../../util/util";
+import { StaticConfig } from "../../config/StaticConfig";
+import { DefaultRules } from "../../config/DefaultRules";
+import { Context } from "../../Context";
 
 export class InitAction {
     private context: Context;
@@ -45,7 +43,6 @@ export class InitAction {
 
         let postingKey: string | undefined = undefined;
 
-
         const propertiesToAsk: any = {};
 
         if (!username) {
@@ -59,53 +56,70 @@ export class InitAction {
 
         if (savePostingKey === undefined) {
             propertiesToAsk.savePostingKey = {
-                description: "Would you like to store your posting key in the config file or type it manually for every command? "
-                    + "Type \"yes\" to save or \"no\" to be asked for it in every command.",
+                description:
+                    "Would you like to store your posting key in the config file or type it manually for every command? " +
+                    'Type "yes" to save or "no" to be asked for it in every command.',
                 required: true,
-                pattern: /^y(es)?|no?$/gmi,
+                pattern: /^y(es)?|no?$/gim,
                 type: "string",
             };
         }
 
         propertiesToAsk.postingWif = {
-            description: "Enter your steem posting key Wif \n(Here is an instruction where to find it: https://steemit.com/security/@noisy/public-and-private-keys-how-they-are-used-by-steem-making-all-of-these-possible-you-can-find-answer-here)",
+            description:
+                "Enter your steem posting key Wif \n(Here is an instruction where to find it: https://steemit.com/security/@noisy/public-and-private-keys-how-they-are-used-by-steem-making-all-of-these-possible-you-can-find-answer-here)",
             required: true,
             hidden: true,
             type: "string",
             pattern: /^[0-9A-Za-z-]+$/,
             ask: () => {
                 if (savePostingKey !== undefined) return savePostingKey;
-                else return prompt.history("savePostingKey").value.toLowerCase().substr(0, 1) === "y";
-            }
+                else
+                    return (
+                        prompt
+                            .history("savePostingKey")
+                            .value.toLowerCase()
+                            .substr(0, 1) === "y"
+                    );
+            },
         };
 
         await new Promise((resolve, reject) => {
             prompt.start({ stdin: this.context.stdin, stdout: this.context.stdout });
-            prompt.get({
-                properties: propertiesToAsk
-            }, (error: Error, result: { username: string, savePostingKey: string, postingWif: string }) => {
-                prompt.stop();
-                if (error) reject(error);
-                else {
-                    if (!username) username = result.username;
-                    if (savePostingKey === undefined) savePostingKey = (result.savePostingKey.toLowerCase().substr(0, 1) === "y");
-                    if (savePostingKey) postingKey = result.postingWif;
-                    resolve();
+            prompt.get(
+                {
+                    properties: propertiesToAsk,
+                },
+                (error: Error, result: { username: string; savePostingKey: string; postingWif: string }) => {
+                    prompt.stop();
+                    if (error) reject(error);
+                    else {
+                        if (!username) username = result.username;
+                        if (savePostingKey === undefined)
+                            savePostingKey = result.savePostingKey.toLowerCase().substr(0, 1) === "y";
+                        if (savePostingKey) postingKey = result.postingWif;
+                        resolve();
+                    }
                 }
-            });
+            );
         });
 
         if (sinceBlock === undefined) {
             this.context.log("Fetching HEAD block number...");
-            sinceBlock = d((await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties()).head_block_number);
+            sinceBlock = d(
+                (await new DirectBlockchainApi(Wise.constructDefaultProtocol()).getDynamicGlobalProperties())
+                    .head_block_number
+            );
             this.context.log("HEAD block number is " + sinceBlock);
         }
 
         this.context.log("--- Your settings ---");
         this.context.log("Account name: " + username);
-        this.context.log("Save posting key: " +
-            (savePostingKey ? "Yes. Your posting key is saved to config file. You will not be prompted for it"
-                           : "No. You will be asked for your posting key every time it is required")
+        this.context.log(
+            "Save posting key: " +
+                (savePostingKey
+                    ? "Yes. Your posting key is saved to config file. You will not be prompted for it"
+                    : "No. You will be asked for your posting key every time it is required")
         );
         this.context.log("Daemon will start synchronisation from block " + sinceBlock);
         this.context.log("Wise path: " + path.resolve(wisePath));
@@ -121,23 +135,20 @@ export class InitAction {
             } catch (err) {
                 throw new Error("Directory " + wisePath + " is not writeable and readable");
             }
-        }
-        else {
+        } else {
             this.context.log("Creating " + wisePath + ".");
             fs.mkdirSync(wisePath);
         }
 
-
         this.context.log("Writing " + configPath + "");
         const configObj = _.merge({}, StaticConfig.DEFAULT_CONFIG, {
             username: username,
-            postingWif: (savePostingKey ? postingKey : ""),
+            postingWif: savePostingKey ? postingKey : "",
             defaultRulesPath: path.relative(path.dirname(configPath), rulesPath),
             defaultSyncStartBlockNum: sinceBlock,
             syncedBlockNumFile: path.relative(path.dirname(configPath), syncedBlockNumPath),
         });
         fs.writeFileSync(configPath, yaml.safeDump(configObj));
-
 
         this.context.log("Writing " + syncedBlockNumPath + "");
         fs.writeFileSync(syncedBlockNumPath, sinceBlock + "");
@@ -146,10 +157,14 @@ export class InitAction {
         fs.writeFileSync(rulesPath, yaml.safeDump(DefaultRules.DEFAULT_RULES));
         this.context.log("Done");
 
-        return "Wise successfully set up in '" + wisePath + "'. Now you have to do two more actions to start the daemon: \n"
-            + "  1. Run 'wise upload-rules' to publish the rules to the blockchain.\n"
-            + "  2. Run 'wise daemon' to start the daemon.\n"
-            + " That's all what is required for the daemon to work. If you would like a more complex setup \n"
-            + " (e.g. Docker compose) please refer to the \"The Wise Manual\".";
+        return (
+            "Wise successfully set up in '" +
+            wisePath +
+            "'. Now you have to do two more actions to start the daemon: \n" +
+            "  1. Run 'wise upload-rules' to publish the rules to the blockchain.\n" +
+            "  2. Run 'wise daemon' to start the daemon.\n" +
+            " That's all what is required for the daemon to work. If you would like a more complex setup \n" +
+            ' (e.g. Docker compose) please refer to the "The Wise Manual".'
+        );
     }
 }

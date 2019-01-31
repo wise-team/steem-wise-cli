@@ -5,11 +5,11 @@ import { ow_extend } from "./util/ow-extend";
 
 import { ConfigLoadedFromFile, ConfigLoader } from "./config/Config";
 import { StaticConfig } from "./config/StaticConfig";
-import { UploadRulesAction } from "./actions/UploadRulesAction";
-import { DownloadRulesAction } from "./actions/DownloadRulesAction";
-import { SendVoteorderAction } from "./actions/SendVoteorderAction";
-import { DaemonAction } from "./actions/DaemonAction";
-import { InitAction } from "./actions/InitAction";
+import { UploadRulesAction } from "./actions/upload-rules/UploadRulesAction";
+import { DownloadRulesAction } from "./actions/download-rules/DownloadRulesAction";
+import { SendVoteorderAction } from "./actions/send-voteorder/SendVoteorderAction";
+import { DaemonAction } from "./actions/daemon/DaemonAction";
+import { InitAction } from "./actions/init/InitAction";
 import { Log } from "./log";
 import { Context } from "./Context";
 
@@ -17,12 +17,12 @@ export class App {
     private static VERSION: string = require("../package.json").version;
     private context: Context;
     private commander: Command;
-    private argv: string [];
+    private argv: string[];
 
     private doneCallback: (error: any, result?: string) => void = () => {};
     private commandExecutionBegun: boolean = false;
 
-    public constructor(context: Context, commander: Command, argv: string []) {
+    public constructor(context: Context, commander: Command, argv: string[]) {
         this.context = context;
         this.commander = commander;
         this.argv = argv;
@@ -41,88 +41,114 @@ export class App {
         this.commander
             .command("send-voteorder [voteorder]")
             .description("Sends a voteorder. You can pass path to a JSON file or pass JSON directly")
-            .action(voteorder => this.actionWrapper(async () => {
-                ow(voteorder, ow.any(ow_extend.isValidJson("voteorder"), ow_extend.fileExists("voteorder")));
+            .action(voteorder =>
+                this.actionWrapper(async () => {
+                    ow(voteorder, ow.any(ow_extend.isValidJson("voteorder"), ow_extend.fileExists("voteorder")));
 
-                return new SendVoteorderAction(this.context).doAction(await this.loadConfig(true), voteorder);
-            }));
+                    return new SendVoteorderAction(this.context).doAction(await this.loadConfig(true), voteorder);
+                })
+            );
 
         this.commander
             .command("upload-rules [rules]")
             .description("Uploads rules to blockchain. You can pass path to a JSON file or pass JSON directly")
-            .action(rules => this.actionWrapper(async () => {
-                if (rules) ow(rules, ow.any(ow_extend.isValidJson("rules"), ow_extend.fileExists("rules")));
+            .action(rules =>
+                this.actionWrapper(async () => {
+                    if (rules) ow(rules, ow.any(ow_extend.isValidJson("rules"), ow_extend.fileExists("rules")));
 
-                return new UploadRulesAction(this.context).doAction(await this.loadConfig(true), rules);
-            }));
+                    return new UploadRulesAction(this.context).doAction(await this.loadConfig(true), rules);
+                })
+            );
 
         this.commander
             .command("download-rules [file]")
-            .description("Downloads rules from blockchain to the file. Type 'wise download-rules --help' to list options.")
+            .description(
+                "Downloads rules from blockchain to the file. Type 'wise download-rules --help' to list options."
+            )
             .option("-f, --format <format>", "Format of the output file (yml|json) [yml]", "yml")
             .option("-o, --override", "Override the file if it exists. If this option is not set you will be prompted.")
             .option("-a, --account [username]", "Account to download rules from")
             .option("--stdout", "Print rules to stdout")
-            .action((file, options) => this.actionWrapper(async () => {
-                if (file) ow(file, ow_extend.parentDirExists("file"));
-                ow(options.format, ow.string.label("format").oneOf([ "yml", "json" ]));
-                ow(options.override, ow.any(ow.undefined, ow.boolean.label("override")));
-                if (options.account) ow(options.account, ow.string.minLength(3));
-                ow(options.stdout, ow.any(ow.undefined, ow.boolean.label("override")));
+            .action((file, options) =>
+                this.actionWrapper(async () => {
+                    if (file) ow(file, ow_extend.parentDirExists("file"));
+                    ow(options.format, ow.string.label("format").oneOf(["yml", "json"]));
+                    ow(options.override, ow.any(ow.undefined, ow.boolean.label("override")));
+                    if (options.account) ow(options.account, ow.string.minLength(3));
+                    ow(options.stdout, ow.any(ow.undefined, ow.boolean.label("override")));
 
-                return new DownloadRulesAction(this.context).doAction(await this.loadConfig(true), file, options);
-            }));
+                    return new DownloadRulesAction(this.context).doAction(await this.loadConfig(true), file, options);
+                })
+            );
 
         this.commander
             .command("daemon [sinceBlockNum]")
-            .description("Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain")
-            .action(sinceBlockNum => this.actionWrapper(async () => {
-                ow(sinceBlockNum, ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)));
+            .description(
+                "Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain"
+            )
+            .action(sinceBlockNum =>
+                this.actionWrapper(async () => {
+                    ow(sinceBlockNum, ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)));
 
-                if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum);
-                else sinceBlockNum = undefined;
+                    if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum);
+                    else sinceBlockNum = undefined;
 
-                return new DaemonAction(this.context).doAction(await this.loadConfig(true), sinceBlockNum);
-            }));
+                    return new DaemonAction(this.context).doAction(await this.loadConfig(true), sinceBlockNum);
+                })
+            );
 
         this.commander
             .command("init [path]")
-            .description("Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' to list options.")
+            .description(
+                "Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' to list options."
+            )
             .option("-g, --global", "Puts config and rules in home directory (~/.wise/)")
             .option("-n, --config [path]", "Specify path for config.yml [default:config.yml]")
             .option("-r, --rules [path]", "Specify path for rules.yml [defualt:rules.yml]")
             .option("-u, --username [account]", "Account name")
             .option("-k, --save-posting-key", "Saves private post key in config file")
             .option("-d, --dont-save-posting-key", "Do not save posting key in config file")
-            .option("-b, --since-block [block-num]", "Number of block, from which synchronisation starts [default: head]")
-            .option("-s, --synced-block-num-path [path]", "Path to file, which stores number of last synced block [default: synced-block-num.txt]")
-            .action((path, options) => this.actionWrapper(async () => {
-                if (path) ow(path, ow_extend.fileExists("path"));
-                ow(options.global, ow.any(ow.undefined, ow.boolean.label("global")));
-                if (options.config) ow(options.config, ow_extend.fileExists("config"));
-                if (options.rules) ow(options.rules, ow_extend.fileExists("rules"));
-                if (options.username) ow(options.username, ow.string.minLength(3));
-                ow(options.savePostingKey, ow.any(ow.undefined, ow.boolean.label("savePostingKey")));
-                ow(options.dontSavePostingKey, ow.any(ow.undefined, ow.boolean.label("dontSavePostingKey")));
-                ow(options.sinceBlockNum, ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)));
-                if (options.syncedBlockNumPath) ow(options.syncedBlockNumPath, ow_extend.fileExists("syncedBlockNumPath"));
+            .option(
+                "-b, --since-block [block-num]",
+                "Number of block, from which synchronisation starts [default: head]"
+            )
+            .option(
+                "-s, --synced-block-num-path [path]",
+                "Path to file, which stores number of last synced block [default: synced-block-num.txt]"
+            )
+            .action((path, options) =>
+                this.actionWrapper(async () => {
+                    if (path) ow(path, ow_extend.fileExists("path"));
+                    ow(options.global, ow.any(ow.undefined, ow.boolean.label("global")));
+                    if (options.config) ow(options.config, ow_extend.fileExists("config"));
+                    if (options.rules) ow(options.rules, ow_extend.fileExists("rules"));
+                    if (options.username) ow(options.username, ow.string.minLength(3));
+                    ow(options.savePostingKey, ow.any(ow.undefined, ow.boolean.label("savePostingKey")));
+                    ow(options.dontSavePostingKey, ow.any(ow.undefined, ow.boolean.label("dontSavePostingKey")));
+                    ow(
+                        options.sinceBlockNum,
+                        ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0))
+                    );
+                    if (options.syncedBlockNumPath)
+                        ow(options.syncedBlockNumPath, ow_extend.fileExists("syncedBlockNumPath"));
 
-                return new InitAction(this.context).doAction(options, path);
-            }));
+                    return new InitAction(this.context).doAction(options, path);
+                })
+            );
 
         // easteregg
-        this.commander
-            .command("man", "", { noHelp: true })
-            .action((path, options) => this.actionWrapper(async () => {
+        this.commander.command("man", "", { noHelp: true }).action((path, options) =>
+            this.actionWrapper(async () => {
                 return "You are a wise gentleman";
-            }));
+            })
+        );
 
         // easteregg
-        this.commander
-            .command("woman", "", { noHelp: true })
-            .action((path, options) => this.actionWrapper(async () => {
+        this.commander.command("woman", "", { noHelp: true }).action((path, options) =>
+            this.actionWrapper(async () => {
                 return "You are a wise lady";
-            }));
+            })
+        );
     }
 
     private async initAction() {
@@ -161,8 +187,7 @@ export class App {
                 this.initAction();
                 const result: string = await action();
                 this.doneCallback(undefined, result);
-            }
-            catch (error) {
+            } catch (error) {
                 this.doneCallback(error, undefined);
             }
         })();
