@@ -7,11 +7,14 @@ import { ConfigLoader, ConfigLoadedFromFile } from "../../config/Config";
 import { Wise, DirectBlockchainApi, SteemOperationNumber, SingleDaemon } from "steem-wise-core";
 import { StaticConfig } from "../../config/StaticConfig";
 import { Context } from "../../Context";
+import { Watchdog } from "./Watchdog";
 
 export class DaemonAction {
     private context: Context;
+    private watchdog: Watchdog;
     public constructor(context: Context) {
         this.context = context;
+        this.watchdog = new Watchdog();
     }
 
     public doAction(config: ConfigLoadedFromFile, sinceBlockNum: undefined | number): Promise<string> {
@@ -23,6 +26,7 @@ export class DaemonAction {
         let delegatorWise: Wise;
 
         return Promise.resolve()
+            .then(() => this.watchdog.start())
             .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
             .then(() => {
                 api = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, {
@@ -57,6 +61,7 @@ export class DaemonAction {
                     }
 
                     if (event.type === SingleDaemon.EventType.EndBlockProcessing) {
+                        this.watchdog.heartbeatBeat();
                         try {
                             fs.writeFileSync(lastBlockFile, "" + event.blockNum, { flag: "w+" });
                             this.context.log("Processed block " + event.blockNum);
