@@ -1,6 +1,6 @@
 {
   "name": "steem-wise-cli",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Vote delegation system for STEEM blockchain: cli tool for delegators",
   "main": "dist/index.js",
   "bin": {
@@ -14,9 +14,10 @@
     "commander": "^2.18.0",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
+    "node-docker-watchdog": "^1.2.3",
     "ow": "^0.8.0",
     "prompt": "^1.0.0",
-    "steem-wise-core": "^3.1.0"
+    "steem-wise-core": "^3.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
@@ -31,6 +32,8 @@
     "@types/nock": "^9.3.0",
     "@types/node": "^9.6.31",
     "@types/rimraf": "^2.0.2",
+    "@types/sinon": "^7.0.5",
+    "@types/uuid": "^3.4.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^2.0.5",
@@ -40,10 +43,12 @@
     "nock": "^10.0.4",
     "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
-    "stdio-mock": "^1.1.0",
+    "sinon": "^7.2.3",
+    "stdio-mock--fork-by-wiseteam": "^1.1.2",
     "ts-node": "^6.2.0",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "check": "if echo \"$(node --version)\" | grep -q \"$(cat .nvmrc)\"; then echo \"Node version correct\"; else echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
@@ -57,7 +62,9 @@
     "prepare": "npm run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "commitmsg": "commitlint -E GIT_PARAMS",
+    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.test.ts",
     "verify": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.integration.test.ts",
+    "test-coverage": "nyc npm run test",
     "verify-coverage": "nyc npm run verify"
   },
   "commitlint": {
