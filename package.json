@@ -57,7 +57,8 @@
     "prepare": "npm run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "commitmsg": "commitlint -E GIT_PARAMS",
-    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.ts"
+    "verify": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.integration.test.ts",
+    "verify-coverage": "nyc npm run verify"
   },
   "commitlint": {
     "extends": [
