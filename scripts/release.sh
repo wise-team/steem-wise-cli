@@ -38,15 +38,6 @@ if [[ -z "${CONVENTIONAL_GITHUB_RELEASER_TOKEN}" ]]; then
 fi
 
 
-echo "Updating version of steem-wise-core in package.json to ${VERSION}"
-node -e " \
-var packageFileContents = require(\"./package.json\"); \
-packageFileContents.dependencies[\"steem-wise-core\"] = \"^${VERSION}\"; \
-require('fs').writeFileSync(\"./package.json\", JSON.stringify(packageFileContents, null, 2), \"utf8\"); \
-"
-echo "Updating version succeeded"
-
-
 echo "Building..."
 npm install
 npm run build
