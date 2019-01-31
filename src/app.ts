@@ -161,7 +161,7 @@ export class App {
 
     private async loadConfig(loadFromFile: boolean): Promise<ConfigLoadedFromFile> {
         if (loadFromFile) return ConfigLoader.loadConfig(this.commander);
-        else return Promise.resolve({ ...StaticConfig.DEFAULT_CONFIG, configFilePath: process.cwd() });
+        else return { ...StaticConfig.DEFAULT_CONFIG, configFilePath: process.cwd() };
     }
 
     private runCb(doneCallback: (error: any, result?: string) => void) {
@@ -184,7 +184,7 @@ export class App {
         this.commandExecutionBegun = true;
         (async () => {
             try {
-                this.initAction();
+                await this.initAction();
                 const result: string = await action();
                 this.doneCallback(undefined, result);
             } catch (error) {

@@ -14,10 +14,10 @@ export class Context {
         this.stdout = process.stdout;
         this.stdin = process.stdin;
         this.stderr = process.stderr;
-        this.log = console.log;
-        this.error = console.error;
-        this.debug = Log.log().debug;
-        this.info = Log.log().info;
+        this.log = (msg: string) => console.log(msg);
+        this.error = (msg?: string, error?: any) => console.error(msg, error);
+        this.debug = (msg: string) => Log.log().debug(msg);
+        this.info = (msg: string) => Log.log().info(msg);
         this.exception = (exception: Error, level?: string) => Log.log().exception(level || Log.level.error, exception);
     }
 }
