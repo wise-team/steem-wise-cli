@@ -1,5 +1,5 @@
 #§ 'FROM node:' + data.config.npm.node.version + '-slim'
-FROM node:10.12-slim
+FROM node:10.15-slim
 
 LABEL maintainer="Jędrzej Lewandowski <jedrzejblew@gmail.com>"
 

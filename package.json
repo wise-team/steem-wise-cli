@@ -7,7 +7,7 @@
     "wise": "./dist/index.js"
   },
   "engines": {
-    "node": ">=10.12"
+    "node": ">=10.15"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
