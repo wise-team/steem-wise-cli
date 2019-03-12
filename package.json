@@ -22,7 +22,8 @@
     "verify": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.integration.test.ts",
     "test-coverage": "nyc npm run test",
     "verify-coverage": "nyc npm run verify",
-    "lint-fix": "tslint --fix -c tslint.json -p tsconfig.lint.json"
+    "lint-fix": "tslint --fix -c tslint.json -p tsconfig.lint.json",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
@@ -59,6 +60,7 @@
     "nock": "^10.0.4",
     "nyc": "^13.3.0",
     "rimraf": "^2.6.2",
+    "semantic-release": "^16.0.0-beta.18",
     "sinon": "^7.2.3",
     "stdio-mock--fork-by-wiseteam": "^1.1.2",
     "ts-node": "^6.2.0",
@@ -104,7 +106,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wise-team/steem-wise-cli.git"
+    "url": "https://github.com/wise-team/steem-wise-cli.git"
   },
   "keywords": [
     "steem",
