@@ -18,7 +18,7 @@ export class DownloadRulesAction {
     private static downloadRules(username: string, config: Config): Promise<EffectuatedSetRules[]> {
         const delegatorWise = new Wise(
             username,
-            new DirectBlockchainApi(Wise.constructDefaultProtocol(), "", { url: config.steemApi }),
+            new DirectBlockchainApi(Wise.constructDefaultProtocol(), "", { apiUrl: config.steemApi }),
         );
         return delegatorWise.downloadAllRulesets(username);
     }

@@ -88,7 +88,7 @@ export class UploadRulesAction {
                 const api: DirectBlockchainApi = new DirectBlockchainApi(
                     Wise.constructDefaultProtocol(),
                     config.postingWif,
-                    { url: config.steemApi },
+                    { apiUrl: config.steemApi },
                 );
                 if (config.disableSend) api.setSendEnabled(false);
                 const delegatorWise = new Wise(config.username, api);

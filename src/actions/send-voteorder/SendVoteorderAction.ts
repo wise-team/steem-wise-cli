@@ -65,7 +65,7 @@ export class SendVoteorderAction {
                 const api: DirectBlockchainApi = new DirectBlockchainApi(
                     Wise.constructDefaultProtocol(),
                     config.postingWif,
-                    { url: config.steemApi },
+                    { apiUrl: config.steemApi },
                 );
                 if (config.disableSend) api.setSendEnabled(false);
                 const wise = new Wise(config.username, api);

@@ -29,7 +29,7 @@ export class DaemonAction {
             .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
             .then(() => {
                 api = new DirectBlockchainApi(Wise.constructDefaultProtocol(), config.postingWif, {
-                    url: config.steemApi,
+                    apiUrl: config.steemApi,
                 });
                 if (config.disableSend) api.setSendEnabled(false);
                 delegatorWise = new Wise(config.username, api);
