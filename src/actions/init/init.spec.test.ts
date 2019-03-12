@@ -1,17 +1,17 @@
-import * as fs from "fs";
 import * as BluebirdPromise from "bluebird";
-import * as yaml from "js-yaml";
 import { expect, use as chaiUse } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
+import * as fs from "fs";
+import * as yaml from "js-yaml";
+import * as _ from "lodash";
 import "mocha";
 import * as nock from "nock";
-import * as _ from "lodash";
 chaiUse(chaiAsPromised);
 
 import { CliTestHelper } from "../../_test/CliTestHelper.test";
 
-import { StaticConfig } from "../../config/StaticConfig";
 import { DefaultRules } from "../../config/DefaultRules";
+import { StaticConfig } from "../../config/StaticConfig";
 
 describe("$ wise init", () => {
     let helper: CliTestHelper;
@@ -32,7 +32,7 @@ describe("$ wise init", () => {
         it("Scenario: ask for everything, store password=" + storePassword, async () => {
             let stdoutPtr = 0;
 
-            const steemRpcNock = nock(StaticConfig.DEFAULT_CONFIG.steemApi)
+            nock(StaticConfig.DEFAULT_CONFIG.steemApi)
                 .post("/", (body: any) => _.isEqual(body.params, ["database_api", "get_dynamic_global_properties", []]))
                 .reply(200, (uri: any, rqBody: any) => ({
                     jsonrpc: "2.0",
@@ -52,7 +52,7 @@ describe("$ wise init", () => {
 
                 await BluebirdPromise.delay(30);
                 expect(helper.getStdoutLines()[stdoutPtr]).to.match(
-                    /Would you like to store your posting key in the config file/
+                    /Would you like to store your posting key in the config file/,
                 );
                 stdoutPtr = helper.getStdoutLines().length;
                 expect(helper.getStderrLines().length).to.equal(0);
@@ -92,13 +92,13 @@ describe("$ wise init", () => {
                 });
 
                 expect(yaml.safeLoad(fs.readFileSync(helper.getTmpDir() + "/rules.yml").toString())).to.deep.equal(
-                    DefaultRules.DEFAULT_RULES
+                    DefaultRules.DEFAULT_RULES,
                 );
                 expect(fs.readFileSync(helper.getTmpDir() + "/synced-block-num.txt").toString()).to.equal(
-                    headBlockNum + ""
+                    headBlockNum + "",
                 );
             })();
             await Promise.all([appPromise, testPromise]);
-        })
+        }),
     );
 });

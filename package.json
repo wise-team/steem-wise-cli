@@ -9,6 +9,21 @@
   "engines": {
     "node": ">=10.15"
   },
+  "scripts": {
+    "check": "if echo \"$(node --version)\" | grep -q \"$(cat .nvmrc)\"; then echo \"Node version correct\"; else echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
+    "build:cleanbefore": "rm -rf dist",
+    "build:lint": "tslint -c tslint.json -p tsconfig.lint.json",
+    "build:node": "tsc",
+    "build": "npm run check && npm run build:cleanbefore && npm run build:node && npm run build:lint",
+    "prepare": "npm run build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.test.ts",
+    "verify": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.integration.test.ts",
+    "test-coverage": "nyc npm run test",
+    "verify-coverage": "nyc npm run verify",
+    "lint-fix": "tslint --fix -c tslint.json -p tsconfig.lint.json"
+  },
   "dependencies": {
     "bluebird": "^3.5.2",
     "commander": "^2.18.0",
@@ -38,41 +53,39 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^2.0.5",
-    "husky": "^0.14.3",
+    "husky": "^1.3.1",
     "mocha": "^5.2.0",
     "mock-fs": "^4.7.0",
     "nock": "^10.0.4",
-    "nyc": "^13.1.0",
+    "nyc": "^13.3.0",
     "rimraf": "^2.6.2",
     "sinon": "^7.2.3",
     "stdio-mock--fork-by-wiseteam": "^1.1.2",
     "ts-node": "^6.2.0",
     "tslint": "^5.11.0",
     "typescript": "^2.9.2",
-    "uuid": "^3.3.2"
-  },
-  "scripts": {
-    "check": "if echo \"$(node --version)\" | grep -q \"$(cat .nvmrc)\"; then echo \"Node version correct\"; else echo \"Node version does not match that in .nvmrc\" && exit 1; fi",
-    "start": "node dist/index.js",
-    "run": "ts-node src/index.ts",
-    "build": "rm -rf dist && npm run build-ts && npm run tslint",
-    "build-ts": "npm run check && tsc",
-    "watch-ts": "npm run check && tsc -w",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "debug": "npm run build && npm run watch-debug",
-    "prepare": "npm run build",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "commitmsg": "commitlint -E GIT_PARAMS",
-    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.test.ts",
-    "verify": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.integration.test.ts",
-    "test-coverage": "nyc npm run test",
-    "verify-coverage": "nyc npm run verify"
+    "uuid": "^3.3.2",
+    "wise-tslint-configuration": "^0.2.0"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "header-max-length": [
+        0
+      ],
+      "scope-case": [
+        0
+      ]
+    }
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "release": {},
   "nyc": {
     "extension": [
       ".ts"

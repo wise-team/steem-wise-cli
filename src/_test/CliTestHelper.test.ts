@@ -1,14 +1,13 @@
-import { stdio as stdioMock, MockReadable, MockWritable } from "stdio-mock--fork-by-wiseteam";
-import * as _ from "lodash";
-import * as os from "os";
+import { Command } from "commander";
 import * as fs from "fs";
-import * as rimraf from "rimraf";
+import * as os from "os";
 import ow from "ow";
+import * as rimraf from "rimraf";
+import { MockReadable, MockWritable, stdio as stdioMock } from "stdio-mock--fork-by-wiseteam";
+
+import { App } from "../app";
 import { Context } from "../Context";
 import { d } from "../util/util";
-import { App } from "../app";
-import { Command } from "commander";
-import { Config } from "../config/Config";
 
 export class CliTestHelper {
     private static REQUIRED_EXEC_ARGS = ["node", "index.js"];
@@ -38,7 +37,7 @@ export class CliTestHelper {
             this.stdio.stderr.write(
                 (msg ? msg : "") + "\n" + error
                     ? d(error).name + ": " + d(error).message + "\n " + (d(error).stack || "")
-                    : ""
+                    : "",
             );
         context.debug = (msg: string) => this.stdio.stdout.write(msg + "\n");
         context.info = (msg: string) => this.stdio.stdout.write(msg + "\n");

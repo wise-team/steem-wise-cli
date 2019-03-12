@@ -1,12 +1,11 @@
-import * as path from "path";
 import * as _ from "lodash";
+import * as path from "path";
+import { DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber, Wise } from "steem-wise-core";
 
-import { Log } from "../../log";
-import { ConfigLoader, Config, ConfigLoadedFromFile } from "../../config/Config";
-import { Wise, DirectBlockchainApi, SetRulesForVoter, SteemOperationNumber } from "steem-wise-core";
+import { Config, ConfigLoadedFromFile, ConfigLoader } from "../../config/Config";
 import { StaticConfig } from "../../config/StaticConfig";
-import { PrioritizedFileObjectLoader } from "../../util/PrioritizedFileObjectLoader";
 import { Context } from "../../Context";
+import { PrioritizedFileObjectLoader } from "../../util/PrioritizedFileObjectLoader";
 
 export class UploadRulesAction {
     private context: Context;
@@ -33,12 +32,13 @@ export class UploadRulesAction {
 
         if (rulesIn && rulesIn.length > 0) {
             try {
-                let data: object[] | undefined = undefined;
+                let data: object[] | undefined;
                 const input: object = JSON.parse(rulesIn);
-                if (!(Object.prototype.toString.call(input) === "[object Array]"))
+                if (!(Object.prototype.toString.call(input) === "[object Array]")) {
                     throw new Error(
-                        "Rules should be an array (incorrect type: " + Object.prototype.toString.call(input) + ")"
+                        "Rules should be an array (incorrect type: " + Object.prototype.toString.call(input) + ")",
                     );
+                }
                 data = input as object[];
 
                 return Promise.resolve(data); // succes parsing inline json
@@ -48,7 +48,7 @@ export class UploadRulesAction {
                         rulesIn +
                         " as inline JSON. Proceeding to loading files. Adding " +
                         rulesIn +
-                        " as top-priority file."
+                        " as top-priority file.",
                 );
                 rulesPaths.unshift(rulesIn);
             }
@@ -56,36 +56,39 @@ export class UploadRulesAction {
 
         return PrioritizedFileObjectLoader.loadFromFilesNoMerge([], rulesPaths, "rules").then(
             (result: { loadedObject: object[] | undefined; path: string | undefined }) => {
-                if (!result.loadedObject)
+                if (!result.loadedObject) {
                     throw new Error("Could not load rulesets from any of the files: " + _.join(rulesPaths, ", "));
-                if (!(Object.prototype.toString.call(result.loadedObject) === "[object Array]"))
+                }
+                if (!(Object.prototype.toString.call(result.loadedObject) === "[object Array]")) {
                     throw new Error(
                         "Rules should be an array (incorrect type: " +
                             Object.prototype.toString.call(result.loadedObject) +
                             ") json=" +
-                            JSON.stringify(result.loadedObject)
+                            JSON.stringify(result.loadedObject),
                     );
+                }
                 return result.loadedObject;
-            }
+            },
         );
     }
 
-    private syncRules(config: Config, rawRulesets: object[]): Promise<SteemOperationNumber | true> {
+    private syncRules(initialConfig: Config, rawRulesets: object[]): Promise<SteemOperationNumber | true> {
         return Promise.resolve()
-            .then(() => ConfigLoader.askForCredentialsIfEmpty(config))
+            .then(() => ConfigLoader.askForCredentialsIfEmpty(initialConfig))
             .then(config => {
                 const newRules: SetRulesForVoter[] = rawRulesets as SetRulesForVoter[];
 
                 newRules.forEach((element: SetRulesForVoter) => {
                     if (!element.voter) return Promise.reject(new Error("Voter should be specified for each SetRules"));
-                    if (!element.rulesets)
+                    if (!element.rulesets) {
                         return Promise.reject(new Error("Rulesets should be specified for each voter"));
+                    }
                 });
 
                 const api: DirectBlockchainApi = new DirectBlockchainApi(
                     Wise.constructDefaultProtocol(),
                     config.postingWif,
-                    { url: config.steemApi }
+                    { url: config.steemApi },
                 );
                 if (config.disableSend) api.setSendEnabled(false);
                 const delegatorWise = new Wise(config.username, api);

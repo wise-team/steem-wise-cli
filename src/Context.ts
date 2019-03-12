@@ -1,3 +1,4 @@
+/* tslint:disable no-console */
 import { Log } from "./log";
 
 export class Context {

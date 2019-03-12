@@ -1,8 +1,6 @@
 import * as _ from "lodash";
-import * as commander from "commander";
-import * as Promise from "bluebird";
-import { ConfigLoadedFromFile } from "./config/Config";
 
+/* tslint:disable max-line-length */
 export function wisdomQuote(): string {
     return _.sample([
         "A wise man changes his mind sometimes, but a fool never. To change your mind is the best evidence you have one.  ~Desmond Ford",
@@ -29,6 +27,6 @@ export function wisdomQuote(): string {
         "Concentrate your energies, your thoughts and your capital. The wise man puts all his eggs in one basket and watches the basket.  ~Andrew Carnegie",
         "A wise man should consider that health is the greatest of human blessings, and learn how by his own thought to derive benefit from his illnesses.  ~Hippocrates",
         "The wise man does not grow old, but ripens.  ~Victor Hugo",
-        "Who then is free? The wise man who can command himself.  ~Horace"
+        "Who then is free? The wise man who can command himself.  ~Horace",
     ]) as string;
 }

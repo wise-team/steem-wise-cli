@@ -9,12 +9,12 @@ export class StaticConfig {
 
     public static DEFAULT_CONFIG_FILE_PATHS: string [] = [
         "./config.json", "./config.yml",
-        StaticConfig.DEFAULT_GLOBAL_PATH + "/config.json", StaticConfig.DEFAULT_GLOBAL_PATH + "/config.yml"
+        StaticConfig.DEFAULT_GLOBAL_PATH + "/config.json", StaticConfig.DEFAULT_GLOBAL_PATH + "/config.yml",
     ];
 
     public static DEFAULT_RULES_FILE_PATHS: string [] = [
         "./rules.json", "./rules.yml",
-        StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.json", StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.yml"
+        StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.json", StaticConfig.DEFAULT_GLOBAL_PATH + "/rules.yml",
     ];
 
     public static DEFAULT_DOWNLOAD_RULES_PATH_YML = "rules.yml";
@@ -27,6 +27,6 @@ export class StaticConfig {
         defaultSyncStartBlockNum: 0, // introduction of smartvotes
         defaultRulesPath: "",
         syncedBlockNumFile: "./wise-synced-block-num.txt",
-        disableSend: false
+        disableSend: false,
     };
 }

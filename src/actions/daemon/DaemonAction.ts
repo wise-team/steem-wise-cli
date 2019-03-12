@@ -1,12 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as program from "commander";
-import ow from "ow";
+import { DirectBlockchainApi, SingleDaemon, SteemOperationNumber, Wise } from "steem-wise-core";
 
-import { ConfigLoader, ConfigLoadedFromFile } from "../../config/Config";
-import { Wise, DirectBlockchainApi, SteemOperationNumber, SingleDaemon } from "steem-wise-core";
+import { ConfigLoadedFromFile, ConfigLoader } from "../../config/Config";
 import { StaticConfig } from "../../config/StaticConfig";
 import { Context } from "../../Context";
+
 import { Watchdog } from "./Watchdog";
 
 export class DaemonAction {
@@ -39,16 +38,16 @@ export class DaemonAction {
                 if (sinceBlockNum) {
                     return new SteemOperationNumber(sinceBlockNum, 0, 0);
                 } else if (lastBlockFile && fs.existsSync(lastBlockFile)) {
-                    return new SteemOperationNumber(parseInt(fs.readFileSync(lastBlockFile, "UTF-8")) + 1, 0, 0);
+                    return new SteemOperationNumber(parseInt(fs.readFileSync(lastBlockFile, "UTF-8"), 10) + 1, 0, 0);
                 } else if (config.defaultSyncStartBlockNum > 0) {
-                    return new SteemOperationNumber(parseInt(config.defaultSyncStartBlockNum + ""), 0, 0);
+                    return new SteemOperationNumber(parseInt(config.defaultSyncStartBlockNum + "", 10), 0, 0);
                 } else {
                     return delegatorWise
                         .getLastConfirmationMoment(config.username)
                         .then((moment: SteemOperationNumber | undefined) =>
                             moment
                                 ? moment
-                                : new SteemOperationNumber(StaticConfig.INTRODUCTION_OF_WISE_BLOCK_NUM, 0, 0)
+                                : new SteemOperationNumber(StaticConfig.INTRODUCTION_OF_WISE_BLOCK_NUM, 0, 0),
                         );
                 }
             })
@@ -69,7 +68,9 @@ export class DaemonAction {
                             this.context.error(error);
                         }
                     } else if (event.type === SingleDaemon.EventType.StartBlockProcessing) {
+                        //
                     } else if (event.type === SingleDaemon.EventType.SynchronizationStop) {
+                        //
                     } else if (event.type === SingleDaemon.EventType.VoteorderPassed) {
                         this.context.log("[Synchronization] (voter=" + event.voter + ") " + event.message);
                         this.context.log(JSON.stringify(event.voteorder, undefined, 2));

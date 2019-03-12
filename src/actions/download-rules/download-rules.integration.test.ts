@@ -1,15 +1,11 @@
-import * as fs from "fs";
-import { expect, use as chaiUse } from "chai";
-import * as chaiAsPromised from "chai-as-promised";
-import "mocha";
-import * as _ from "lodash";
-import { d } from "../../util/util";
-import * as nock from "nock";
 import * as BluebirdPromise from "bluebird";
-import Wise, { DirectBlockchainApi, SetRulesForVoter } from "steem-wise-core";
+import { expect } from "chai";
+import * as fs from "fs";
 import * as yaml from "js-yaml";
-
-chaiUse(chaiAsPromised);
+import * as _ from "lodash";
+import "mocha";
+import * as nock from "nock";
+import Wise, { DirectBlockchainApi, SetRulesForVoter } from "steem-wise-core";
 
 import { CliTestHelper } from "../../_test/CliTestHelper.test";
 
@@ -41,7 +37,7 @@ describe("$ wise download-rules", function() {
                 const sTimeMs = Date.now();
                 const downloadedRules: SetRulesForVoter[] = (await new Wise(
                     "",
-                    new DirectBlockchainApi(Wise.constructDefaultProtocol())
+                    new DirectBlockchainApi(Wise.constructDefaultProtocol()),
                 ).downloadAllRulesets(account)).map(esr => _.omit(esr, "moment") as SetRulesForVoter);
                 await BluebirdPromise.delay(Math.max(10000 - (Date.now() - sTimeMs), 0));
                 helper.endStdin();
@@ -61,6 +57,6 @@ describe("$ wise download-rules", function() {
             const result = await Promise.all([appPromise, testPromise]);
 
             expect(result[0]).to.match(new RegExp("Rules saved to file (.*)." + format));
-        })
+        }),
     );
 });

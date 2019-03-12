@@ -1,5 +1,6 @@
-import ow from "ow";
+/* tslint:disable:variable-name */
 import * as fs from "fs";
+import ow from "ow";
 import * as path from "path";
 
 export const ow_extend = {
@@ -10,8 +11,7 @@ export const ow_extend = {
         let parentPath: string = "";
         try {
             parentPath = path.dirname(path.normalize(filePath));
-        }
-        catch (error) {
+        } catch (error) {
             return `Expected ${filePath} to be a valid path: ${error}`;
         }
         return (fs.existsSync(parentPath) && fs.statSync(parentPath).isDirectory())
@@ -21,9 +21,8 @@ export const ow_extend = {
         try {
             JSON.parse(v);
             return true;
-        }
-        catch (error) {
+        } catch (error) {
             return `Expected ${v} to be a valid JSON object`;
         }
-    })
+    }),
 };

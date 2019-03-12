@@ -1,18 +1,14 @@
-import { expect, use as chaiUse } from "chai";
-import * as chaiAsPromised from "chai-as-promised";
-import * as fs from "fs";
-import "mocha";
+import { expect } from "chai";
 import * as _ from "lodash";
-import { d } from "../../util/util";
+import "mocha";
 import * as nock from "nock";
 import * as uuid from "uuid/v4";
-import * as mocks from "./mocks.test";
-chaiUse(chaiAsPromised);
 
 import { CliTestHelper } from "../../_test/CliTestHelper.test";
-import { StaticConfig } from "../../config/StaticConfig";
 import { Config } from "../../config/Config";
-import { fstat } from "fs";
+import { StaticConfig } from "../../config/StaticConfig";
+
+import * as mocks from "./mocks.test";
 import { VoteorderWithDelegator } from "./SendVoteorderAction";
 
 describe("$ wise send-voteorder", () => {
@@ -69,8 +65,9 @@ describe("$ wise send-voteorder", () => {
                         body.params[0] === "network_broadcast_api" &&
                         body.params[1] === "broadcast_transaction_synchronous"
                     )
-                )
+                ) {
                     return false;
+                }
                 const broadcastTx = body.params[2][0];
                 // console.log(broadcastTx);
                 const wiseOp = broadcastTx.operations[0];
@@ -85,6 +82,6 @@ describe("$ wise send-voteorder", () => {
             expect(error + "").to.contain("missing required posting authority");
         }
 
-        expect(nockScope.isDone()).to.be.true;
+        expect(nockScope.isDone()).to.be.equal(true);
     });
 });

@@ -3,9 +3,9 @@
 import { Command } from "commander";
 
 import { App } from "./app";
-import { Log } from "./log";
-import * as eastereggs from "./eastereggs";
 import { Context } from "./Context";
+import * as eastereggs from "./eastereggs";
+import { Log } from "./log";
 
 Log.log().initialize(false, false);
 
@@ -18,17 +18,18 @@ const app: App = new App(context, commander, process.argv);
         const result = await app.run();
         context.log(result);
         context.log("");
-    }
-    catch (error) {
+    } catch (error) {
         if (error.incorrect_command) {
             context.log("Incorrect command.");
             app.outputHelp();
             process.exit(1);
-        }
-        else {
+        } else {
             Log.log().exception(Log.level.error, error);
             context.log("");
-            context.log(">  We apologize for this error. Maybe this wise sentence will improve your mood: " + eastereggs.wisdomQuote());
+            context.log(
+                `>  We apologize for this error. ` +
+                `Maybe this wise sentence will improve your mood: ${eastereggs.wisdomQuote()}`,
+            );
             process.exit(1);
         }
     }

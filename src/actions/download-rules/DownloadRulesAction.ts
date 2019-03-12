@@ -1,24 +1,57 @@
-import * as path from "path";
 import * as fs from "fs";
-import * as _ from "lodash";
-import * as prompt from "prompt";
 import * as yaml from "js-yaml";
-
-import { Log } from "../../log";
-import { ConfigLoader, Config, ConfigLoadedFromFile } from "../../config/Config";
+import * as _ from "lodash";
+import * as path from "path";
+import * as prompt from "prompt";
 import {
-    Wise,
     DirectBlockchainApi,
-    SetRulesForVoter,
-    SteemOperationNumber,
-    SetRules,
     EffectuatedSetRules,
+    Wise,
 } from "steem-wise-core";
+
+import { Config, ConfigLoadedFromFile, ConfigLoader } from "../../config/Config";
 import { StaticConfig } from "../../config/StaticConfig";
-import { PrioritizedFileObjectLoader } from "../../util/PrioritizedFileObjectLoader";
 import { Context } from "../../Context";
 
 export class DownloadRulesAction {
+
+    private static downloadRules(username: string, config: Config): Promise<EffectuatedSetRules[]> {
+        const delegatorWise = new Wise(
+            username,
+            new DirectBlockchainApi(Wise.constructDefaultProtocol(), "", { url: config.steemApi }),
+        );
+        return delegatorWise.downloadAllRulesets(username);
+    }
+
+    private static askIfOverride(file: string): Promise<boolean> {
+        return Promise.resolve().then(
+            (): Promise<boolean> =>
+                new Promise((resolve, reject) => {
+                    prompt.start({});
+                    prompt.get(
+                        {
+                            properties: {
+                                override: {
+                                    description:
+                                        "File " +
+                                        file +
+                                        " already exists. Would you like to overwrite it? [type yes / no]",
+                                    pattern: /^y(es)?|no?$/gim,
+                                    required: true,
+                                    type: "string",
+                                },
+                            },
+                        },
+                        (error: Error, result: { override: string }) => {
+                            if (error) reject(error);
+                            else {
+                                resolve(result.override.toLowerCase().substr(0, 1) === "y");
+                            }
+                        },
+                    );
+                }),
+        );
+    }
     private context: Context;
     public constructor(context: Context) {
         this.context = context;
@@ -30,12 +63,15 @@ export class DownloadRulesAction {
 
         const override: boolean = !!options.override;
 
-        if (!file || !file.trim().length)
+        if (!file || !file.trim().length) {
             file =
                 format === "yml"
                     ? StaticConfig.DEFAULT_DOWNLOAD_RULES_PATH_YML
                     : StaticConfig.DEFAULT_DOWNLOAD_RULES_PATH_JSON;
-        if (!path.isAbsolute(file)) file = path.resolve(path.dirname(config.configFilePath), file); // prepend with path to config file
+        }
+        if (!path.isAbsolute(file)) {
+            file = path.resolve(path.dirname(config.configFilePath), file); // prepend with path to config file
+        }
 
         return Promise.resolve()
             .then(() => {
@@ -44,8 +80,8 @@ export class DownloadRulesAction {
                     return ConfigLoader.askForCredentialsIfEmpty(
                         config,
                         true,
-                        false /* don't ask for posting key */
-                    ).then(config => config.username);
+                        false, /* don't ask for posting key */
+                    ).then(loadedConfig => loadedConfig.username);
                 }
             })
             .then((account: string) => {
@@ -81,45 +117,7 @@ export class DownloadRulesAction {
                             fs.writeFileSync(file, outStr, { encoding: "utf8", flag: "w" });
                             return "Rules saved to file " + file;
                         });
-                }
+                },
             );
-    }
-
-    private static downloadRules(username: string, config: Config): Promise<EffectuatedSetRules[]> {
-        const delegatorWise = new Wise(
-            username,
-            new DirectBlockchainApi(Wise.constructDefaultProtocol(), "", { url: config.steemApi })
-        );
-        return delegatorWise.downloadAllRulesets(username);
-    }
-
-    private static askIfOverride(file: string): Promise<boolean> {
-        return Promise.resolve().then(
-            (): Promise<boolean> =>
-                new Promise((resolve, reject) => {
-                    prompt.start({});
-                    prompt.get(
-                        {
-                            properties: {
-                                override: {
-                                    description:
-                                        "File " +
-                                        file +
-                                        " already exists. Would you like to overwrite it? [type yes / no]",
-                                    pattern: /^y(es)?|no?$/gim,
-                                    required: true,
-                                    type: "string",
-                                },
-                            },
-                        },
-                        (error: Error, result: { override: string }) => {
-                            if (error) reject(error);
-                            else {
-                                resolve(result.override.toLowerCase().substr(0, 1) === "y");
-                            }
-                        }
-                    );
-                })
-        );
     }
 }

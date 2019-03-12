@@ -1,6 +1,6 @@
-import { SetRules, wise_rule } from "steem-wise-core";
+import { SetRules } from "steem-wise-core";
 
-export type Rules = {
+export type Rules = Array<{
     rules: SetRules,
-    voter: string
-} [];
+    voter: string,
+}>;

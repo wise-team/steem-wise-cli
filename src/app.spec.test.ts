@@ -1,7 +1,6 @@
 import { expect, use as chaiUse } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
-import * as _ from "lodash";
 chaiUse(chaiAsPromised);
 
 import { CliTestHelper } from "./_test/CliTestHelper.test";

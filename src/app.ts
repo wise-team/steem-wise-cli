@@ -1,25 +1,23 @@
-import { Command } from "commander";
 import * as BluebirdPromise from "bluebird";
+import { Command } from "commander";
 import ow from "ow";
-import { ow_extend } from "./util/ow-extend";
 
+import { DaemonAction } from "./actions/daemon/DaemonAction";
+import { DownloadRulesAction } from "./actions/download-rules/DownloadRulesAction";
+import { InitAction } from "./actions/init/InitAction";
+import { SendVoteorderAction } from "./actions/send-voteorder/SendVoteorderAction";
+import { UploadRulesAction } from "./actions/upload-rules/UploadRulesAction";
 import { ConfigLoadedFromFile, ConfigLoader } from "./config/Config";
 import { StaticConfig } from "./config/StaticConfig";
-import { UploadRulesAction } from "./actions/upload-rules/UploadRulesAction";
-import { DownloadRulesAction } from "./actions/download-rules/DownloadRulesAction";
-import { SendVoteorderAction } from "./actions/send-voteorder/SendVoteorderAction";
-import { DaemonAction } from "./actions/daemon/DaemonAction";
-import { InitAction } from "./actions/init/InitAction";
-import { Log } from "./log";
 import { Context } from "./Context";
+import { Log } from "./log";
+import { ow_extend } from "./util/ow-extend";
 
 export class App {
     private static VERSION: string = require("../package.json").version;
     private context: Context;
     private commander: Command;
     private argv: string[];
-
-    private doneCallback: (error: any, result?: string) => void = () => {};
     private commandExecutionBegun: boolean = false;
 
     public constructor(context: Context, commander: Command, argv: string[]) {
@@ -29,6 +27,17 @@ export class App {
 
         this.setup();
     }
+
+    public async run(): Promise<string> {
+        const result = await BluebirdPromise.promisify(this.runCb, { context: this })();
+        return result;
+    }
+
+    public outputHelp() {
+        this.commander.outputHelp();
+    }
+
+    private doneCallback: (error: any, result?: string) => void = () => { /* */ };
 
     private setup() {
         this.commander
@@ -46,7 +55,7 @@ export class App {
                     ow(voteorder, ow.any(ow_extend.isValidJson("voteorder"), ow_extend.fileExists("voteorder")));
 
                     return new SendVoteorderAction(this.context).doAction(await this.loadConfig(true), voteorder);
-                })
+                }),
             );
 
         this.commander
@@ -57,13 +66,13 @@ export class App {
                     if (rules) ow(rules, ow.any(ow_extend.isValidJson("rules"), ow_extend.fileExists("rules")));
 
                     return new UploadRulesAction(this.context).doAction(await this.loadConfig(true), rules);
-                })
+                }),
             );
 
         this.commander
             .command("download-rules [file]")
             .description(
-                "Downloads rules from blockchain to the file. Type 'wise download-rules --help' to list options."
+                "Downloads rules from blockchain to the file. Type 'wise download-rules --help' to list options.",
             )
             .option("-f, --format <format>", "Format of the output file (yml|json) [yml]", "yml")
             .option("-o, --override", "Override the file if it exists. If this option is not set you will be prompted.")
@@ -78,29 +87,31 @@ export class App {
                     ow(options.stdout, ow.any(ow.undefined, ow.boolean.label("override")));
 
                     return new DownloadRulesAction(this.context).doAction(await this.loadConfig(true), file, options);
-                })
+                }),
             );
 
         this.commander
             .command("daemon [sinceBlockNum]")
             .description(
-                "Reads all blocks since last confirmation (or saved state) a loop and sends votes/confirmations to blockchain"
+                `Reads all blocks since last confirmation (or saved state) ` +
+                 `a loop and sends votes/confirmations to blockchain`,
             )
             .action(sinceBlockNum =>
                 this.actionWrapper(async () => {
                     ow(sinceBlockNum, ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)));
 
-                    if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum);
+                    if (sinceBlockNum) sinceBlockNum = parseInt(sinceBlockNum, 10);
                     else sinceBlockNum = undefined;
 
                     return new DaemonAction(this.context).doAction(await this.loadConfig(true), sinceBlockNum);
-                })
+                }),
             );
 
         this.commander
             .command("init [path]")
             .description(
-                "Creates default rules.yml, config.yml, synced-block-num.txt in specified location. Type 'wise init --help' to list options."
+                `Creates default rules.yml, config.yml, synced-block-num.txt in specified location. ` +
+                `Type 'wise init --help' to list options.`,
             )
             .option("-g, --global", "Puts config and rules in home directory (~/.wise/)")
             .option("-n, --config [path]", "Specify path for config.yml [default:config.yml]")
@@ -110,11 +121,11 @@ export class App {
             .option("-d, --dont-save-posting-key", "Do not save posting key in config file")
             .option(
                 "-b, --since-block [block-num]",
-                "Number of block, from which synchronisation starts [default: head]"
+                "Number of block, from which synchronisation starts [default: head]",
             )
             .option(
                 "-s, --synced-block-num-path [path]",
-                "Path to file, which stores number of last synced block [default: synced-block-num.txt]"
+                "Path to file, which stores number of last synced block [default: synced-block-num.txt]",
             )
             .action((path, options) =>
                 this.actionWrapper(async () => {
@@ -127,27 +138,28 @@ export class App {
                     ow(options.dontSavePostingKey, ow.any(ow.undefined, ow.boolean.label("dontSavePostingKey")));
                     ow(
                         options.sinceBlockNum,
-                        ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0))
+                        ow.any(ow.undefined, ow.number.label("sinceBlockNum").finite.greaterThan(0)),
                     );
-                    if (options.syncedBlockNumPath)
+                    if (options.syncedBlockNumPath) {
                         ow(options.syncedBlockNumPath, ow_extend.fileExists("syncedBlockNumPath"));
+                    }
 
                     return new InitAction(this.context).doAction(options, path);
-                })
+                }),
             );
 
         // easteregg
         this.commander.command("man", "", { noHelp: true }).action((path, options) =>
             this.actionWrapper(async () => {
                 return "You are a wise gentleman";
-            })
+            }),
         );
 
         // easteregg
         this.commander.command("woman", "", { noHelp: true }).action((path, options) =>
             this.actionWrapper(async () => {
                 return "You are a wise lady";
-            })
+            }),
         );
     }
 
@@ -175,11 +187,6 @@ export class App {
         }
     }
 
-    public async run(): Promise<string> {
-        const result = await BluebirdPromise.promisify(this.runCb, { context: this })();
-        return result;
-    }
-
     private actionWrapper(action: () => Promise<string>) {
         this.commandExecutionBegun = true;
         (async () => {
@@ -191,9 +198,5 @@ export class App {
                 this.doneCallback(error, undefined);
             }
         })();
-    }
-
-    public outputHelp() {
-        this.commander.outputHelp();
     }
 }

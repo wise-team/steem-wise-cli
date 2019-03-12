@@ -1,13 +1,13 @@
-import * as path from "path";
-import * as program from "commander";
+import * as commander from "commander";
 import * as _ from "lodash";
-import * as BluebirdPromise from "bluebird";
-import * as prompt from "prompt";
 import ow from "ow";
+import * as path from "path";
+import * as prompt from "prompt";
 
 import { Log } from "../log";
-import { StaticConfig } from "./StaticConfig";
 import { PrioritizedFileObjectLoader } from "../util/PrioritizedFileObjectLoader";
+
+import { StaticConfig } from "./StaticConfig";
 
 /**
  * Config parameters.
@@ -31,7 +31,7 @@ export interface ConfigLoadedFromFile extends Config {
  * This Env variables can be used to override config settings.
  * This can be handful e.g. when using wise with docker-compose.
  */
-const envMappings: [string, string][] = [
+const envMappings: Array<[string, string]> = [
     ["WISE_STEEM_USERNAME", "username"],
     ["WISE_STEEM_POSTINGWIF", "postingWif"],
     ["WISE_STEEM_API", "steemApi"],
@@ -51,11 +51,11 @@ const envMappings: [string, string][] = [
  */
 
 export class ConfigLoader {
-    public static async loadConfig(program: program.Command): Promise<ConfigLoadedFromFile> {
-        ow(program, ow.object.label("program"));
+    public static async loadConfig(command: commander.Command): Promise<ConfigLoadedFromFile> {
+        ow(command, ow.object.label("command"));
 
         const config: Config = StaticConfig.DEFAULT_CONFIG;
-        let configLoadedFromFile: ConfigLoadedFromFile = await this.loadFromFilesBasedOnPriority(program, config);
+        let configLoadedFromFile: ConfigLoadedFromFile = await this.loadFromFilesBasedOnPriority(command, config);
         configLoadedFromFile = ConfigLoader.loadEnv(configLoadedFromFile);
 
         ConfigLoader.validateConfig(configLoadedFromFile);
@@ -64,17 +64,68 @@ export class ConfigLoader {
         return configLoadedFromFile;
     }
 
-    private static async loadFromFilesBasedOnPriority(program: program.Command, prevConfig: Config): Promise<ConfigLoadedFromFile> {
-        ow(program, ow.object.label("program"));
+    public static askForCredentialsIfEmpty(
+        config: Config, username: boolean = true, postingKey: boolean = true,
+    ): Promise<Config> {
+        return Promise.resolve().then((): Promise<Config> => {
+            const askForUsername = username && (!config.username || config.username.trim().length === 0);
+            const askForPostingWif = postingKey && (!config.postingWif || config.postingWif.trim().length === 0);
+            if (!askForUsername && !askForPostingWif) return Promise.resolve(config);
+
+            const propertiesToAsk: any = {};
+
+            if (askForUsername) {
+                propertiesToAsk.username = {
+                    description: "Enter your steem username (without @)",
+                    required: true,
+                    type: "string",
+                    pattern: /^[0-9a-z-]{3,24}$/,
+                };
+            }
+
+            if (askForPostingWif) {
+                const question = "Enter " + (askForUsername ? "your" : "your (@" + config.username + ")") +
+                    " steem posting key Wif \n(Here is an instruction where to find it: " +
+                    "https://steemit.com/security/@noisy/public-and-private-keys-how-they-are-used" +
+                    "-by-steem-making-all-of-these-possible-you-can-find-answer-here)";
+                propertiesToAsk.postingWif = {
+                    description: question,
+                    required: true,
+                    hidden: true,
+                    type: "string",
+                    pattern: /^[0-9A-Za-z-]+$/,
+                };
+            }
+            return new Promise((resolve, reject) => {
+                prompt.start({});
+                prompt.get({
+                    properties: propertiesToAsk,
+                }, (error: Error, result: { username: string, postingWif: string }) => {
+                    if (error) reject(error);
+                    else {
+                        if (askForUsername) config.username = result.username;
+                        if (askForPostingWif) config.postingWif = result.postingWif;
+                        resolve(config);
+                    }
+                });
+            });
+        })
+        .then(loadedConfig => loadedConfig);
+    }
+
+    private static async loadFromFilesBasedOnPriority(
+        command: commander.Command, prevConfig: Config,
+    ): Promise<ConfigLoadedFromFile> {
+        ow(command, ow.object.label("command"));
         ow(prevConfig, ow.object.label("prevConfig"));
 
         const configFiles: string [] = _.cloneDeep(StaticConfig.DEFAULT_CONFIG_FILE_PATHS);
-        if (program.configFile) configFiles.unshift(program.configFile);
+        if (command.configFile) configFiles.unshift(command.configFile);
 
         const newConfig = await PrioritizedFileObjectLoader.loadFromFiles(prevConfig, configFiles, "config");
         const configLoadedFromFile: ConfigLoadedFromFile = {
             ...newConfig.loadedObject,
-            configFilePath: path.resolve((newConfig.path ? newConfig.path : "."))
+            configFilePath: path.resolve((newConfig.path ? newConfig.path : ".")),
         };
         return configLoadedFromFile;
     }
@@ -90,48 +141,5 @@ export class ConfigLoader {
 
     private static validateConfig(config: ConfigLoadedFromFile): ConfigLoadedFromFile {
         return config;
-    }
-
-    public static askForCredentialsIfEmpty(config: Config, username: boolean = true, postingKey: boolean = true): Promise<Config> {
-        return Promise.resolve().then((): Promise<Config> => {
-            const askForUsername = username && (!config.username || config.username.trim().length == 0);
-            const askForPostingWif = postingKey && (!config.postingWif || config.postingWif.trim().length == 0);
-            if (!askForUsername && !askForPostingWif) return Promise.resolve(config);
-
-            const propertiesToAsk: any = {};
-
-            if (askForUsername) {
-                propertiesToAsk.username = {
-                    description: "Enter your steem username (without @)",
-                    required: true,
-                    type: "string",
-                    pattern: /^[0-9a-z-]{3,24}$/,
-                };
-            }
-
-            if (askForPostingWif) {
-                propertiesToAsk.postingWif = {
-                    description: "Enter " + (askForUsername ? "your" : "your (@" + config.username + ")") + " steem posting key Wif \n(Here is an instruction where to find it: https://steemit.com/security/@noisy/public-and-private-keys-how-they-are-used-by-steem-making-all-of-these-possible-you-can-find-answer-here)",
-                    required: true,
-                    hidden: true,
-                    type: "string",
-                    pattern: /^[0-9A-Za-z-]+$/,
-                };
-            }
-            return new Promise((resolve, reject) => {
-                prompt.start({});
-                prompt.get({
-                    properties: propertiesToAsk
-                }, (error: Error, result: { username: string, postingWif: string }) => {
-                    if (error) reject(error);
-                    else {
-                        if (askForUsername) config.username = result.username;
-                        if (askForPostingWif) config.postingWif = result.postingWif;
-                        resolve(config);
-                    }
-                });
-            });
-        })
-        .then(config => config);
     }
 }
