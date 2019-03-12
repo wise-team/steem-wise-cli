@@ -2,3 +2,4 @@
 /.dockerignore
 /docker-compose.yml
 /Dockerfile
+*.test.ts
