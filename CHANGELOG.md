@@ -1,3 +1,18 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/wise-team/steem-wise-cli/compare/v3.1.1...v3.2.0) (2019-01-31)
+
+
+### Bug Fixes
+
+* change sync-rules to upload-rules in docker-compose ([e8e3092](https://github.com/wise-team/steem-wise-cli/commit/e8e3092))
+
+
+### Features
+
+* add watchdog healthcheck to docker image ([1f4e017](https://github.com/wise-team/steem-wise-cli/commit/1f4e017))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/wise-team/steem-wise-cli/compare/v3.1.0...v3.1.1) (2019-01-31)
 
