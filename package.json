@@ -59,7 +59,7 @@
     "mock-fs": "4.7.0",
     "nock": "10.0.4",
     "nyc": "13.3.0",
-    "rimraf": "2.6.2",
+    "rimraf": "2.6.3",
     "semantic-release": "16.0.0-beta.18",
     "sinon": "7.2.3",
     "stdio-mock--fork-by-wiseteam": "1.1.2",
