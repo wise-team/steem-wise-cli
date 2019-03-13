@@ -65,7 +65,7 @@
     "stdio-mock--fork-by-wiseteam": "1.1.2",
     "ts-node": "6.2.0",
     "tslint": "5.11.0",
-    "typescript": "2.9.2",
+    "typescript": "3.3.3333",
     "uuid": "3.3.2",
     "wise-tslint-configuration": "0.2.0"
   },
