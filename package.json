@@ -34,7 +34,7 @@
     "ow": "^0.8.0",
     "prompt": "^1.0.0",
     "steem-wise-core": "^4.2.0",
-    "universe-log": "^0.2.0"
+    "universe-log": "^1.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "7.5.2",
