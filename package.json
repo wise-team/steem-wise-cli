@@ -15,7 +15,7 @@
     "build:lint": "tslint -c tslint.json -p tsconfig.lint.json",
     "build:node": "tsc",
     "build": "npm run check && npm run build:cleanbefore && npm run build:node && npm run build:lint",
-    "prepare": "npm run build",
+    "prepare": "npm run snyk-protect; npm run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --require source-map-support/register --recursive src/**/*.spec.test.ts",
@@ -23,7 +23,8 @@
     "test-coverage": "nyc npm run test",
     "verify-coverage": "nyc npm run verify",
     "lint-fix": "tslint --fix -c tslint.json -p tsconfig.lint.json",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
@@ -34,7 +35,8 @@
     "ow": "^0.8.0",
     "prompt": "^1.0.0",
     "steem-wise-core": "^4.2.0",
-    "universe-log": "^0.2.0"
+    "universe-log": "^0.2.0",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "@commitlint/cli": "7.5.2",
@@ -121,5 +123,6 @@
   "homepage": "https://wise.vote/",
   "bugs": {
     "url": "https://github.com/wise-team/steem-wise-cli/issues"
-  }
+  },
+  "snyk": true
 }
