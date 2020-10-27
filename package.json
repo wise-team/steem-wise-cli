@@ -40,7 +40,7 @@
     "@commitlint/cli": "7.5.2",
     "@commitlint/config-conventional": "7.5.0",
     "@types/bluebird": "3.5.26",
-    "@types/chai": "4.1.7",
+    "@types/chai": "4.2.14",
     "@types/chai-as-promised": "7.1.0",
     "@types/js-yaml": "3.12.1",
     "@types/lodash": "4.14.123",
