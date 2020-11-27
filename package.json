@@ -39,7 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "7.5.2",
     "@commitlint/config-conventional": "7.5.0",
-    "@types/bluebird": "3.5.26",
+    "@types/bluebird": "3.5.33",
     "@types/chai": "4.1.7",
     "@types/chai-as-promised": "7.1.0",
     "@types/js-yaml": "3.12.1",
