@@ -31,7 +31,7 @@
     "js-yaml": "^3.13.0",
     "lodash": "^4.17.11",
     "node-docker-watchdog": "^1.2.3",
-    "ow": "^0.8.0",
+    "ow": "^0.19.0",
     "prompt": "^1.0.0",
     "steem-wise-core": "^4.2.0",
     "universe-log": "^0.2.0"
